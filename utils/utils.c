@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/16 17:34:37 by abablil          ###   ########.fr       */
+/*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
+/*   Updated: 2024/02/16 18:16:03 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-int main(int total, char **args, char **env)
+bool only_spaces(char *str)
 {
-	t_data data;
-	(void)args;
+	int i;
+	int count;
 
-	if (total != 1)
+	i = 0;
+	count = 0;
+	while (str[i])
 	{
-		printf("Error: minishell\n");
-		return (1);
+		if (str[i] == ' ' || str[i] == '\t')
+			count++;
+		i++;
 	}
-	data.env = env;
-	reader(&data);
-	return (0);
+	if (count == i)
+		return (true);
+	return (false);
 }

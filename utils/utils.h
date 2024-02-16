@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/16 17:34:37 by abablil          ###   ########.fr       */
+/*   Created: 2024/02/16 18:01:22 by abablil           #+#    #+#             */
+/*   Updated: 2024/02/16 18:01:53 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-int main(int total, char **args, char **env)
-{
-	t_data data;
-	(void)args;
+#include "../minishell.h"
 
-	if (total != 1)
-	{
-		printf("Error: minishell\n");
-		return (1);
-	}
-	data.env = env;
-	reader(&data);
-	return (0);
-}
+bool only_spaces(char *str);
+
+#endif
