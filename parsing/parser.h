@@ -6,12 +6,16 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/16 12:02:29 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/16 16:34:30 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
+#include "../minishell.h"
+
+// Parsing
+void	reader(void);
 
 #endif

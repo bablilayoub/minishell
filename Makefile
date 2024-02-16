@@ -3,7 +3,7 @@ HEADER = minishell.h
 
 CFLAGS = -Wall -Wextra -Werror
 
-LIBFT = ./libft/libft.a
+LIBFT = ./utils/libft/libft.a
 
 PARSING = parsing.c
 EXECUTION = execution.c
@@ -21,7 +21,7 @@ $(NAME): prepare_libft $(PARSING_OBJS) $(EXECUTION_OBJS) $(MAIN_OBJS)
 	@echo "minishell is ready"
 
 prepare_libft:
-	@cd libft && make
+	@cd ./utils/libft && make
 	@echo "libft is ready"
 
 %.o: %.c $(HEADER)
@@ -31,13 +31,13 @@ prepare_libft:
 all: $(NAME)
 
 clean:
-	@cd libft && make clean
+	@cd ./utils/libft && make clean
 	@rm -f $(PARSING_OBJS) $(EXECUTION_OBJS) $(MAIN_OBJS)
 	@echo "minishell is clean"
 
 fclean: clean
 	@rm -f $(NAME)
-	@cd libft && make fclean
+	@cd ./utils/libft && make fclean
 	@echo "minishell is fully clean"
 
 re: fclean all

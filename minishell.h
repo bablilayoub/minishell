@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/16 12:49:40 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/16 16:33:41 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <readline/readline.h>
-#include "libft/libft.h"
+#include <readline/history.h>
+#include "utils/libft/libft.h"
 #include "parsing/parser.h"
 #include "execution/execution.h"
 
-typedef struct s_history
-{
-	char				*cmd;
-	struct s_history	*next;
-	struct s_history	*prev;
-}				t_history;
+#define PREFIX "minishell$ "
 
 typedef struct s_cmd
 {
@@ -40,8 +36,10 @@ typedef struct s_data
 {
 	char		**env;
 	char		**args;
-	t_history	*history;
 	t_cmd		*cmd;
 }				t_data;
+
+
+
 
 #endif

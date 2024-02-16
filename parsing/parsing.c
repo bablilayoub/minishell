@@ -6,25 +6,27 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/16 12:33:10 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/16 16:34:12 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "parser.h"
 
-void	parser(char *line, t_data *data)
+void	reader(void)
 {
-	(void)data;
-
+	char *line;
 	
 	while (1)
 	{
-		line = readline("minishell$ ");
+		line = readline(PREFIX);
 		if (!line)
-			break ;
-		if (strcmp(line, "pwd") == 0)
 		{
-			printf("pwd\n");
+			clear_history();
+			break;
 		}
+		if (ft_strlen(line) > 0)
+			add_history(line);
+		free(line);
 	}
 }
+
