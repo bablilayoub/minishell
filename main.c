@@ -6,8 +6,14 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/16 12:00:54 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/16 12:52:07 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#
+#include "minishell.h"
+
+int main(int total, char **args, char **env)
+{
+	if (total != 1)
+		return (0);
+}
