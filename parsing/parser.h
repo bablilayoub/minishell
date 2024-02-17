@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 18:21:45 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 18:43:04 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,15 @@ typedef struct s_token_params
 	t_token	*token;
 }	t_token_params;
 
-typedef struct s_arg
+struct s_arg
 {
 	char			*arg;
 	int				env_var;
 	struct s_arg	*next;
 	struct s_arg	*prev;
-}	t_arg;
+};
 
-typedef struct s_cmd
+struct s_cmd
 {
 	char			*cmd;
 	char			*path;
@@ -73,7 +73,7 @@ typedef struct s_cmd
 	struct s_arg	*args;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
-}	t_cmd;
+};
 
 // Parsing
 void	reader(t_data *data);

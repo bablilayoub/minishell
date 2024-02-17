@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/17 18:37:16 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/17 18:45:40 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,16 @@ void executer(t_data *data)
     list_cmd = data->cmd;
     
     initialize_path(list_cmd);
-    printf("path: %s\n", list_cmd->path);
     while (list_cmd != NULL)
     {
         printf("path: %s\n", list_cmd->path);
         while (list_cmd->args)
         {
-            printf("path: %s\n", list_cmd->args->arg);
+            printf("arg : %s | env_var : %d\n", list_cmd->args->arg, list_cmd->args->env_var);
             list_cmd->args = list_cmd->args->next;
         }
         list_cmd = list_cmd->next;
     }
-    exit(0);
     // print_commands(list_cmd);
     // execution(list_cmd);
 }

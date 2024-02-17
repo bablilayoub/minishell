@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 14:56:24 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 18:43:12 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,18 @@
 #include <readline/history.h>
 #include "utils/libft/libft.h"
 
-typedef struct s_data
+typedef struct s_cmd t_cmd;
+typedef struct s_token t_token;
+typedef struct s_data t_data;
+typedef struct s_arg t_arg;
+
+struct s_data
 {
 	char		**env;
 	char		**args;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
-}				t_data;
+};
 
 #include "parsing/parser.h"
 #include "execution/execution.h"
