@@ -85,6 +85,13 @@ push:
 	@git push
 	@echo "pushed"
  
+force:
+	@echo "pushing"
+	@git add .
+	@git commit -m "update"
+	@git push -f
+	@echo "pushed"
+
 pull:
 	@echo "pulling"
 	@git pull
