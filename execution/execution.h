@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/17 12:32:16 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/17 12:33:43 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #include <stdlib.h>
 #include "../utils/libft/libft.h"
 #include "../parsing/parser.h"
-
 
 
 #endif
