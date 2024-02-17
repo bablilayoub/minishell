@@ -5,28 +5,38 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 18:36:28 by alaalalm         ###   ########.fr       */
+/*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
+/*   Updated: 2024/02/17 18:36:50 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "execution.h"
 
-bool only_spaces(char *str)
+void initialize_path(t_cmd *head)
 {
-	int i;
-	int count;
+    char **env;
+    int i;
 
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		if (str[i] == ' ' || str[i] == '\t')
-			count++;
-		i++;
-	}
-	if (count == i)
-		return (true);
-	return (false);
+    while (head)
+    {
+        env = ft_split(getenv("PATH"), ':');
+        i = 0;
+        while (env[i])
+        {
+            env[i] = ft_strjoin(env[i], "/");
+            env[i] = ft_strjoin(env[i], head->cmd);
+            i++;
+        }
+        i = 0;
+        while (env[i])
+        {
+            if (access(env[i], F_OK | X_OK) == 0)
+            {
+                head->path = env[i];
+                break;
+            }
+            i++;
+        }
+        head = head->next;
+    }
 }
-

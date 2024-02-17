@@ -25,7 +25,7 @@ PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER)) $(addprefix converter/
 
 # EXECUTION
 EXECUTION_HEADER = ./execution/execution.h
-EXECUTION = execution.c
+EXECUTION = execution.c utils.c
 
 # SOURCES
 PARSING_SRCS = $(addprefix parsing/, $(PARSING))
