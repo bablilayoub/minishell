@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 19:16:09 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 19:31:00 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void find_args(t_cmd *cmd, t_token *token)
 	t_token *tmp = token;
 	t_arg *head = NULL;
 
+	head = add_arg(head, cmd->cmd, 0);
 	while (not_a_shell_command(tmp))
 	{
 		if (ft_strncmp(tmp->type, WORD, 4) == 0)
