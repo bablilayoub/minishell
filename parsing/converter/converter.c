@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 17:45:01 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 19:11:39 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,10 @@ int not_a_shell_command(t_token *token)
 	return (1);
 }
 
-int between_quotes(t_token *token)
-{
-	t_token *tmp = token;
-	int found_quote = 0;
-	while (not_a_shell_command(tmp))
-	{
-		if (ft_strncmp(tmp->type, QUOTE, 1) == 0)
-			found_quote = 1;
-		tmp = tmp->next;
-	}
-	return (found_quote);
-}
-
 void convert_tokens_to_commands(t_data *data)
 {
+	if (!data->token)
+		return;
 	t_token *tmp = data->token;
 	t_cmd *head = NULL;
 	int found_cmd = 0;
@@ -61,4 +50,14 @@ void convert_tokens_to_commands(t_data *data)
 		tmp = tmp->next;
 	}
 	data->cmd = head;
+	while (head)
+	{
+		printf("cmd : %s\n", head->cmd ? head->cmd : "NULL");
+		while (head->args)
+		{
+			printf("arg : %s | env_var : %d\n", head->args->arg ? head->args->arg : "NULL", head->args->env_var ? head->args->env_var : 0);
+			head->args = head->args->next;
+		}
+		head = head->next;
+	}
 }

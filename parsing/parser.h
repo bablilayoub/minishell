@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 18:43:04 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 19:13:55 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	print_tokens(t_token *token);
 // Converter
 void	convert_tokens_to_commands(t_data *data);
 int		not_a_shell_command(t_token *token);
-int		between_quotes(t_token *token);
 
 // Converter utils
 t_cmd	*new_cmd(t_token *token);
@@ -100,6 +99,5 @@ t_cmd	*add_cmd(t_cmd *head, t_cmd *cmd);
 t_arg	*new_arg(char *value);
 t_arg	*add_arg(t_arg *head, char *value, int found_quote);
 void	find_args(t_cmd *cmd, t_token *token);
-
 
 #endif
