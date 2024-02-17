@@ -20,6 +20,7 @@ UTILS_HEADER = ./utils/utils.h
 # PARSING
 PARSING_HEADER = ./parsing/parsing.h
 TOKENIZER = tokenizer.c tokenizer_utils.c
+CONVERTER = converter.c
 PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER))
 
 # EXECUTION
