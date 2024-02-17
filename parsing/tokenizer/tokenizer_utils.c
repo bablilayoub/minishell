@@ -6,11 +6,11 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 08:57:32 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 11:28:59 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../parser.h"
 
 t_token *new_token(char *value, char *type, int state, size_t len)
 {
@@ -42,13 +42,22 @@ t_token *add_token(t_token *head, t_token *token)
 	return (head);
 }
 
+int not_a_special_char(char c)
+{
+	if (c != ' ' && c != '\t' && c != '\n' && c != '\''
+		&& c != '\"' && c != '$' && c != '|' && c != '<'
+		&& c != '>' && c != '\\')
+		return (1);
+	return (0);
+}
+
 char *get_word(char *line, size_t *i)
 {
 	size_t start;
 	char *word;
 
 	start = *i;
-	while (line[*i] && ft_isalnum(line[*i]))
+	while (line[*i] && not_a_special_char(line[*i]))
 		(*i)++;
 	word = ft_substr(line, start, *i - start);
 	if (!word)
@@ -117,8 +126,35 @@ void print_tokens(t_token *token)
 			i++;
 		}
 		i = 0;
-		space_left = 14 - ft_strlen(tmp->type);
-		printf("|    %s", tmp->type);
+		char *new_type;
+		if (ft_strncmp(tmp->type, QUOTE, 6) == 0)
+			new_type = "QUOTE";
+		else if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 6) == 0)
+			new_type = "DOUBLE_QUOTE";
+		else if (ft_strncmp(tmp->type, WORD, 4) == 0)
+			new_type = "WORD";
+		else if (ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0)
+			new_type = "WHITE_SPACE";
+		else if (ft_strncmp(tmp->type, NEW_LINE, 1) == 0)
+			new_type = "NEW_LINE";
+		else if (ft_strncmp(tmp->type, ESCAPE, 1) == 0)
+			new_type = "ESCAPE";
+		else if (ft_strncmp(tmp->type, ENV, 1) == 0)
+			new_type = "ENV";
+		else if (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0)
+			new_type = "PIPE_LINE";
+		else if (ft_strncmp(tmp->type, REDIR_IN, 1) == 0)
+			new_type = "REDIR_IN";
+		else if (ft_strncmp(tmp->type, REDIR_OUT, 1) == 0)
+			new_type = "REDIR_OUT";
+		else if (ft_strncmp(tmp->type, HERE_DOC, 2) == 0)
+			new_type = "HERE_DOC";
+		else if (ft_strncmp(tmp->type, APPEND_OUT, 2) == 0)
+			new_type = "APPEND_OUT";
+		else
+			new_type = tmp->type;
+		space_left = 14 - ft_strlen(new_type);
+		printf("|    %s", new_type);
 		while (i < space_left)
 		{
 			printf(" ");
@@ -128,4 +164,19 @@ void print_tokens(t_token *token)
 		tmp = tmp->next;
 	}
 	printf("-------------------------------------------------------------------------------\n");
+}
+
+void free_tokens(t_token *token)
+{
+	t_token *tmp;
+
+	tmp = token;
+	while (tmp)
+	{
+		free(tmp->value);
+		free(tmp->type);
+		token = tmp->next;
+		free(tmp);
+		tmp = token;
+	}
 }

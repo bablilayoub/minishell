@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 09:51:08 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 11:14:57 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #define WORD "WORD"
 #define WHITE_SPACE " "
 #define NEW_LINE "\n"
-#define QOUTE "\'"
+#define QUOTE "\'"
 #define DOUBLE_QUOTE "\""
 #define ESCAPE "\\"
 #define ENV "$"
@@ -46,6 +46,7 @@ typedef struct s_token_params
 {
 	size_t i;
 	size_t len;
+	char *line;
 	char *value;
 	char *type;
 	int state;

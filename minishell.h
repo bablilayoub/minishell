@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/16 18:21:18 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 10:08:59 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,5 @@ typedef struct s_data
 #include "utils/utils.h"
 
 #define PREFIX "minishell$ "
-
 
 #endif
