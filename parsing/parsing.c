@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 12:06:50 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 12:36:33 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void validate_syntax(t_token *token)
 void check_syntax(t_token *token)
 {
 	validate_syntax(token);
+	
 }
 
 void parser(char *line, t_data *data)

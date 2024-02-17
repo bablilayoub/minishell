@@ -49,6 +49,14 @@ prepare_libft:
 	@cd ./utils/libft && make
 	@echo "libft is ready"
 
+parsing: prepare_libft $(PARSING_OBJS) $(UTILS_OBJS) $(MAIN_OBJS)
+	@cc $(CFLAGS) -lreadline $(PARSING_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
+	@echo "parsing is ready"
+
+execution: prepare_libft $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS)
+	@cc $(CFLAGS) -lreadline $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
+	@echo "execution is ready"
+
 %.o: %.c $(HEADERS)
 	@echo "compiling $<"
 	@cc $(CFLAGS) -c $< -o $@

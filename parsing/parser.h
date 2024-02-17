@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 12:33:56 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 12:35:55 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,24 @@ typedef struct s_token
 
 typedef struct s_token_params
 {
-	size_t i;
-	size_t len;
-	char *line;
-	char *value;
-	char *type;
-	int state;
-	int in_quote;
-	int in_dquote;
-	t_token *head;
-	t_token *token;
-} t_token_params;
+	size_t	i;
+	size_t	len;
+	char 	*line;
+	char 	*value;
+	char 	*type;
+	int 	state;
+	int 	in_quote;
+	int		in_dquote;
+	t_token	*head;
+	t_token	*token;
+}	t_token_params;
 
 typedef struct s_cmd
 {
-	char	*cmd;
-	char	**args;
+	char			*cmd;
+	char			**args;
 	struct s_cmd	*next;
-}				t_cmd;
+}	t_cmd;
 
 // Parsing
 void	reader(t_data *data);
