@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
 LIBFT = ./utils/libft/libft.a
 
-PARSING = parsing.c
+PARSING = parsing.c tokenizer.c tokenizer_utils.c
 EXECUTION = execution.c
 UTILS = utils.c
 MAIN = main.c
