@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 10:08:59 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 12:02:30 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 typedef struct s_cmd
 {
 	char	*cmd;
-	char	**options;
 	char	**args;
+	struct s_cmd	*next;
 }				t_cmd;
 
 typedef struct s_data

@@ -6,32 +6,37 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 10:55:44 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 12:06:50 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void check_syntax(t_token *token)
+void validate_syntax(t_token *token)
 {
 	t_token *tmp = token;
 	int quotes_count = 0;
 	int dquotes_count = 0;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->type, QUOTE, 6) == 0)
+		if (ft_strncmp(tmp->type, QUOTE, 1) == 0)
 			quotes_count++;
 		tmp = tmp->next;
 	}
 	tmp = token;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 6) == 0)
+		if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) == 0)
 			dquotes_count++;
 		tmp = tmp->next;
 	}
 	if (quotes_count % 2 != 0 || dquotes_count % 2 != 0)
-		printf("minishell: syntax error: unclosed quotes or double quotes\n");
+		printf("%s\n", PREFIX "Syntax error");
+}
+
+void check_syntax(t_token *token)
+{
+	validate_syntax(token);
 }
 
 void parser(char *line, t_data *data)

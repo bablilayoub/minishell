@@ -67,4 +67,12 @@ fclean: clean
 
 re: fclean all
 
+push:
+	@echo "pushing"
+	@make fclean
+	@git add .
+	@git commit -m "update"
+	@git push
+	@echo "pushed"
+
 .PHONY: clean fclean prepare_libft
