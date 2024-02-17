@@ -6,13 +6,12 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 12:33:51 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 14:56:24 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
 
 #include <stdio.h>
 #include <unistd.h>

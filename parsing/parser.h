@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 14:49:02 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 17:45:14 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,23 @@ typedef struct s_token_params
 	t_token	*token;
 }	t_token_params;
 
+typedef struct s_arg
+{
+	char			*arg;
+	int				env_var;
+	struct s_arg	*next;
+	struct s_arg	*prev;
+}	t_arg;
+
 typedef struct s_cmd
 {
 	char			*cmd;
 	char			*path;
-	char			**args;
 	char			*redirect;
 	char			*output_file;
+	struct s_arg	*args;
 	struct s_cmd	*next;
+	struct s_cmd	*prev;
 }	t_cmd;
 
 // Parsing
@@ -78,7 +87,19 @@ t_token	*add_token(t_token *head, t_token *token);
 char	*get_word(char *line, size_t *i);
 void	print_tokens(t_token *token);
 
-// Converting
-void	convert_tokens_to_commands(t_token *token);
+// Converter
+void	convert_tokens_to_commands(t_data *data);
+int		not_a_shell_command(t_token *token);
+int		between_quotes(t_token *token);
+
+// Converter utils
+t_cmd	*new_cmd(t_token *token);
+t_cmd	*add_cmd(t_cmd *head, t_cmd *cmd);
+
+// Arguments
+t_arg	*new_arg(char *value);
+t_arg	*add_arg(t_arg *head, char *value, int found_quote);
+void	find_args(t_cmd *cmd, t_token *token);
+
 
 #endif

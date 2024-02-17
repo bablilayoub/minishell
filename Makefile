@@ -7,7 +7,7 @@ NAME = minishell
 HEADER = minishell.h
 
 # FLAGS
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a
@@ -20,8 +20,8 @@ UTILS_HEADER = ./utils/utils.h
 # PARSING
 PARSING_HEADER = ./parsing/parsing.h
 TOKENIZER = tokenizer.c tokenizer_utils.c
-CONVERTER = converter.c
-PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER))
+CONVERTER = converter.c arguments.c commands.c
+PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER)) $(addprefix converter/, $(CONVERTER))
 
 # EXECUTION
 EXECUTION_HEADER = ./execution/execution.h
@@ -58,7 +58,7 @@ execution: prepare_libft $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS)
 	@cc $(CFLAGS) -lreadline $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
 	@echo "execution is ready"
 
-%.o: %.c $(HEADERS)
+%.o: %.c $(HEADER)
 	@echo "compiling $<"
 	@cc $(CFLAGS) -c $< -o $@
 
@@ -76,6 +76,7 @@ fclean: clean
 
 re: fclean all
 
+# GIT COMMANDS
 push:
 	@echo "pushing"
 	@make fclean
@@ -96,4 +97,5 @@ stash:
 	@git stash pop
 	@echo "stashed"
 
-.PHONY: clean fclean prepare_libft
+# PHONY
+.PHONY: prepare_libft clean fclean 
