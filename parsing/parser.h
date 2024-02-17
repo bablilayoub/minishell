@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 14:41:52 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 14:49:02 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,8 @@ t_token	*new_token(char *value, char *type, int state, size_t len);
 t_token	*add_token(t_token *head, t_token *token);
 char	*get_word(char *line, size_t *i);
 void	print_tokens(t_token *token);
+
+// Converting
+void	convert_tokens_to_commands(t_token *token);
 
 #endif
