@@ -74,5 +74,10 @@ push:
 	@git commit -m "update"
 	@git push
 	@echo "pushed"
+ 
+pull:
+	@echo "pulling"
+	@git pull
+	@echo "pulled"
 
 .PHONY: clean fclean prepare_libft
