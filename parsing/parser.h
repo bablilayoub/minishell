@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 19:13:55 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 19:19:42 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ struct s_cmd
 	char			*path;
 	char			*redirect;
 	char			*output_file;
+	char 			**arguments;
 	struct s_arg	*args;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/17 18:36:50 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/17 19:20:29 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,15 @@ void initialize_path(t_cmd *head)
         }
         head = head->next;
     }
+}
+
+int args_lenght(t_arg *args)
+{
+    int i = 0;
+    while (args != NULL)
+    {
+        i++;
+        args = args->next;
+    }
+    return (i);
 }
