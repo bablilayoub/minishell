@@ -81,14 +81,14 @@ push:
 	@echo "pushing"
 	@make fclean
 	@git add .
-	@git commit -m $(m)
+	@git commit -m "New push"
 	@git push
 	@echo "pushed"
  
 force:
 	@echo "pushing"
 	@git add .
-	@git commit -m $(m)
+	@git commit -m "Force push"
 	@git push -f
 	@echo "pushed"
 

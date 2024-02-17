@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 19:11:39 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 19:25:26 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ void convert_tokens_to_commands(t_data *data)
 		tmp = tmp->next;
 	}
 	data->cmd = head;
-	while (head)
-	{
-		printf("cmd : %s\n", head->cmd ? head->cmd : "NULL");
-		while (head->args)
-		{
-			printf("arg : %s | env_var : %d\n", head->args->arg ? head->args->arg : "NULL", head->args->env_var ? head->args->env_var : 0);
-			head->args = head->args->next;
-		}
-		head = head->next;
-	}
+	// while (head)
+	// {
+	// 	printf("cmd : %s\n", head->cmd ? head->cmd : "NULL");
+	// 	while (head->args)
+	// 	{
+	// 		printf("arg : %s | env_var : %d\n", head->args->arg ? head->args->arg : "NULL", head->args->env_var ? head->args->env_var : 0);
+	// 		head->args = head->args->next;
+	// 	}
+	// 	head = head->next;
+	// }
 }
