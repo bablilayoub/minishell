@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 12:56:10 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/17 14:41:52 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_token_params
 typedef struct s_cmd
 {
 	char			*cmd;
+	char			*path;
 	char			**args;
 	char			*redirect;
 	char			*output_file;

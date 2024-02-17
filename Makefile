@@ -88,4 +88,11 @@ pull:
 	@git pull
 	@echo "pulled"
 
+stash:
+	@echo "stashing"
+	@git stash
+	@git pull
+	@git stash pop
+	@echo "stashed"
+
 .PHONY: clean fclean prepare_libft
