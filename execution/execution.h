@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lfrida <lfrida@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/17 19:20:40 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/17 22:16:14 by lfrida           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include "../utils/libft/libft.h"
 #include "../minishell.h"
+#include "../parsing/parser.h"
 
 void initialize_path(t_cmd *head);
 void executer(t_data *data);

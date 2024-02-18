@@ -7,7 +7,8 @@ NAME = minishell
 HEADER = minishell.h
 
 # FLAGS
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+LDFLAGS=$(pkg-config --libs readline) -lhistory
+CFLAGS = -Wall -Wextra -Werror $(LDFLAGS) -lhistory
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a
