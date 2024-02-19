@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 20:55:08 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 22:08:58 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,6 @@ void free_data(t_data *data)
 		free_cmd(data->cmd);
 	if (data->token)
 		free_tokens(data->token);
+	data->cmd = NULL;
+	data->token = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 20:56:07 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 22:16:15 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void validate_syntax(t_token *token)
 		tmp = tmp->next;
 	}
 	if (quotes_count % 2 != 0 || dquotes_count % 2 != 0)
-		printf("%s\n", PREFIX "Syntax error");
+		printf("%s\n", PREFIX_ERROR "Syntax error");
 }
 
 void check_syntax(t_token *token)
