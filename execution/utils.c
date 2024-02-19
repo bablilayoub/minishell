@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/17 19:20:29 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/19 12:07:16 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,29 @@ int args_lenght(t_arg *args)
         args = args->next;
     }
     return (i);
+}
+
+int cmd_lenght(t_cmd *cmd)
+{
+    int i = 0;
+    while (cmd != NULL)
+    {
+        i++;
+        cmd = cmd->next;
+    }
+    return (i);
+}
+
+void close_fds(int fd[][2], int cmd)
+{
+    int i;
+    int k;
+
+    i = -1;
+    while (++i < cmd)
+    {
+        k = -1;
+        while (++k < 2)
+            close(fd[i][k]);
+    }
 }
