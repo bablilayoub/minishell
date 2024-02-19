@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 17:56:34 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 19:21:46 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,31 @@ int not_a_shell_command(t_token *token)
 void print_args(t_cmd *head)
 {
 	t_cmd *tmp = head;
-		
+	if (!tmp)
+		return;
 	while (tmp)
 	{
 		printf("--------------------------------------------\n");
 		printf("| Command  : %s %*s |\n", tmp->cmd, 28 - (int)ft_strlen(tmp->cmd), " ");
-		while (tmp->args)
+		if (tmp->args)
 		{
-			printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", tmp->args->arg, 8 - (int)ft_strlen(tmp->args->arg), " ", tmp->args->env_var);
-			tmp->args = tmp->args->next;
+			while (tmp->args)
+			{
+				printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", tmp->args->arg, 8 - (int)ft_strlen(tmp->args->arg), " ", tmp->args->env_var);
+				tmp->args = tmp->args->next;
+			}
 		}
 		if (tmp->redirect)
-			printf("| Redirect : '%s' %*s |\n", tmp->redirect, 26 - (int)ft_strlen(tmp->redirect
-			), " ");
+			printf("| Redirect : '%s' %*s |\n", tmp->redirect, 26 - (int)ft_strlen(tmp->redirect), " ");
+		else
+			printf("| Redirect : '%s' %*s |\n", "NULL", 26 - 4, " ");
 		if (tmp->output_file)
 			printf("| Output   : '%s' %*s |\n", tmp->output_file, 26 - (int)ft_strlen(tmp->output_file), " ");
+		else
+			printf("| Output   : '%s' %*s |\n", "NULL", 26 - 4, " ");
 		if (tmp->has_pipe)
+			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
+		else
 			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
 		printf("--------------------------------------------\n");
 		tmp = tmp->next;
@@ -61,7 +70,7 @@ void convert_tokens_to_commands(t_data *data)
 	t_token *tmp = data->token;
 	t_cmd *head = NULL;
 	int found_cmd = 0;
-	
+
 	while (tmp)
 	{
 		t_cmd *cmd = NULL;
@@ -79,10 +88,13 @@ void convert_tokens_to_commands(t_data *data)
 					break;
 				}
 				else
+				{
+					cmd->args = add_arg(cmd->args, cmd->cmd, 1);
 					break;
+				}
 			}
 			tmp = tmp->next;
-		    if (tmp)
+			if (tmp)
 				tmp = skip_white_spaces(tmp);
 		}
 		if (tmp)
@@ -91,5 +103,5 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(head);
+	// print_args(data->cmd);
 }

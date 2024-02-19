@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/02/19 18:10:25 by alaalalm         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/19 18:06:20 by abablil          ###   ########.fr       */
->>>>>>> 0124b97586fac35d3a95f34dc861c56c1050c703
+/*   Updated: 2024/02/19 18:55:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +38,14 @@ struct s_data
 #include "execution/execution.h"
 #include "utils/utils.h"
 
-#define PREFIX			"minishell$ "
-#define PREFIX_ERROR	"msh"
+// Colors define
+#define RED		"\033[0;31m"
+#define GREEN	"\033[0;32m"
+#define YELLOW	"\033[0;33m"
+#define BLUE	"\033[0;34m"
+#define RESET	"\033[0m"
+
+#define PREFIX			RESET GREEN "$minishell : " RESET
+#define PREFIX_ERROR	RESET RED "$minishell : " RESET
 
 #endif

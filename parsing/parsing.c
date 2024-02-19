@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 17:56:31 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 19:24:15 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,12 @@ void reader(t_data *data)
 		line = readline(PREFIX);
 		if (!line)
 			break;
+		// printf("'line' : '%s'\n", line);
 		parser(line, data);
 		prepare_for_excution(data->cmd);
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		free(line);
-		line = NULL;
 	}
-	//free_data(data);
+	// free_data(data);
 }
