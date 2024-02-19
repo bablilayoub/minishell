@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfrida <lfrida@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/17 22:16:14 by lfrida           ###   ########.fr       */
+/*   Updated: 2024/02/19 08:09:24 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,5 @@
 
 void initialize_path(t_cmd *head);
 void executer(t_data *data);
-int args_lenght(t_arg *args);
+int	args_lenght(t_arg *args);
 #endif

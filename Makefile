@@ -7,8 +7,8 @@ NAME = minishell
 HEADER = minishell.h
 
 # FLAGS
-LDFLAGS=$(pkg-config --libs readline) -lhistory
-CFLAGS = -Wall -Wextra -Werror $(LDFLAGS) -lhistory
+# LDFLAGS=$(pkg-config --libs readline) -lhistory
+CFLAGS = -Wall -Wextra -Werror $(LDFLAGS) #-lhistory
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a
