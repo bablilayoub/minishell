@@ -6,7 +6,11 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2024/02/19 16:05:52 by alaalalm         ###   ########.fr       */
+=======
+/*   Updated: 2024/02/19 12:07:16 by alaalalm         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +67,21 @@ int cmd_lenght(t_cmd *cmd)
     return (i);
 }
 
+<<<<<<< Updated upstream
 void close_fds(int fd[][2], int fd_c)
+=======
+void close_fds(int fd[][2], int cmd)
+>>>>>>> Stashed changes
 {
     int i;
     int k;
 
     i = -1;
+<<<<<<< Updated upstream
     while (++i < fd_c)
+=======
+    while (++i < cmd)
+>>>>>>> Stashed changes
     {
         k = -1;
         while (++k < 2)
