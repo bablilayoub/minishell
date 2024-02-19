@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 22:33:40 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 16:05:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,27 @@ void parser(char *line, t_data *data)
 		return;
 
 	data->token = tokenizer(line);
-	print_tokens(data->token);
+	// print_tokens(data->token);
 	check_syntax(data->token);
 	convert_tokens_to_commands(data);
+}
+
+void sigint_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		ft_putstr_fd(PREFIX, 1);
+		rl_redisplay();
+	}
 }
 
 void reader(t_data *data)
 {
 	char *line;
-
+	
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigint_handler);
 	while (1)
 	{
 		line = readline(PREFIX);
@@ -65,4 +77,5 @@ void reader(t_data *data)
 			add_history(line);
 		free(line);
 	}
+	//free_data(data);
 }

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 18:43:12 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 15:54:46 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_arg t_arg;
 struct s_data
 {
 	char		**env;
-	char		**args;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
 };

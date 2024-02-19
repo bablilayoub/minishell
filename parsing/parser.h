@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 10:16:08 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 15:45:21 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,8 @@ t_cmd	*add_cmd(t_cmd *head, t_cmd *cmd);
 t_arg	*new_arg(char *value);
 t_arg	*add_arg(t_arg *head, char *value, int found_quote);
 t_token	*find_args(t_cmd *cmd, t_token *token);
+
+// Cleaning
+void	free_data(t_data *data);
 
 #endif

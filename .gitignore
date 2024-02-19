@@ -1,3 +1,5 @@
 .vscode
 a.out
 minishell
+**/*.o
+**/*.a

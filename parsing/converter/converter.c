@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 11:26:30 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 16:05:34 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,6 @@ void print_args(t_cmd *head)
 		if (tmp->has_pipe)
 			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
 		printf("--------------------------------------------\n");
-		// printf("cmd: '%s'\n", tmp->cmd);
-		// if (tmp->redirect)
-		// 	printf("redirect: '%s'\n", tmp->redirect);
-		// if (tmp->output_file)
-		// 	printf("output_file: '%s'\n", tmp->output_file);
-		// if (tmp->has_pipe)
-		// 	printf("has_pipe: '%d'\n", tmp->has_pipe);
-		// if (tmp->args)
-		// {
-		// 	t_arg *arg = tmp->args;
-		// 	printf("args: \n");
-		// 	while (arg)
-		// 	{
-		// 		printf("'%s' | is_env_var: %d\n", arg->arg, arg->env_var);
-		// 		arg = arg->next;
-		// 	}
-		// }
-		// printf("\n");
 		tmp = tmp->next;
 	}
 }
@@ -109,5 +91,5 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	print_args(head);
+	// print_args(head);
 }
