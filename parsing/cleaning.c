@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 15:58:52 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 20:55:08 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void free_args(t_arg *args)
 	while (args)
 	{
 		tmp = args->next;
-		free(args->arg);
+		free(args);
 		args = tmp;
 	}
 }
@@ -46,8 +46,11 @@ void free_cmd(t_cmd *cmd)
 	
 	while (cmd)
 	{
+		if (cmd->arguments)
+			ft_free_array(cmd->arguments);
+		if (cmd->args)
+			free_args(cmd->args);
 		tmp = cmd->next;
-		free(cmd->cmd);
 		free(cmd);
 		cmd = tmp;
 	}

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 19:24:15 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 20:47:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void reader(t_data *data)
 		// printf("'line' : '%s'\n", line);
 		parser(line, data);
 		prepare_for_excution(data->cmd);
+		free_data(data);
 		if (ft_strlen(line) > 0)
 			add_history(line);
 		free(line);
