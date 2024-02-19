@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/19 18:00:05 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/19 19:19:08 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,5 @@ int cmd_lenght(t_cmd *cmd);
 void close_fds(int fd[][2], int cmd);
 t_cmd *parsed_list();
 void prepare_for_excution(t_cmd *cmd_list);
+void initialize_arguments(t_cmd *cmd_list);
 #endif
