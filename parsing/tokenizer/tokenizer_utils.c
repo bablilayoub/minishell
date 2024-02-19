@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 11:28:59 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 15:46:55 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,19 +164,4 @@ void print_tokens(t_token *token)
 		tmp = tmp->next;
 	}
 	printf("-------------------------------------------------------------------------------\n");
-}
-
-void free_tokens(t_token *token)
-{
-	t_token *tmp;
-
-	tmp = token;
-	while (tmp)
-	{
-		free(tmp->value);
-		free(tmp->type);
-		token = tmp->next;
-		free(tmp);
-		tmp = token;
-	}
 }

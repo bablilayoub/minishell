@@ -8,6 +8,8 @@ HEADER = minishell.h
 
 # FLAGS
 # LDFLAGS=$(pkg-config --libs readline) -lhistory
+READLINE = $(shell brew --prefix readline)/lib
+READLINE_INCLUDE = $(shell brew --prefix readline)/include
 CFLAGS = -Wall -Wextra -Werror $(LDFLAGS) -g -fsanitize=address #-lhistory
 
 # LIBRARIES
@@ -22,7 +24,7 @@ UTILS_HEADER = ./utils/utils.h
 PARSING_HEADER = ./parsing/parsing.h
 TOKENIZER = tokenizer.c tokenizer_utils.c
 CONVERTER = converter.c arguments.c commands.c
-PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER)) $(addprefix converter/, $(CONVERTER))
+PARSING = parsing.c cleaning.c $(addprefix tokenizer/, $(TOKENIZER)) $(addprefix converter/, $(CONVERTER))
 
 # EXECUTION
 EXECUTION_HEADER = ./execution/execution.h
