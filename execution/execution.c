@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/19 17:44:12 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:00:21 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void prepare_for_excution(t_cmd *cmd_list)
     int fd_c;
     
     initialize_arguments(cmd_list);
-    initialize_path(cmd_list);
+    if (!initialize_path(cmd_list))
+        return ;
     fd_c = cmd_lenght(cmd_list);
     start_execution(cmd_list, fd_c, fd_c);
 }

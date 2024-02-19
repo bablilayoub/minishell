@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 15:54:46 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 18:10:25 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ struct s_data
 #include "execution/execution.h"
 #include "utils/utils.h"
 
-#define PREFIX "minishell$ "
+#define PREFIX			"minishell$ "
+#define PREFIX_ERROR	"msh"
 
 #endif

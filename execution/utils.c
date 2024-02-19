@@ -6,15 +6,17 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/19 17:02:42 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:10:41 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void initialize_path(t_cmd *head)
+bool initialize_path(t_cmd *head)
 {
     char **env;
+    bool flag = false;
+    int found_error = 0;
     int i;
 
     while (head)
@@ -33,12 +35,21 @@ void initialize_path(t_cmd *head)
             if (access(env[i], F_OK | X_OK) == 0)
             {
                 head->path = env[i];
+                flag = true;
                 break;
             }
             i++;
         }
+        if (!flag)
+        {
+             printf(PREFIX_ERROR": command not found: %s\n", head->cmd);
+             found_error = 1;
+        }
         head = head->next;
     }
+    if (found_error)
+        return false;
+    return (true);
 }
 
 int args_lenght(t_arg *args)
