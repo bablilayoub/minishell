@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/19 18:10:41 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/19 20:39:20 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool initialize_path(t_cmd *head)
         }
         if (!flag)
         {
-             printf(PREFIX_ERROR": command not found: %s\n", head->cmd);
+             printf(PREFIX_ERROR"command not found: %s\n", head->cmd);
              found_error = 1;
         }
         head = head->next;

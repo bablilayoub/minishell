@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 19:21:46 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 20:40:52 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int not_a_shell_command(t_token *token)
 void print_args(t_cmd *head)
 {
 	t_cmd *tmp = head;
+	t_arg *arg;
+	
 	if (!tmp)
 		return;
 	while (tmp)
@@ -40,11 +42,13 @@ void print_args(t_cmd *head)
 		printf("| Command  : %s %*s |\n", tmp->cmd, 28 - (int)ft_strlen(tmp->cmd), " ");
 		if (tmp->args)
 		{
+			arg = tmp->args;
 			while (tmp->args)
 			{
 				printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", tmp->args->arg, 8 - (int)ft_strlen(tmp->args->arg), " ", tmp->args->env_var);
 				tmp->args = tmp->args->next;
 			}
+			tmp->args = arg;
 		}
 		if (tmp->redirect)
 			printf("| Redirect : '%s' %*s |\n", tmp->redirect, 26 - (int)ft_strlen(tmp->redirect), " ");
@@ -103,5 +107,5 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(data->cmd);
+	print_args(data->cmd);
 }
