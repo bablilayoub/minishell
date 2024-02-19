@@ -10,7 +10,7 @@ HEADER = minishell.h
 # LDFLAGS=$(pkg-config --libs readline) -lhistory
 READLINE = $(shell brew --prefix readline)/lib
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
-CFLAGS = -Wall -Wextra -Werror $(LDFLAGS) -g -fsanitize=address #-lhistory
+CFLAGS = -Wall -Wextra -Werror $(LDFLAGS)  #-lhistory
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a

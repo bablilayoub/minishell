@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/19 16:22:03 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 17:44:12 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void excute_childs(t_cmd *cmd, int fd[][2], int k, int fd_c)
 {
-    dup2(fd[k][0], STDIN_FILENO);
+    dup2(fd[k][0], STDIN_FILENO); 
     dup2(fd[k + 1][1], STDOUT_FILENO);        
     close_fds(fd, fd_c);
     execve(cmd->path, cmd->arguments, NULL);
@@ -72,24 +72,15 @@ void  initialize_arguments(t_cmd *cmd_list)
     temp = cmd_list;
     while (cmd_list != NULL)
     {
-        cmd_list->arguments = malloc(sizeof(char *) * args_lenght(cmd_list->args) + 1);
+        cmd_list->arguments = malloc(sizeof(char *) * (args_lenght(cmd_list->args) + 1));
         i = 0;
         while (cmd_list->args)
         {
+            
             cmd_list->arguments[i++] = cmd_list->args->arg;
             cmd_list->args = cmd_list->args->next;
         }
         cmd_list->arguments[i] = NULL;
-        cmd_list = cmd_list->next;
-    }
-    
-    cmd_list = temp;
-    i = 0;
-    while (cmd_list != NULL)
-    {
-        printf("cmd : %s", cmd_list->cmd);
-        while (cmd_list->arguments[i])
-            printf("Arg : '%s'\n", cmd_list->arguments[i++]);
         cmd_list = cmd_list->next;
     }
 }
@@ -98,7 +89,6 @@ void prepare_for_excution(t_cmd *cmd_list)
     int fd_c;
     
     initialize_arguments(cmd_list);
-    exit(0);
     initialize_path(cmd_list);
     fd_c = cmd_lenght(cmd_list);
     start_execution(cmd_list, fd_c, fd_c);
