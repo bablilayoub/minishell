@@ -6,13 +6,13 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 15:46:55 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/20 00:26:30 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-t_token *new_token(char *value, char *type, int state, size_t len)
+t_token	*new_token(char *value, char *type, int state, size_t len)
 {
 	t_token *token;
 
