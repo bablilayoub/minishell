@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 18:36:28 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/19 10:21:41 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,12 @@ bool only_spaces(char *str)
 	return (false);
 }
 
+t_token *skip_white_spaces(t_token *token)
+{
+	if (!token)
+		return (NULL);
+	t_token *tmp = token;
+	while (tmp && ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0)
+		tmp = tmp->next;
+	return (tmp);
+}

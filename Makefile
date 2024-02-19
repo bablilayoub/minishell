@@ -8,7 +8,7 @@ HEADER = minishell.h
 
 # FLAGS
 # LDFLAGS=$(pkg-config --libs readline) -lhistory
-CFLAGS = -Wall -Wextra -Werror $(LDFLAGS) #-lhistory
+CFLAGS = -Wall -Wextra -Werror $(LDFLAGS) -g -fsanitize=address #-lhistory
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a
@@ -82,7 +82,7 @@ push:
 	@echo "pushing"
 	@make fclean
 	@git add .
-	@git commit -m "New push"
+	@git commit -m "$(m)"
 	@git push
 	@echo "pushed"
  

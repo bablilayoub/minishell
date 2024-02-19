@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 22:28:10 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/19 10:16:08 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ struct s_cmd
 	char			*path;
 	char			*redirect;
 	char			*output_file;
+	bool			has_pipe;
 	char 			**arguments;
 	struct s_arg	*args;
 	struct s_cmd	*next;
@@ -99,6 +100,6 @@ t_cmd	*add_cmd(t_cmd *head, t_cmd *cmd);
 // Arguments
 t_arg	*new_arg(char *value);
 t_arg	*add_arg(t_arg *head, char *value, int found_quote);
-void	find_args(t_cmd *cmd, t_token *token);
+t_token	*find_args(t_cmd *cmd, t_token *token);
 
 #endif
