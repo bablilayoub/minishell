@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/21 13:36:02 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/21 16:30:56 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void print_args(t_cmd *head)
 			printf("| Redirect : '%s' %*s |\n", tmp->redirect, 26 - (int)ft_strlen(tmp->redirect), " ");
 		else
 			printf("| Redirect : '%s' %*s |\n", "NULL", 26 - 4, " ");
-		if (tmp->output_file)
-			printf("| Output   : '%s' %*s |\n", tmp->output_file, 26 - (int)ft_strlen(tmp->output_file), " ");
+		if (tmp->file)
+			printf("| File     : '%s' %*s |\n", tmp->file, 26 - (int)ft_strlen(tmp->file), " ");
 		else
 			printf("| Output   : '%s' %*s |\n", "NULL", 26 - 4, " ");
 		if (tmp->has_pipe)

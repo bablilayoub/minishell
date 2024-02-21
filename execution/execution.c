@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/19 20:45:30 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:27:08 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ void excute_childs(t_cmd *cmd, int fd[][2], int k, int fd_c)
     dup2(fd[k][0], STDIN_FILENO);
     dup2(fd[k + 1][1], STDOUT_FILENO);
     close_fds(fd, fd_c);
-    execve(cmd->path, cmd->arguments, NULL);
-    perror("execv");
-    exit(EXIT_FAILURE);
+    if (execve(cmd->path, cmd->arguments, NULL) == -1)
+    {
+        perror("execv");
+        exit(EXIT_FAILURE);
+    }
+    exit(EXIT_SUCCESS);
 }
 void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c)
 {

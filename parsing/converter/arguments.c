@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/21 13:32:28 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/21 16:36:33 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,20 @@ t_arg *add_arg(t_arg *head, char *value, int found_quote)
 	return (head);
 }
 
+bool between_dquotes(t_token *token)
+{
+	t_token *tmp = token;
+	int count = 0;
+	while (tmp && ft_strncmp(tmp->type, QUOTE, 1) != 0)
+	{
+		if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) == 0)
+			count++;
+		tmp = tmp->prev;
+	}
+	return (count % 2 == 0);
+}
+
+
 t_token *find_args(t_cmd *cmd, t_token *token)
 {
 	if (!token || !cmd)
@@ -61,7 +75,7 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 			if (tmp->next)
 				tmp = skip_white_spaces(tmp->next);
 			if (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
-				cmd->output_file = tmp->value;
+				cmd->file = tmp->value;
 			else if (tmp && 
 				(ft_strncmp(tmp->type, REDIR_IN, 1) == 0 
 				|| ft_strncmp(tmp->type, REDIR_OUT, 1) == 0))
@@ -70,11 +84,11 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 				return (NULL);
 			} 
 			else
-				cmd->output_file = NULL;
+				cmd->file = NULL;
 		}
 		else if (ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0 && (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE))
 			head = add_arg(head, tmp->value, 1);
-		else if (ft_strncmp(tmp->type, QUOTE, 1) == 0 && (tmp->prev->state == IN_DQUOTE || tmp->next->state == IN_DQUOTE))
+		else if (ft_strncmp(tmp->type, QUOTE, 1) == 0 && between_dquotes(tmp))
 			head = add_arg(head, tmp->value, 1);
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 15:45:21 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/21 13:45:15 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ struct s_cmd
 	char			*cmd;
 	char			*path;
 	char			*redirect;
-	char			*output_file;
+	char			*file;
 	bool			has_pipe;
 	char 			**arguments;
 	struct s_arg	*args;

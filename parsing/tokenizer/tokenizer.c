@@ -6,14 +6,41 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:51:56 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/21 13:29:12 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/21 16:13:16 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
+void handle_special_char(t_token_params *params, char *value, int len)
+{
+	char *temp;
+
+	if (value[0] == '$' && value[1] == '\0')
+	{
+		params->i++;
+		temp = get_word(params->line, &params->i);
+		params->value = ft_strjoin(value, temp);
+		free(temp);
+		params->i--;
+		len = ft_strlen(params->value);
+	}
+	else
+		params->value = ft_strdup(value);
+	params->type = ft_strdup(value);
+	params->token = new_token(params->value, params->type, params->state, len);
+	params->head = add_token(params->head, params->token);
+	if (len > 1)
+		params->i++;
+}
+
 void handle_quotes(t_token_params *params, int quote, char *quote_type)
 {
+	if (quote == 1 && params->in_dquote)
+	{
+		handle_special_char(params, quote_type, 1);
+		return;
+	}
 	if (quote == 1)
 	{
 		if (params->in_quote)
@@ -59,27 +86,6 @@ void handle_word(t_token_params *params, char *line)
 	params->type = ft_strdup(WORD);
 	params->token = new_token(params->value, params->type, params->state, ft_strlen(params->value));
 	params->head = add_token(params->head, params->token);
-}
-
-void handle_special_char(t_token_params *params, char *value, int len)
-{
-	char *temp;
-	
-	if (value[0] == '$' && value[1] == '\0')
-	{
-		params->i++;
-		temp = get_word(params->line, &params->i);
-		params->value = ft_strjoin(value, temp);
-		free(temp);
-		params->i--;
-		len = ft_strlen(params->value);
-	} else
-		params->value = ft_strdup(value);
-	params->type = ft_strdup(value);
-	params->token = new_token(params->value, params->type, params->state, len);
-	params->head = add_token(params->head, params->token);
-	if (len > 1)
-		params->i++;
 }
 
 void handle_cases(t_token_params *params, char *line)

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/21 13:35:07 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/21 16:30:50 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,16 @@ void parser(char *line, t_data *data)
 	convert_tokens_to_commands(data);
 }
 
-void sigint_handler(int sig)
+void signal_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("\n");
-		ft_putstr_fd(PREFIX, 1);
-		rl_redisplay();
+		ft_putstr_fd("\n"PREFIX, 1);
+		// rl_redisplay();
+	}
+	else if (sig == SIGQUIT)
+	{
+		ft_putstr_fd("\b\b  \b\b", 1);
 	}
 }
 
@@ -64,8 +67,8 @@ void reader(t_data *data)
 {
 	char *line;
 	
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigint_handler);
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	while (1)
 	{
 		line = readline(PREFIX);
@@ -73,7 +76,7 @@ void reader(t_data *data)
 			break;
 		// printf("'line' : '%s'\n", line);
 		parser(line, data);
-		prepare_for_excution(data->cmd);
+		// prepare_for_excution(data->cmd);
 		// free_data(data);
 		if (ft_strlen(line) > 0)
 			add_history(line);
