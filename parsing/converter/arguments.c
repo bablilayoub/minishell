@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 22:15:37 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/21 13:32:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 				cmd->output_file = NULL;
 		}
 		else if (ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0 && (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE))
+			head = add_arg(head, tmp->value, 1);
+		else if (ft_strncmp(tmp->type, QUOTE, 1) == 0 && (tmp->prev->state == IN_DQUOTE || tmp->next->state == IN_DQUOTE))
 			head = add_arg(head, tmp->value, 1);
 		tmp = tmp->next;
 	}

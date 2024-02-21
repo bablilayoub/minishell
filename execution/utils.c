@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/19 20:57:12 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:11:45 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,26 @@
 
 int args_lenght(t_arg *args)
 {
+    t_arg *tmp = args;
+    
     int i = 0;
-    while (args != NULL)
+    while (tmp != NULL)
     {
         i++;
-        args = args->next;
+        tmp = tmp->next;
     }
     return (i);
 }
 
 int cmd_lenght(t_cmd *cmd)
 {
+    t_cmd *tmp = cmd;
+    
     int i = 0;
-    while (cmd != NULL)
+    while (tmp != NULL)
     {
         i++;
-        cmd = cmd->next;
+        tmp = tmp->next;
     }
     return (i);
 }

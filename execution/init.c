@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/20 00:36:52 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/21 13:11:01 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,21 @@ void initialize_arguments(t_cmd *cmd_list)
 {
     int i;
     t_cmd *temp;
+    t_arg *arg_temp;
 
     temp = cmd_list;
     while (cmd_list != NULL)
     {
         cmd_list->arguments = malloc(sizeof(char *) * (args_lenght(cmd_list->args) + 1));
         i = 0;
+        arg_temp = cmd_list->args;
         while (cmd_list->args)
         {
 
             cmd_list->arguments[i++] = cmd_list->args->arg;
             cmd_list->args = cmd_list->args->next;
         }
+        cmd_list->args = arg_temp;
         cmd_list->arguments[i] = NULL;
         cmd_list = cmd_list->next;
     }

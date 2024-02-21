@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:51:56 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/17 11:25:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/21 13:29:12 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,23 @@ void handle_quotes(t_token_params *params, int quote, char *quote_type)
 			params->in_dquote = 1;
 	}
 	if (quote == 1 && params->in_quote)
-		params->state = IN_QUOTE;
+	{
+		if (params->state == IN_DQUOTE)
+			params->state = IN_DQUOTE;
+		else if (params->state == IN_QUOTE)
+			params->state = GENERAL;
+		else
+			params->state = IN_QUOTE;
+	}
 	else if (quote == 2 && params->in_dquote)
-		params->state = IN_DQUOTE;
-	else
+	{
+		if (params->state == IN_QUOTE)
+			params->state = IN_QUOTE;
+		else if (params->state == IN_DQUOTE)
+			params->state = GENERAL;
+		else
+			params->state = IN_DQUOTE;
+	} else
 		params->state = GENERAL;
 	params->value = ft_strdup(quote_type);
 	params->type = ft_strdup(quote_type);
