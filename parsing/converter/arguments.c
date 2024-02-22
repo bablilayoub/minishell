@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/23 00:01:02 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/23 00:13:23 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 		return (NULL);
 	t_token *tmp = token;
 	t_arg *head = NULL;
-	int found_special_char = 0;
 
 	head = add_arg(head, cmd->cmd, 1);
 	tmp = skip_white_spaces(tmp);
