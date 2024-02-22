@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/21 13:45:15 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/22 15:02:10 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ struct s_cmd
 	char			*file;
 	bool			has_pipe;
 	char 			**arguments;
+	bool			built_in;
 	struct s_arg	*args;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
