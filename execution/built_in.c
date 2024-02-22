@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/22 15:17:45 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:29:36 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void ft_exit(t_cmd *cmd)
         exit(ft_atoi(cmd->arguments[1]));
 }
 
-void builtin_funtions(t_cmd *cmd_list, t_data *data)
+void builtin_functions(t_cmd *cmd_list, t_data *data)
 {
     static char **env;
 

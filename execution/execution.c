@@ -6,22 +6,16 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2024/02/22 15:17:15 by alaalalm         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/22 01:55:02 by abablil          ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2024/02/22 15:58:27 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void excute_childs(t_data *data, int fd[][2], int k, int fd_c)
+void excute_childs( t_cmd *cmd, int fd[][2], int k, int fd_c)
 {
-    t_cmd *cmd;
-
-    cmd = data->cmd;
-    dup2(fd[k][0], STDIN_FILENO);
+    if (strncmp(cmd->arguments[0], "grep", 4) && (strncmp(cmd->arguments[0], "cat", 3)))
+        dup2(fd[k][0], STDIN_FILENO);
     dup2(fd[k + 1][1], STDOUT_FILENO);
     close_fds(fd, fd_c);
     if (execve(cmd->path, cmd->arguments, NULL) == -1)
@@ -67,7 +61,7 @@ void start_execution(t_data *data, int fd_c)
         if (pid[k] == -1)
             perror("fork");
         else if (pid[k] == 0)
-            excute_childs(data, fd, k, fd_c);
+            excute_childs(current, fd, k, fd_c);
         k++;
         current = current->next;
     }

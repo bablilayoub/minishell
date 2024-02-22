@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/22 15:17:24 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:29:24 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,5 @@ void ft_pwd();
 void ft_export(t_cmd *cmd, char ***envp);
 void ft_env(char **env);
 void ft_exit(t_cmd *cmd);
-void builtin_funtions(t_cmd *cmd_list, t_data *data);
+void builtin_functions(t_cmd *cmd_list, t_data *data);
 #endif
