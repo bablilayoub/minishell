@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 20:57:36 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/22 22:49:59 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ struct s_data
 #define YELLOW	"\033[0;33m"
 #define BLUE	"\033[0;34m"
 #define RESET	"\033[0m"
+#define BOLD	"\033[1m"
 
-#define PREFIX			RESET GREEN "$minishell : " RESET
-#define PREFIX_ERROR	RESET RED "$minishell : " RESET
+#define PREFIX			RESET BLUE BOLD "➜  minishell : " RESET
+#define PREFIX_ERROR	RESET RED BOLD "⊗  minishell : " RESET
 
 #endif
