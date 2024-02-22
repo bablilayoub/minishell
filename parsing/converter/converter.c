@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/21 18:06:11 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/22 18:30:11 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ void convert_tokens_to_commands(t_data *data)
 	{
 		t_cmd *cmd = NULL;
 		found_cmd = 0;
-		while (tmp && ft_strncmp(tmp->type, PIPE_LINE, 1) != 0)
+		while (tmp)
 		{
+			if (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0 && tmp->state != IN_DQUOTE && tmp->state != IN_QUOTE)
+				break;
 			if (ft_strncmp(tmp->type, WORD, 4) == 0 && !found_cmd)
 			{
 				found_cmd = 1;
@@ -108,4 +110,29 @@ void convert_tokens_to_commands(t_data *data)
 	}
 	data->cmd = head;
 	// print_args(data->cmd);
+}
+
+void get_env_vars(t_data *data)
+{
+	t_cmd *tmp = data->cmd;
+	t_arg *arg;
+	char *env_var;
+	while (tmp)
+	{
+		arg = tmp->args;
+		while (tmp->args)
+		{
+			if (ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1)
+			{
+				env_var = getenv(tmp->args->arg + 1);
+				if (!env_var)
+					tmp->args->arg = ft_strdup("");
+				else
+					tmp->args->arg = ft_strdup(env_var);
+			}
+			tmp->args = tmp->args->next;
+		}
+		tmp->args = arg;
+		tmp = tmp->next;
+	}
 }

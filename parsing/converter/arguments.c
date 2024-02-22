@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/21 16:36:33 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/22 18:23:35 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,11 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 	t_arg *head = NULL;
 
 	head = add_arg(head, cmd->cmd, 1);
-	while (tmp && ft_strncmp(tmp->type, PIPE_LINE, 1) != 0)
+	tmp = skip_white_spaces(tmp);
+	while (tmp)
 	{
+		if (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0 && tmp->state != IN_DQUOTE && tmp->state != IN_QUOTE)
+			break;
 		if (ft_strncmp(tmp->type, WORD, 4) == 0)
 			head = add_arg(head, tmp->value, 1);
 		else if (ft_strncmp(tmp->type, ENV, 1) == 0)
@@ -88,11 +91,19 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 		}
 		else if (ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0 && (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE))
 			head = add_arg(head, tmp->value, 1);
-		else if (ft_strncmp(tmp->type, QUOTE, 1) == 0 && between_dquotes(tmp))
+		else if (ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0 && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
+		{
+			head = add_arg(head, tmp->value, 1);
+			tmp = skip_white_spaces(tmp);
+			continue;
+		}
+		else if (ft_strncmp(tmp->type, QUOTE, 1) == 0 && between_dquotes(tmp) && (tmp->state == IN_DQUOTE))
+			head = add_arg(head, tmp->value, 1);
+		else if (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0 && (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE))
 			head = add_arg(head, tmp->value, 1);
 		tmp = tmp->next;
 	}
-	if (tmp && ft_strncmp(tmp->type, PIPE_LINE, 1) == 0)
+	if (tmp && ft_strncmp(tmp->type, PIPE_LINE, 1) == 0 && tmp->state != IN_DQUOTE && tmp->state != IN_QUOTE)
 		cmd->has_pipe = 1;
 	cmd->args = head;
 	return (tmp);

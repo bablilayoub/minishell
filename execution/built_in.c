@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/22 15:29:36 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:04:17 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void ft_echo(t_cmd *cmd)
     i = 1;
     while (tmp->arguments[i])
     {
-        if (tmp->arguments[i + 1])
-            printf("%s ", tmp->arguments[i]);
-        else
-            printf("%s", tmp->arguments[i]);
+        printf("%s", tmp->arguments[i]);
         i++;
     }
     printf("\n");

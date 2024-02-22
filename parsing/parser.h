@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/22 15:02:10 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:35:09 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	print_tokens(t_token *token);
 // Converter
 void	convert_tokens_to_commands(t_data *data);
 int		not_a_shell_command(t_token *token);
+void	get_env_vars(t_data *data);
 
 // Converter utils
 t_cmd	*new_cmd(t_token *token);

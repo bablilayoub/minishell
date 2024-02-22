@@ -7,8 +7,10 @@ NAME = minishell
 HEADER = minishell.h
 
 # FLAGS
-# LDFLAGS=$(pkg-config --libs readline) -lhistory
-CFLAGS = -Wall -Wextra -Werror $(LDFLAGS) -g #-fsanitize=address -g
+READLINE_LIB = $(shell brew --prefix readline)/lib
+READLINE_INCLUDE = $(shell brew --prefix readline)/include
+
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address -g
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a
@@ -44,7 +46,7 @@ HEADERS = $(HEADER) $(PARSING_HEADER) $(EXECUTION_HEADER) $(UTILS_HEADER)
 
 # RULES
 $(NAME): prepare_libft $(PARSING_OBJS) $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS)
-	@cc $(CFLAGS) -lreadline $(PARSING_OBJS) $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
+	@cc $(CFLAGS) -L $(READLINE_LIB) -lreadline $(PARSING_OBJS) $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
 	@echo "minishell is ready"
 
 prepare_libft:
@@ -52,16 +54,16 @@ prepare_libft:
 	@echo "libft is ready"
 
 parsing: prepare_libft $(PARSING_OBJS) $(UTILS_OBJS) $(MAIN_OBJS)
-	@cc $(CFLAGS) -lreadline $(PARSING_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
+	@cc $(CFLAGS) -L $(READLINE_LIB) -lreadline $(PARSING_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
 	@echo "parsing is ready"
 
 execution: prepare_libft $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS)
-	@cc $(CFLAGS) -lreadline $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
+	@cc $(CFLAGS) -L $(READLINE_LIB) -lreadline $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
 	@echo "execution is ready"
 
 %.o: %.c $(HEADER)
 	@echo "compiling $<"
-	@cc $(CFLAGS) -c $< -o $@
+	@cc $(CFLAGS) -I $(READLINE_INCLUDE)  -c $< -o $@
 
 all: $(NAME)
 

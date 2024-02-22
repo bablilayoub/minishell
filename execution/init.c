@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/21 13:11:01 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/22 16:13:08 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool initialize_path(t_cmd *head)
         }
         if (!flag)
         {
-            printf(PREFIX_ERROR ": command not found: %s\n", head->cmd);
+            printf(PREFIX_ERROR "command not found: %s\n", head->cmd);
             found_error = 1;
         }
         head = head->next;
