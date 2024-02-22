@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/22 18:23:35 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/22 18:49:49 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,9 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 			head = add_arg(head, tmp->value, 1);
 		else if (ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0 && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
 		{
-			head = add_arg(head, tmp->value, 1);
 			tmp = skip_white_spaces(tmp);
+			if (tmp)
+				head = add_arg(head, " ", 1);
 			continue;
 		}
 		else if (ft_strncmp(tmp->type, QUOTE, 1) == 0 && between_dquotes(tmp) && (tmp->state == IN_DQUOTE))
