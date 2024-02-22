@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/22 17:04:17 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/22 19:21:56 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int ft_chdir(t_cmd *cmd)
 
 void ft_pwd()
 {
-    printf("%s\n", getenv("PWD"));
+    printf("%s\n", getcwd(NULL, 0));
 }
 
 void ft_env(char **env)
