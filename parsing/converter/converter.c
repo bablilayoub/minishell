@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/23 18:02:40 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/23 18:31:47 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ void print_args(t_cmd *head)
 			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
 		else
 			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
+		if (tmp->built_in)
+			printf("| Built In : %d %*s |\n", tmp->built_in, 27, " ");
+		else
+			printf("| Built In : %d %*s |\n", tmp->built_in, 27, " ");
 		printf("--------------------------------------------\n");
 		tmp = tmp->next;
 	}
@@ -104,7 +108,7 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(data->cmd);
+	print_args(data->cmd);
 }
 
 void get_env_vars(t_data *data)

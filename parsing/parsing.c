@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/23 16:51:15 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/23 18:31:06 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,28 @@ void validate_syntax(t_token *token)
 		printf("%s\n", PREFIX_ERROR "Syntax error");
 }
 
-void check_syntax(t_token *token)
+void check_pipes(t_cmd *cmd)
 {
-	validate_syntax(token);
+	t_cmd *tmp = cmd;
+	
+	while (tmp)
+	{
+		if (tmp->has_pipe)
+		{
+			if (!tmp->next)
+			{
+				printf("%s\n", PREFIX_ERROR "Syntax error");
+				return;
+			}
+		}
+		tmp = tmp->next;
+	}
+}
+
+void check_syntax(t_data *data)
+{
+	validate_syntax(data->token);
+	check_pipes(data->cmd);
 }
 
 void parser(char *line, t_data *data)
@@ -45,9 +64,9 @@ void parser(char *line, t_data *data)
 		return;
 
 	data->token = tokenizer(line);
-	check_syntax(data->token);
 	convert_tokens_to_commands(data);
 	get_env_vars(data);
+	check_syntax(data);
 	// print_tokens(data->token);
 }
 
