@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/22 16:13:08 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/23 16:41:20 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ bool initialize_path(t_cmd *head)
         }
         if (!flag)
         {
-            printf(PREFIX_ERROR "command not found: %s\n", head->cmd);
+            printf(PREFIX_ERROR"command not found: %s\n", head->cmd);
             found_error = 1;
         }
         head = head->next;
@@ -62,20 +62,19 @@ void initialize_arguments(t_cmd *cmd_list)
     t_arg *arg_temp;
 
     temp = cmd_list;
-    while (cmd_list != NULL)
+    while (temp != NULL)
     {
-        cmd_list->arguments = malloc(sizeof(char *) * (args_lenght(cmd_list->args) + 1));
+        temp->arguments = malloc(sizeof(char *) * (args_lenght(temp->args) + 1));
         i = 0;
-        arg_temp = cmd_list->args;
-        while (cmd_list->args)
+        arg_temp = temp->args;
+        while (temp->args)
         {
 
-            cmd_list->arguments[i++] = cmd_list->args->arg;
-            cmd_list->args = cmd_list->args->next;
+            temp->arguments[i++] = temp->args->arg;
+            temp->args = temp->args->next;
         }
-        cmd_list->args = arg_temp;
-        cmd_list->arguments[i] = NULL;
-        cmd_list = cmd_list->next;
+        temp->args = arg_temp;
+        temp->arguments[i] = NULL;
+        temp = temp->next;
     }
-    cmd_list = temp;
 }

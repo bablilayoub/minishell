@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/23 15:39:25 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/23 16:25:37 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,10 @@ void convert_tokens_to_commands(t_data *data)
 				cmd = new_cmd(tmp);
 				head = add_cmd(head, cmd);
 				if (tmp->next)
-				{
 					tmp = find_args(cmd, tmp->next);
-					break;
-				}
 				else
-				{
 					cmd->args = add_arg(cmd->args, cmd->cmd, 1);
-					break;
-				}
+				break;
 			}
 			tmp = tmp->next;
 			if (tmp)
@@ -109,7 +104,7 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	print_args(data->cmd);
+	// print_args(data->cmd);
 }
 
 void get_env_vars(t_data *data)
