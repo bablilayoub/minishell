@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/22 22:49:59 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/23 15:29:40 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "utils/libft/libft.h"
+#include <errno.h>
 
 typedef struct s_cmd t_cmd;
 typedef struct s_token t_token;
@@ -30,6 +31,7 @@ typedef struct s_arg t_arg;
 struct s_data
 {
 	char		**env;
+	int				exit_status;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
 };

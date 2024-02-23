@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/23 00:03:47 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/23 15:33:33 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void print_args(t_cmd *head)
 {
 	t_cmd *tmp = head;
 	t_arg *arg;
-	
+
 	if (!tmp)
 		return;
 	while (tmp)
@@ -117,6 +117,8 @@ void get_env_vars(t_data *data)
 	t_cmd *tmp = data->cmd;
 	t_arg *arg;
 	char *env_var;
+	char *exit_status;
+
 	while (tmp)
 	{
 		arg = tmp->args;
@@ -124,11 +126,19 @@ void get_env_vars(t_data *data)
 		{
 			if (ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1)
 			{
-				env_var = getenv(tmp->args->arg + 1);
-				if (!env_var)
-					tmp->args->arg = ft_strdup("");
+				if (ft_strncmp(tmp->args->arg, "$?", 2) == 0)
+				{
+					exit_status = ft_itoa(data->exit_status);
+					tmp->args->arg = ft_strjoin(exit_status, tmp->args->arg + 2);
+				}
 				else
-					tmp->args->arg = ft_strdup(env_var);
+				{
+					env_var = getenv(tmp->args->arg + 1);
+					if (!env_var)
+						tmp->args->arg = ft_strdup("");
+					else
+						tmp->args->arg = ft_strdup(env_var);
+				}
 			}
 			tmp->args = tmp->args->next;
 		}
