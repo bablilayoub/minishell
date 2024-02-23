@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 22:08:58 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/23 15:53:24 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 void ft_free_array(char **array)
 {
 	int i;
-
+	
+	if (!array)
+		return;
 	i = 0;
 	while (array[i])
 	{
@@ -44,6 +46,8 @@ void free_cmd(t_cmd *cmd)
 {
 	t_cmd *tmp;
 	
+	if (!cmd)
+		return;
 	while (cmd)
 	{
 		if (cmd->arguments)
@@ -60,11 +64,15 @@ void free_tokens(t_token *token)
 {
 	t_token *tmp;
 
+	if (!token)
+		return;
 	while (token)
 	{
 		tmp = token->next;
-		free(token->value);
-		free(token->type);
+		if (token->value)
+			free(token->value);
+		if (token->type)
+			free(token->type);
 		free(token);
 		token = tmp;
 	}
