@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/23 16:49:30 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/23 18:05:00 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ void excute_builtin(t_cmd *cmd_list, t_data *data)
 
     if (!env)
         env = data->env;
-
     if (ft_strncmp(cmd_list->arguments[0], "echo", 5) == 0)
         ft_echo(cmd_list);
     else if (ft_strncmp(cmd_list->arguments[0], "cd", 3) == 0)
@@ -145,6 +144,5 @@ void excute_builtin(t_cmd *cmd_list, t_data *data)
         ft_exit(cmd_list);
     else if (ft_strncmp(cmd_list->arguments[0], "unset", 6) == 0)
         ft_unset(cmd_list, &env);
-    else
-        return;
+    exit(EXIT_SUCCESS);
 }
