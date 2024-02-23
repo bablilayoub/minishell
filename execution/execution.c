@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/23 18:10:51 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/23 19:14:15 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@ void excute_childs(t_cmd *cmd, int fd[][2], int k, int fd_c, t_data *data)
 	if (cmd->built_in)
 		excute_builtin(cmd, data);
 	else
-		execve(cmd->path, cmd->arguments, NULL);
-	perror("execv");
-	exit(EXIT_FAILURE);
+	{
+		if (execve(cmd->path, cmd->arguments, data->env) == -1)
+		{
+			perror("execve");
+			exit(EXIT_FAILURE);
+		}
+	}
 }
 void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c)
 {

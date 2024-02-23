@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/23 16:41:20 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/23 18:37:11 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,23 @@ bool initialize_path(t_cmd *head)
 
     while (head)
     {
-        // if (((ft_strncmp(head->cmd, "clear", 5) == 0) && !head->prev)
-        //     || ((ft_strncmp(head->cmd, "clear", 5) == 0) && !head->next))
-        //       printf(CLEAR);
+        if (head->built_in)
+        {
+            head = head->next;
+            continue;
+        }
+        if (access(head->cmd, F_OK | X_OK) == 0)
+        {
+            head->path = head->cmd;
+            head = head->next;
+            continue;
+        }
         env = ft_split(getenv("PATH"), ':');
         i = 0;
         while (env[i])
         {
             env[i] = ft_strjoin(env[i], "/");
             env[i] = ft_strjoin(env[i], head->cmd);
-            i++;
-        }
-        i = 0;
-        while (env[i])
-        {
             if (access(env[i], F_OK | X_OK) == 0)
             {
                 head->path = env[i];

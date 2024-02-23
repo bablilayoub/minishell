@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/23 18:05:00 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/23 19:13:36 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void ft_echo(t_cmd *cmd)
 int ft_chdir(t_cmd *cmd)
 {
     const char *dirname;
-
     dirname = cmd->arguments[1];
     if (!dirname)
     {
@@ -79,12 +78,9 @@ void ft_export(t_cmd *cmd, char ***envp)
     while (env[i])
         i++;
     new_env = malloc(sizeof(char *) * (i + 2));
-    i = 0;
-    while (env[i])
-    {
+    i = -1;
+    while (env[++i])
         new_env[i] = ft_strdup(env[i]);
-        i++;
-    }
     new_env[i] = ft_strdup(cmd->arguments[1]);
     new_env[i + 1] = NULL;
     *envp = new_env;
@@ -126,10 +122,6 @@ void ft_unset(t_cmd *cmd, char ***envp)
 }
 void excute_builtin(t_cmd *cmd_list, t_data *data)
 {
-    static char **env;
-
-    if (!env)
-        env = data->env;
     if (ft_strncmp(cmd_list->arguments[0], "echo", 5) == 0)
         ft_echo(cmd_list);
     else if (ft_strncmp(cmd_list->arguments[0], "cd", 3) == 0)
@@ -137,12 +129,15 @@ void excute_builtin(t_cmd *cmd_list, t_data *data)
     else if (ft_strncmp(cmd_list->arguments[0], "pwd", 4) == 0)
         ft_pwd();
     else if (ft_strncmp(cmd_list->arguments[0], "env", 4) == 0)
-        ft_env(env);
+        ft_env(data->env);
     else if (ft_strncmp(cmd_list->arguments[0], "export", 7) == 0)
-        ft_export(cmd_list, &env);
+        ft_export(cmd_list, &data->env);
     else if (ft_strncmp(cmd_list->arguments[0], "exit", 5) == 0)
         ft_exit(cmd_list);
     else if (ft_strncmp(cmd_list->arguments[0], "unset", 6) == 0)
-        ft_unset(cmd_list, &env);
-    exit(EXIT_SUCCESS);
+        ft_unset(cmd_list, &data->env);
+    if (!ft_strncmp(cmd_list->arguments[0], "cd", 3))
+        return;
+    else
+        exit(EXIT_SUCCESS);
 }
