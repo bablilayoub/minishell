@@ -6,11 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2024/02/23 19:14:15 by alaalalm         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/22 15:43:40 by abablil          ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2024/02/24 02:24:44 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +30,19 @@ void excute_childs(t_cmd *cmd, int fd[][2], int k, int fd_c, t_data *data)
 		}
 	}
 }
-void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c)
+void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c, t_data *data)
 {
 	int i;
+	int status;
 
+	status = 0;
 	i = -1;
 	while (++i < fd_c)
 		close(fd[i][1]);
 	i = -1;
 	while (++i < fd_c)
-		waitpid(pid[i], NULL, 0);
+		 waitpid(pid[i], &status, 0);
+	data->exit_status = WEXITSTATUS(status);
 	close_fds(fd, fd_c);
 }
 void start_execution(t_data *data, int fd_c)
@@ -67,7 +66,7 @@ void start_execution(t_data *data, int fd_c)
 		k++;
 		current = current->next;
 	}
-	close_fds_and_wait(fd, pid, fd_c);
+	close_fds_and_wait(fd, pid, fd_c, data);
 }
 
 void prepare_for_excution(t_data *data)
@@ -77,7 +76,7 @@ void prepare_for_excution(t_data *data)
 
 	cmd_list = data->cmd;
 	initialize_arguments(cmd_list);
-	if (!initialize_path(cmd_list))
+	if (!initialize_path(cmd_list, data))
 		return;
 	fd_c = cmd_lenght(cmd_list);
 	start_execution(data, fd_c);

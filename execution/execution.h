@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/23 18:05:03 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/24 02:24:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@
 
 #define CLEAR "\033[H\033[2J"
 
-
-bool initialize_path(t_cmd *head);
+bool initialize_path(t_cmd *head, t_data *data);
 int args_lenght(t_arg *args);
 int cmd_lenght(t_cmd *cmd);
 void close_fds(int fd[][2], int cmd);

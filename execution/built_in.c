@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/23 19:13:36 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/24 02:39:25 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int ft_chdir(t_cmd *cmd)
             return 3;
         perror("chdir");
         return 4;
-    }
+    }    
     if (access(dirname, F_OK) == -1)
     {
         printf("cd: No such file or directory %s\n", dirname);

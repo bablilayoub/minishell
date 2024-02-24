@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/23 18:37:11 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/24 02:24:20 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-bool initialize_path(t_cmd *head)
+bool initialize_path(t_cmd *head, t_data *data)
 {
     char **env;
     bool flag = false;
@@ -54,7 +54,10 @@ bool initialize_path(t_cmd *head)
         head = head->next;
     }
     if (found_error)
+    {
+        data->exit_status = 127;
         return false;
+    }
     return (true);
 }
 
