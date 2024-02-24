@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/24 02:49:48 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/24 20:40:49 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int main(int total, char **args, char **env)
 
 	if (total != 1)
 	{
-		printf("Error: minishell\n");
+		printf(PREFIX_ERROR"Error: program takes no arguments\n");
 		return (1);
 	}
 	data.env = env;

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/24 02:09:38 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/24 21:21:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,22 @@ void print_args(t_cmd *head)
 			}
 			tmp->args = arg;
 		}
-		if (tmp->redirect)
-			printf("| Redirect : '%s' %*s |\n", tmp->redirect, 26 - (int)ft_strlen(tmp->redirect), " ");
+		if (tmp->redirect_in)
+			printf("| Red In   : '%s' %*s |\n", tmp->redirect_in, 26 - (int)ft_strlen(tmp->redirect_in), " ");
 		else
-			printf("| Redirect : '%s' %*s |\n", "NULL", 26 - 4, " ");
-		if (tmp->file)
-			printf("| File     : '%s' %*s |\n", tmp->file, 26 - (int)ft_strlen(tmp->file), " ");
+			printf("| Red In   : '%s' %*s |\n", "NULL", 26 - 4, " ");
+		if (tmp->input_file)
+			printf("| In File  : '%s' %*s |\n", tmp->input_file, 26 - (int)ft_strlen(tmp->input_file), " ");
 		else
-			printf("| Output   : '%s' %*s |\n", "NULL", 26 - 4, " ");
+			printf("| In File  : '%s' %*s |\n", "NULL", 26 - 4, " ");
+		if (tmp->redirect_out)
+			printf("| Red Out  : '%s' %*s |\n", tmp->redirect_out, 26 - (int)ft_strlen(tmp->redirect_out), " ");
+		else
+			printf("| Red Out  : '%s' %*s |\n", "NULL", 26 - 4, " ");
+		if (tmp->output_file)
+			printf("| Out File : '%s' %*s |\n", tmp->output_file, 26 - (int)ft_strlen(tmp->output_file), " ");
+		else
+			printf("| Out File : '%s' %*s |\n", "NULL", 26 - 4, " ");
 		if (tmp->has_pipe)
 			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
 		else
@@ -108,7 +116,7 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(data->cmd);
+	print_args(data->cmd);
 }
 
 void get_env_vars(t_data *data)

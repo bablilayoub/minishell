@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/24 02:49:51 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/24 19:34:38 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ bool initialize_path(t_cmd *head, t_data *data);
 int args_lenght(t_arg *args);
 int cmd_lenght(t_cmd *cmd);
 void close_fds(int fd[][2], int cmd);
-t_cmd *parsed_list();
 void prepare_for_excution(t_data *data);
 void initialize_arguments(t_cmd *cmd_list);
 void ft_echo(t_cmd *cmd);

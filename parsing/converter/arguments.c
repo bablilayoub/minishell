@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/23 17:57:45 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/24 20:46:32 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,25 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 		}
 		else if (ft_strncmp(tmp->type, ENV, 1) == 0)
 			head = add_arg(head, tmp->value, (tmp->state == IN_QUOTE));
-		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, HERE_DOC, 2) == 0) && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
+		else if ((ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0) && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
 		{
-			cmd->redirect = tmp->type;
+			cmd->redirect_out = tmp->type;
 			if (tmp->next)
 				tmp = skip_white_spaces(tmp->next);
 			if (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
-				cmd->file = tmp->value;
-			else if (tmp &&
-					 (ft_strncmp(tmp->type, REDIR_IN, 1) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0))
-			{
-				printf("%s\n", PREFIX_ERROR "Syntax error");
-				return (NULL);
-			}
+				cmd->output_file = tmp->value;
 			else
-				cmd->file = NULL;
+				cmd->output_file = NULL;
+		}
+		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0) && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
+		{
+			cmd->redirect_in = tmp->type;
+			if (tmp->next)
+				tmp = skip_white_spaces(tmp->next);
+			if (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
+				cmd->input_file = tmp->value;
+			else
+				cmd->input_file = NULL;
 		}
 		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, HERE_DOC, 2) == 0) && (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE))
 			head = add_arg(head, tmp->value, 1);

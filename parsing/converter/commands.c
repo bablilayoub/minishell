@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:50:50 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/22 15:27:47 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/24 20:41:29 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ t_cmd *new_cmd(t_token *token)
 	t_cmd *cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	cmd->cmd = token->value;
 	cmd->path = NULL;
-	cmd->redirect = NULL;
+	cmd->redirect_in = NULL;
+	cmd->redirect_out = NULL;
 	cmd->has_pipe = 0;
-	cmd->file = NULL;
+	cmd->output_file = NULL;
+	cmd->input_file = NULL;
 	cmd->arguments = NULL;
 	cmd->args = NULL;
 	cmd->next = NULL;
