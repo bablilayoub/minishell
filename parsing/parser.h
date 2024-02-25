@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/25 04:07:14 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/25 05:14:52 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ struct s_cmd
 	bool			built_in;
 	char 			*here_doc;
 	char 			*append_out;
+	char 			*pwd;
+	char 			*old_pwd;
 	struct s_arg	*args;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
