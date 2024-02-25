@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/24 19:31:08 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/25 03:19:35 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,4 @@ void excute_builtin(t_cmd *cmd_list, t_data *data)
         ft_exit(cmd_list);
     else if (ft_strncmp(cmd_list->arguments[0], "unset", 6) == 0)
         ft_unset(cmd_list, &data->env);
-    // if (!ft_strncmp(cmd_list->arguments[0], "cd", 3))
-    //     return;
-    // else
-    exit(EXIT_SUCCESS);
 }
