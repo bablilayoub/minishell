@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/25 04:37:15 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/26 00:37:10 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,55 @@ void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c, t_data *data)
 		waitpid(pid[i], &status, 0);
 	data->exit_status = WEXITSTATUS(status);
 }
+
+void update_env(t_data *data)
+{
+	int fd_in;
+	int bytes;
+	char *env;
+	char *buff;
+
+	env = ft_strdup("");
+	buff = malloc(sizeof(char) * 1024);
+	fd_in = open("export.txt", O_RDONLY);
+	bytes = 1;
+	while (bytes != 0)
+	{
+		bytes = read(fd_in, buff, 1024);
+		if (bytes > 0)
+		{
+			buff[bytes] = '\0';
+			env = ft_strjoin(env, buff);
+		}
+		else
+			break;
+	}
+	unlink("export.txt");
+	data->env = ft_split(env, '\n');
+	close(fd_in);
+}
+
+void change_path(t_data *data, char *path)
+{
+	char *oldpwd;
+	char *pwd;
+	int fd_in;
+
+	(void)data;
+	fd_in = open("cd.txt", O_RDONLY);
+	path = malloc(sizeof(char) * 1024);
+	read(fd_in, path, 1024);
+	close(fd_in);
+	unlink("cd.txt");
+	oldpwd = getcwd(NULL, 0);
+	data->env = update_env(data->env, oldpwd);
+	chdir(path);
+	pwd = getcwd(NULL, 0);
+	data->env = update_env(data->env, pwd);
+	// free(oldpwd);
+	// free(pwd);
+	// free(path);
+}
 void start_execution(t_data *data, int fd_c)
 {
 	int k;
@@ -85,7 +134,6 @@ void start_execution(t_data *data, int fd_c)
 		pipe(fd[i]);
 	while (current)
 	{
-
 		pid[k] = fork();
 		if (pid[k] == 0)
 		{
@@ -101,6 +149,19 @@ void start_execution(t_data *data, int fd_c)
 				execve(current->path, current->arguments, data->env);
 				perror("execve");
 				exit(EXIT_FAILURE);
+			}
+		}
+		if (pid[k] > 0)
+		{
+			if (ft_strncmp(current->cmd, "export", 6) == 0)
+			{
+				waitpid(pid[k], NULL, 0);
+				update_env(data);
+			}
+			else if (ft_strncmp(current->cmd, "cd", 2) == 0)
+			{
+				waitpid(pid[k], NULL, 0);
+				change_path(data, current->arguments[1]);
 			}
 		}
 		k++;
