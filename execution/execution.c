@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 00:38:38 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/26 00:54:35 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,28 @@ void update_env(t_data *data)
 	data->env = ft_split(env, '\n');
 	close(fd_in);
 }
+char **update_envp(char **env, char *oldpwd, char *pwd)
+{
+	int i;
+	char **new_env;
 
+	i = 0;
+	while (env[i])
+		i++;
+	new_env = malloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (env[++i])
+	{
+		if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
+			new_env[i] = ft_strjoin("OLDPWD=", oldpwd);
+		else if (ft_strncmp(env[i], "PWD", 3) == 0)
+			new_env[i] = ft_strjoin("PWD=", pwd);
+		else
+			new_env[i] = ft_strdup(env[i]);
+	}
+	new_env[i] = NULL;
+	return (new_env);
+}
 void change_path(t_data *data, char *path)
 {
 	char *oldpwd;
@@ -111,10 +132,9 @@ void change_path(t_data *data, char *path)
 	close(fd_in);
 	unlink("cd.txt");
 	oldpwd = getcwd(NULL, 0);
-	data->env = update_env(data->env, oldpwd);
 	chdir(path);
 	pwd = getcwd(NULL, 0);
-	data->env = update_env(data->env, pwd);
+	data->env = update_envp(data->env, oldpwd, pwd);
 	// free(oldpwd);
 	// free(pwd);
 	// free(path);
