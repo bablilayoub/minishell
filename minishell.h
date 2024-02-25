@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/24 02:50:28 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 00:43:19 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ typedef struct s_arg t_arg;
 
 struct s_data
 {
-	char		**env;
+	char			*prefix;
+	char			*prefix_error;
+	char			**env;
 	int				exit_status;
 	struct s_cmd	*cmd;
 	struct s_token	*token;

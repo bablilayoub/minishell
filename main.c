@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/24 20:40:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 00:43:24 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int main(int total, char **args, char **env)
 	data.token = NULL;
 	data.cmd = NULL;
 	data.exit_status = 0;
+	data.prefix = ft_strdup(PREFIX);
+	data.prefix_error = ft_strdup(PREFIX_ERROR);
 	reader(&data);
 	return (0);
 }

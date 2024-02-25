@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/22 12:53:18 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/26 00:48:34 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,32 @@ void close_fds(int fd[][2], int fd_c)
                 perror("close");
         }
     }
+}
+
+void  update_prefix(t_data *data, char *prefix)
+{
+    char *new_prefix;
+    
+    free(data->prefix);
+    new_prefix = ft_strjoin(RESET, BLUE);
+    new_prefix = ft_strjoin(new_prefix, BOLD);
+    new_prefix = ft_strjoin(new_prefix, "➜  ");
+    new_prefix = ft_strjoin(new_prefix, prefix);
+    new_prefix = ft_strjoin(new_prefix, " : ");
+    new_prefix = ft_strjoin(new_prefix, RESET);
+    data->prefix = new_prefix;
+}
+
+void  update_prefix_error(t_data *data, char *prefix_error)
+{
+    char *new_prefix_error;
+    
+    free(data->prefix_error);
+    new_prefix_error = ft_strjoin(RESET, RED);
+    new_prefix_error = ft_strjoin(new_prefix_error, BOLD);
+    new_prefix_error = ft_strjoin(new_prefix_error, "⊗  ");
+    new_prefix_error = ft_strjoin(new_prefix_error, prefix_error);
+    new_prefix_error = ft_strjoin(new_prefix_error, " : ");
+    new_prefix_error = ft_strjoin(new_prefix_error, RESET);
+    data->prefix_error = new_prefix_error;
 }

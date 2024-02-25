@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/25 19:27:58 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 00:43:40 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void reader(t_data *data)
 	rl_catch_signals = 0;
 	while (1)
 	{
-		line = readline(PREFIX);
+		line = readline(data->prefix);
 		if (!line)
 			break;
 		// printf("'line' : '%s'\n", line);
