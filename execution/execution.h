@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 01:02:14 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 21:55:35 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,15 @@ void initialize_arguments(t_cmd *cmd_list);
 void ft_echo(t_cmd *cmd);
 int ft_chdir(t_data *data, t_cmd *cmd);
 void ft_pwd();
-void ft_export(t_data *data, char ***envp);
+void ft_export(t_data *data,  char **env);
 void ft_env(char **env);
 void ft_exit(t_cmd *cmd);
 void excute_builtin(t_cmd *cmd_list, t_data *data);
 void  update_prefix(t_data *data, char *prefix);
+void update_env(t_data *data);
+char **update_envpwd(char **env, char *oldpwd, char *pwd);
+void change_path(t_data *data, char *path);
+void unset_env(t_data *data);
+void exit_shell(void);
+void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c, t_data *data);
 #endif
