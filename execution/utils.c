@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 00:48:34 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 01:02:09 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,4 @@ void  update_prefix(t_data *data, char *prefix)
     new_prefix = ft_strjoin(new_prefix, " : ");
     new_prefix = ft_strjoin(new_prefix, RESET);
     data->prefix = new_prefix;
-}
-
-void  update_prefix_error(t_data *data, char *prefix_error)
-{
-    char *new_prefix_error;
-    
-    free(data->prefix_error);
-    new_prefix_error = ft_strjoin(RESET, RED);
-    new_prefix_error = ft_strjoin(new_prefix_error, BOLD);
-    new_prefix_error = ft_strjoin(new_prefix_error, "⊗  ");
-    new_prefix_error = ft_strjoin(new_prefix_error, prefix_error);
-    new_prefix_error = ft_strjoin(new_prefix_error, " : ");
-    new_prefix_error = ft_strjoin(new_prefix_error, RESET);
-    data->prefix_error = new_prefix_error;
 }

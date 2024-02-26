@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 01:38:22 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/26 01:43:44 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ void change_path(t_data *data, char *path)
 	chdir(path);
 	pwd = getcwd(NULL, 0);
 	data->env = update_envp(data->env, oldpwd, pwd);
+	char *new_prefix = ft_strrchr(pwd, '/');
+	update_prefix(data, new_prefix + 1);
 	// free(oldpwd);
 	// free(pwd);
 	// free(path);
