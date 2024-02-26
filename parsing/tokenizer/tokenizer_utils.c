@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/21 16:38:26 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 16:08:08 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,19 @@ void print_tokens(t_token *token)
 	{
 		i = 0;
 		space_left = 14 - ft_strlen(tmp->value);
-		printf("|    '%s'", tmp->value);
+		
+		if (ft_strncmp(tmp->type, NEW_LINE, 1) != 0 && ft_strncmp(tmp->type, TAB_SPACE, 1) != 0)
+			printf("|    '%s'", tmp->value);
+		else if (ft_strncmp(tmp->type, NEW_LINE, 1) == 0)
+		{
+			space_left = 14 - ft_strlen("\\n");
+			printf("|    '\\n'");
+		}
+		else
+		{
+			space_left = 14 - ft_strlen("\\t");
+			printf("|    '\\t'");
+		}
 		while (i < space_left)
 		{
 			printf(" ");
@@ -151,6 +163,8 @@ void print_tokens(t_token *token)
 			new_type = "HERE_DOC";
 		else if (ft_strncmp(tmp->type, APPEND_OUT, 2) == 0)
 			new_type = "APPEND_OUT";
+		else if (ft_strncmp(tmp->type, TAB_SPACE, 1) == 0)
+			new_type = "TAB_SPACE";
 		else
 			new_type = tmp->type;
 		space_left = 14 - ft_strlen(new_type);

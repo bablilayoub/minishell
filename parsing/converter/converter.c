@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   converter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 01:39:01 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:16:19 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,12 @@ void print_args(t_cmd *head)
 			arg = tmp->args;
 			while (tmp->args)
 			{
-				printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", tmp->args->arg, 8 - (int)ft_strlen(tmp->args->arg), " ", tmp->args->env_var);
+				if (ft_strncmp(tmp->args->arg, NEW_LINE, 1) != 0 && ft_strncmp(tmp->args->arg, TAB_SPACE, 1) != 0)
+					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", tmp->args->arg, 8 - (int)ft_strlen(tmp->args->arg), " ", tmp->args->env_var);
+				else if (ft_strncmp(tmp->args->arg, NEW_LINE, 1) == 0)
+					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", "\\n", 8 - 2, " ", tmp->args->env_var);
+				else
+					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", "\\t", 8 - 2, " ", tmp->args->env_var);
 				tmp->args = tmp->args->next;
 			}
 			tmp->args = arg;
@@ -116,7 +121,7 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(data->cmd);
+	print_args(data->cmd);
 }
 
 char *get_env(char *env, t_data *data)
