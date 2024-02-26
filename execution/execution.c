@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 00:57:59 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 01:38:22 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 	int fd_in = 0;
 	int fd_out = 1;
 
-	if (cmd->redirect_in || cmd->redirect_out || cmd->here_doc || cmd->append_out)
+	if (cmd->redirect_in || cmd->redirect_out)
 	{
-		if (cmd->redirect_in)
+		if (cmd->redirect_in && !ft_strncmp(cmd->redirect_in, "<<", 2))
 			fd_in = open(cmd->input_file, O_RDONLY);
-		if (cmd->redirect_out)
-			fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (cmd->here_doc)
+		else if (cmd->redirect_in)
 			fd_in = open(cmd->input_file, O_RDONLY);
-		if (cmd->append_out)
+		if (cmd->redirect_out && !ft_strncmp(cmd->redirect_out, ">>", 2))
 			fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else if (cmd->redirect_out)
+			fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	}
 	else
 	{
@@ -135,8 +135,6 @@ void change_path(t_data *data, char *path)
 	chdir(path);
 	pwd = getcwd(NULL, 0);
 	data->env = update_envp(data->env, oldpwd, pwd);
-	char *after_last_slash = ft_strrchr(pwd, '/');
-	update_prefix(data, after_last_slash + 1);
 	// free(oldpwd);
 	// free(pwd);
 	// free(path);

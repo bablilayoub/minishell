@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/25 05:14:52 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/26 01:38:11 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ struct s_cmd
 	bool			has_pipe;
 	char 			**arguments;
 	bool			built_in;
-	char 			*here_doc;
-	char 			*append_out;
 	char 			*pwd;
 	char 			*old_pwd;
 	struct s_arg	*args;

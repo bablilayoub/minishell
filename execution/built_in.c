@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 00:23:58 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/26 01:20:52 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,12 @@ int ft_chdir(t_data *data, t_cmd *cmd)
     if (access(dirname, F_OK) == -1)
     {
         printf(PREFIX_ERROR "cd: No such file or directory %s\n", dirname);
-        return 5;
+        return 3;
     }
     if (chdir(dirname) == 0)
     {
         write(fd_out, dirname, ft_strlen(dirname));
-        // write(fd_out, "\n", 1);
-        return 1;
+        return 4;
     }
     perror("chdir");
     return 0;
