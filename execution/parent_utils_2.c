@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   parent_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 18:07:14 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 22:07:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,16 @@ void  update_prefix(t_data *data, char *prefix)
     new_prefix = ft_strjoin(new_prefix, " : ");
     new_prefix = ft_strjoin(new_prefix, RESET);
     data->prefix = new_prefix;
+}
+void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c, t_data *data)
+{
+	int i;
+	int status;
+
+	status = 0;
+	close_fds(fd, fd_c);
+	i = -1;
+	while (++i < fd_c)
+		waitpid(pid[i], &status, 0);
+	data->exit_status = WEXITSTATUS(status);
 }
