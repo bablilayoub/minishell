@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 01:04:29 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 16:48:18 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,15 @@ struct s_data
 
 // Colors define
 #define RED		"\033[0;31m"
+#define BLACK	"\033[30m"
 #define GREEN	"\033[0;32m"
 #define YELLOW	"\033[0;33m"
 #define BLUE	"\033[0;34m"
 #define RESET	"\033[0m"
 #define BOLD	"\033[1m"
+
+// Backgrounds define
+#define WHITE_BG		"\033[107m"
 
 #define PREFIX			RESET BLUE BOLD "➜  minishell : " RESET
 #define PREFIX_ERROR	RESET RED BOLD "⊗  minishell : " RESET

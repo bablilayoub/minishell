@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 01:38:11 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:03:12 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #define WORD "WORD"
 #define WHITE_SPACE " "
 #define NEW_LINE "\n"
+#define TAB_SPACE "\t"
 #define QUOTE "\'"
 #define DOUBLE_QUOTE "\""
 #define ESCAPE "\\"
