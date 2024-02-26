@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 16:48:18 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 21:39:11 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ struct s_data
 #include "execution/execution.h"
 #include "utils/utils.h"
 
-// Colors define
+// Colors
 #define RED		"\033[0;31m"
 #define BLACK	"\033[30m"
 #define GREEN	"\033[0;32m"
@@ -50,7 +50,7 @@ struct s_data
 #define RESET	"\033[0m"
 #define BOLD	"\033[1m"
 
-// Backgrounds define
+// Backgrounds
 #define WHITE_BG		"\033[107m"
 
 #define PREFIX			RESET BLUE BOLD "➜  minishell : " RESET

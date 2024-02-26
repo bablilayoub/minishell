@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 16:03:12 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 21:37:20 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,16 @@ t_token	*add_token(t_token *head, t_token *token);
 char	*get_word(char *line, size_t *i);
 void	print_tokens(t_token *token);
 
+// States
+void set_in_quotes(t_token_params *params, int quote);
+void set_states(t_token_params *params, int quote);
+
+// Cases
+void handle_special_char(t_token_params *params, char *value, int len);
+void handle_quotes(t_token_params *params, int quote, char *quote_type);
+void handle_word(t_token_params *params, char *line);
+void handle_cases(t_token_params *params, char *line);
+
 // Converter
 void	convert_tokens_to_commands(t_data *data);
 int		not_a_shell_command(t_token *token);
@@ -111,5 +121,13 @@ t_token	*find_args(t_cmd *cmd, t_token *token);
 
 // Cleaning
 void	free_data(t_data *data);
+
+// Signals
+void	signal_handler(int sig);
+
+// Syntax
+void	check_quotes(t_token *token);
+void	check_pipes(t_cmd *cmd);
+void	check_syntax(t_data *data);
 
 #endif

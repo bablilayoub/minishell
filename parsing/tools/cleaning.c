@@ -6,11 +6,11 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/23 16:07:54 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 20:27:37 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void ft_free_array(char **array)
 {
@@ -69,10 +69,10 @@ void free_tokens(t_token *token)
 	while (token)
 	{
 		tmp = token->next;
-		if (token->value)
-			free(token->value);
 		if (token->type)
 			free(token->type);
+		// if (token->value)
+		// 	free(token->value);
 		free(token);
 		token = tmp;
 	}
@@ -86,5 +86,5 @@ void free_data(t_data *data)
 		free_tokens(data->token);
 	data->cmd = NULL;
 	data->token = NULL;
-	printf("All data has been freed\n");
+	// printf("All data has been freed\n");
 }

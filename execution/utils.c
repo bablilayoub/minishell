@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 01:02:09 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 18:07:14 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int args_lenght(t_arg *args)
     t_arg *tmp = args;
     
     int i = 0;
-    while (tmp != NULL)
+    while (tmp)
     {
         i++;
         tmp = tmp->next;
@@ -30,7 +30,7 @@ int cmd_lenght(t_cmd *cmd)
     t_cmd *tmp = cmd;
     
     int i = 0;
-    while (tmp != NULL)
+    while (tmp)
     {
         i++;
         tmp = tmp->next;

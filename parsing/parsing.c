@@ -6,57 +6,11 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 16:11:47 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 20:24:47 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-void validate_syntax(t_token *token)
-{
-	t_token *tmp = token;
-	int quotes_count = 0;
-	int dquotes_count = 0;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->type, QUOTE, 1) == 0)
-			quotes_count++;
-		tmp = tmp->next;
-	}
-	tmp = token;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) == 0)
-			dquotes_count++;
-		tmp = tmp->next;
-	}
-	if (quotes_count % 2 != 0 || dquotes_count % 2 != 0)
-		printf("%s\n", PREFIX_ERROR "Syntax error");
-}
-
-void check_pipes(t_cmd *cmd)
-{
-	t_cmd *tmp = cmd;
-	
-	while (tmp)
-	{
-		if (tmp->has_pipe)
-		{
-			if (!tmp->next)
-			{
-				printf("%s\n", PREFIX_ERROR "Syntax error");
-				return;
-			}
-		}
-		tmp = tmp->next;
-	}
-}
-
-void check_syntax(t_data *data)
-{
-	validate_syntax(data->token);
-	check_pipes(data->cmd);
-}
 
 void parser(char *line, t_data *data)
 {
@@ -68,17 +22,6 @@ void parser(char *line, t_data *data)
 	get_env_vars(data);
 	check_syntax(data);
 	// print_tokens(data->token);
-}
-
-void signal_handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 1);
-		rl_redisplay();
-	}
 }
 
 void reader(t_data *data)
@@ -99,10 +42,11 @@ void reader(t_data *data)
 		{
 			parser(line, data);
 			prepare_for_excution(data);
-			// free_data(data);
+			free_data(data);
 			add_history(line);
 		}
 		free(line);
+		line = NULL;
 	}
 	rl_clear_history();
 	// free_data(data);

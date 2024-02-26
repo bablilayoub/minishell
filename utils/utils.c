@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/19 22:07:31 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 17:55:09 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool only_spaces(char *str)
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == ' ' || str[i] == '\t')
+		if (str[i] == ' ')
 			count++;
 		i++;
 	}

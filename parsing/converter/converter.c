@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 16:16:19 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/26 21:26:24 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,12 @@ void convert_tokens_to_commands(t_data *data)
 	t_cmd *head = NULL;
 	int found_cmd = 0;
 
+	tmp = skip_white_spaces(tmp);
+	if (ft_strncmp(tmp->type, WORD, 1) != 0)
+	{
+		printf("%s\n", PREFIX_ERROR "Syntax error");
+		return ;
+	}
 	while (tmp)
 	{
 		t_cmd *cmd = NULL;
@@ -121,7 +127,7 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	print_args(data->cmd);
+	// print_args(data->cmd);
 }
 
 char *get_env(char *env, t_data *data)
