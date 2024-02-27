@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 21:26:24 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/27 20:17:15 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,33 @@ void print_args(t_cmd *head)
 	}
 }
 
+t_token *get_last_arg(t_token *head)
+{
+	t_token *tmp = head;
+	while (tmp->next && not_a_shell_command(tmp))
+		tmp = tmp->next;
+	if (!not_a_shell_command(tmp))
+		tmp = tmp->prev;
+	while (ft_strchr(tmp->value, ' ') && tmp->prev)
+		tmp = tmp->prev;
+	return (tmp);
+}
+
+char *get_output_file(t_token *head)
+{
+	t_token *tmp = head;
+	while (tmp && not_a_shell_command(tmp))
+	{
+		if (ft_strncmp(tmp->type, WORD, 4) == 0)
+			return (tmp->value);
+		if (tmp->next)
+			tmp = tmp->next;
+		else
+			return (NULL);
+	}
+	return (NULL);
+}
+
 void convert_tokens_to_commands(t_data *data)
 {
 	if (!data->token)
@@ -93,7 +120,7 @@ void convert_tokens_to_commands(t_data *data)
 	int found_cmd = 0;
 
 	tmp = skip_white_spaces(tmp);
-	if (ft_strncmp(tmp->type, WORD, 1) != 0)
+	if (ft_strncmp(tmp->type, WORD, 1) != 0 && ft_strncmp(tmp->type, REDIR_OUT, 1) != 0 && ft_strncmp(tmp->type, APPEND_OUT, 2) != 0)
 	{
 		printf("%s\n", PREFIX_ERROR "Syntax error");
 		return ;
@@ -116,6 +143,16 @@ void convert_tokens_to_commands(t_data *data)
 				else
 					cmd->args = add_arg(cmd->args, cmd->cmd, 1);
 				break;
+			} 
+			else if ((ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0) && !found_cmd)
+			{
+				found_cmd = 1;
+				cmd = new_cmd(get_last_arg(tmp->next));
+				cmd->redirect_out = ft_strdup(tmp->type);
+				cmd->output_file = get_output_file(tmp->next);
+				head = add_cmd(head, cmd);
+				tmp = get_last_arg(tmp->next);
+				break;
 			}
 			tmp = tmp->next;
 			if (tmp)
@@ -127,7 +164,7 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(data->cmd);
+	print_args(data->cmd);
 }
 
 char *get_env(char *env, t_data *data)

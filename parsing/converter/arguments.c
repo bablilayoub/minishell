@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 16:25:09 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/27 20:33:12 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 		else if (ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0 && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
 		{
 			tmp = skip_white_spaces(tmp);
-			if (tmp && ft_strncmp(cmd->cmd, "echo", 4) == 0)
+			if (tmp && (ft_strncmp(cmd->cmd, "echo", 4) == 0) && not_a_shell_command(tmp))
 				head = add_arg(head, " ", 1);
 			continue;
 		}
@@ -120,3 +120,4 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 	cmd->args = head;
 	return (tmp);
 }
+

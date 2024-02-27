@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 22:06:15 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/27 03:00:36 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ void ft_echo(t_cmd *cmd)
         else
             printf("%s", tmp->arguments[i]);
     }
-    if (ft_strncmp(tmp->arguments[1], "-n", 2) == 0)
-        printf(WHITE_BG BLACK"%c"RESET, '%');
-    printf("\n");
+    if (ft_strncmp(tmp->arguments[1], "-n", 2) != 0)
+        printf("\n");
 }
 
 int check_exported(char *exported)

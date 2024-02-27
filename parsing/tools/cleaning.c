@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 20:27:37 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/27 02:52:58 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void free_tokens(t_token *token)
 		tmp = token->next;
 		if (token->type)
 			free(token->type);
-		// if (token->value)
-		// 	free(token->value);
+		if (token->value)
+			free(token->value);
 		free(token);
 		token = tmp;
 	}
