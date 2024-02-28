@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/28 20:25:58 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/02/28 21:02:59 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ char **load_key_value(char *key, char *value)
 // }
 char **key_value(char *exported, char **env)
 {
+    (void)env;
     char *value;
     char *key;
     char **key_value;
