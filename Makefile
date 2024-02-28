@@ -29,7 +29,9 @@ PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER)) $(addprefix converter/
 
 # EXECUTION
 EXECUTION_HEADER = ./execution/execution.h
-EXECUTION = execution.c  parent_utils_1.c parent_utils_2.c init.c built_in.c
+BUILTIN = built_in.c ft_chdir.c ft_echo.c ft_env.c ft_exit.c ft_export.c ft_pwd.c ft_unset.c
+INCOMING = chdir.c env.c exit_shell.c
+EXECUTION = execution.c  utils.c init.c $(addprefix built_in/, $(BUILTIN)) $(addprefix incoming/, $(INCOMING))
 
 # SOURCES
 PARSING_SRCS = $(addprefix parsing/, $(PARSING))

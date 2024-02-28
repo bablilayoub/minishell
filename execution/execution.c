@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 23:34:20 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:17:42 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,16 @@ void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
 {
 
-	if (ft_strncmp(current->cmd, "export", 6) == 0)
+	if (ft_strncmp(current->cmd, "export", 6) == 0
+		|| (ft_strncmp(current->cmd, "unset", 5) == 0))
 	{
 		waitpid(pid[k], NULL, 0);
-		update_env(data);
+		update_env(data, current->cmd);
 	}
 	else if (ft_strncmp(current->cmd, "cd", 2) == 0)
 	{
 		waitpid(pid[k], NULL, 0);
-		change_path(data, current->arguments[1]);
-	}
-	else if (ft_strncmp(current->cmd, "unset", 5) == 0)
-	{
-		waitpid(pid[k], NULL, 0);
-		unset_env(data);
+		change_path(data);
 	}
 	else if (ft_strncmp(current->cmd, "exit", 4) == 0)
 	{

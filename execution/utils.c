@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parent_utils_2.c                                   :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/26 22:07:27 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:55:26 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,50 @@ void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c, t_data *data)
 	while (++i < fd_c)
 		waitpid(pid[i], &status, 0);
 	data->exit_status = WEXITSTATUS(status);
+}
+void check_error(int fd, const char *msg, int flag)
+{
+    if (fd == -1)
+    {
+        perror(msg);
+        if (flag)
+            return ;
+        else
+            exit(EXIT_FAILURE);
+    }
+}
+
+void check_error_null(void *ptr, const char *msg, int flag)
+{
+    if (!ptr)
+    {
+        perror(msg);
+        if (flag)
+            return ;
+        else
+            exit(EXIT_FAILURE);
+    }
+}
+void free_triplet(char *s1, char *s2, char *s3)
+{
+    free(s1);
+    free(s2);
+    free(s3);
+}
+
+void free_double(char **ptr)
+{
+    int i;
+    
+    i = -1;
+    while (ptr[++i])
+        free(ptr[i]);
+    free(ptr);
+}
+void free_two(char *s1, char *s2)
+{
+    if (s1)
+        free(s1);
+    if (s2)
+        free(s2);
 }

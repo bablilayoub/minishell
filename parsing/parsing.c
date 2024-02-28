@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/27 20:17:26 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/28 16:23:23 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void reader(t_data *data)
 		if (ft_strlen(line) > 0)
 		{
 			parser(line, data);
-			// prepare_for_excution(data);
+			prepare_for_excution(data);
 			// free_data(data);
 			add_history(line);
 		}
