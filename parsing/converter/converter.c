@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/28 21:42:34 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/29 02:27:46 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void print_args(t_cmd *head)
 {
 	t_cmd *tmp = head;
 	t_arg *arg;
+	int i;
 
 	if (!tmp)
 		return;
@@ -59,16 +60,30 @@ void print_args(t_cmd *head)
 			printf("| Red In   : '%s' %*s |\n", tmp->redirect_in, 26 - (int)ft_strlen(tmp->redirect_in), " ");
 		else
 			printf("| Red In   : '%s' %*s |\n", "NULL", 26 - 4, " ");
-		if (tmp->input_file)
-			printf("| In File  : '%s' %*s |\n", tmp->input_file, 26 - (int)ft_strlen(tmp->input_file), " ");
+		if (tmp->input_files)
+		{
+			i = 0;
+			while (tmp->input_files[i])
+			{
+				printf("| In File  : '%s' %*s |\n", tmp->input_files[i], 26 - (int)ft_strlen(tmp->input_files[i]), " ");
+				i++;
+			}
+		}
 		else
 			printf("| In File  : '%s' %*s |\n", "NULL", 26 - 4, " ");
 		if (tmp->redirect_out)
 			printf("| Red Out  : '%s' %*s |\n", tmp->redirect_out, 26 - (int)ft_strlen(tmp->redirect_out), " ");
 		else
 			printf("| Red Out  : '%s' %*s |\n", "NULL", 26 - 4, " ");
-		if (tmp->output_file)
-			printf("| Out File : '%s' %*s |\n", tmp->output_file, 26 - (int)ft_strlen(tmp->output_file), " ");
+		if (tmp->output_files)
+		{
+			i = 0;
+			while (tmp->output_files[i])
+			{
+				printf("| Out File : '%s' %*s |\n", tmp->output_files[i], 26 - (int)ft_strlen(tmp->output_files[i]), " ");
+				i++;
+			}
+		}
 		else
 			printf("| Out File : '%s' %*s |\n", "NULL", 26 - 4, " ");
 		if (tmp->has_pipe)
@@ -87,35 +102,13 @@ void print_args(t_cmd *head)
 t_token *get_command_name(t_token *head)
 {
 	t_token *tmp = head;
-	int found = 0;
-	while (tmp && not_a_shell_command(tmp))
-	{
-		if (found && ft_strncmp(tmp->type, WORD, 4) == 0)
-			return (tmp);
-		if (ft_strncmp(tmp->type, WORD, 4) == 0)
-			found = 1;
-		if (tmp->next)
-			tmp = tmp->next;
-		else
-			return (NULL);
-	}
-	return (NULL);
+	if (!tmp)
+		return (NULL);
+	while (tmp && not_a_shell_command(tmp) && ft_strncmp(tmp->type, WORD, 4) != 0)
+		tmp = tmp->next;
+	return (tmp);
 }
 
-char *get_file(t_token *head)
-{
-	t_token *tmp = head;
-	while (tmp && not_a_shell_command(tmp))
-	{
-		if (ft_strncmp(tmp->type, WORD, 4) == 0)
-			return (tmp->value);
-		if (tmp->next)
-			tmp = tmp->next;
-		else
-			return (NULL);
-	}
-	return (NULL);
-}
 
 void convert_tokens_to_commands(t_data *data)
 {
@@ -129,7 +122,7 @@ void convert_tokens_to_commands(t_data *data)
 	if (ft_strncmp(tmp->type, WORD, 1) != 0 && ft_strncmp(tmp->type, REDIR_OUT, 1) != 0 && ft_strncmp(tmp->type, APPEND_OUT, 2) != 0 && ft_strncmp(tmp->type, REDIR_IN, 1) != 0 && ft_strncmp(tmp->type, HERE_DOC, 2) != 0)
 	{
 		printf("%s\n", PREFIX_ERROR "Syntax error");
-		return ;
+		return;
 	}
 	while (tmp)
 	{
@@ -149,17 +142,32 @@ void convert_tokens_to_commands(t_data *data)
 				else
 					cmd->args = add_arg(cmd->args, cmd->cmd, 1);
 				break;
-			} 
-			else if (((ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0) 
-			|| (ft_strncmp(tmp->type, HERE_DOC, 2) == 0 || ft_strncmp(tmp->type, REDIR_IN, 1) == 0)) && !found_cmd)
+			}
+			else if (((ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0) || (ft_strncmp(tmp->type, HERE_DOC, 2) == 0 || ft_strncmp(tmp->type, REDIR_IN, 1) == 0)) && !found_cmd)
 			{
 				found_cmd = 1;
-				cmd = new_cmd(get_command_name(tmp->next));
-				cmd->redirect_out = ft_strdup(tmp->type);
-				cmd->output_file = get_file(tmp->next);
+				cmd = new_cmd(tmp);
+				while (tmp && ((ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0) || (ft_strncmp(tmp->type, HERE_DOC, 2) == 0 || ft_strncmp(tmp->type, REDIR_IN, 1) == 0)))
+				{
+					if (cmd->redirect_out)
+						free(cmd->redirect_out);
+					if (cmd->redirect_in)
+						free(cmd->redirect_in);
+					if (ft_strncmp(tmp->type, REDIR_IN, 1) == 0 || ft_strncmp(tmp->type, HERE_DOC, 2) == 0)
+						cmd->redirect_in = ft_strdup(tmp->type);
+					else if (ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0)
+						cmd->redirect_out = ft_strdup(tmp->type);
+					if (ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0)
+						tmp = add_file(&cmd->output_files, tmp->next);
+					else if (ft_strncmp(tmp->type, HERE_DOC, 2) == 0 || ft_strncmp(tmp->type, REDIR_IN, 1) == 0)
+						tmp = add_file(&cmd->input_files, tmp->next);
+					tmp = skip_white_spaces(tmp);
+				}
+				cmd->cmd = tmp->value;
 				head = add_cmd(head, cmd);
-				tmp = get_command_name(tmp->next);
-				if (tmp->next)
+				tmp = get_command_name(tmp);
+				tmp = skip_white_spaces(tmp);
+				if (tmp && tmp->next)
 					tmp = find_args(cmd, tmp->next);
 				else
 					cmd->args = add_arg(cmd->args, cmd->cmd, 1);
@@ -175,7 +183,7 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	print_args(data->cmd);
+	// print_args(data->cmd);
 }
 
 char *get_env(char *env, t_data *data)

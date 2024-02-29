@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:50:50 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/28 21:28:19 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/29 02:03:12 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ t_cmd *new_cmd(t_token *token)
 	cmd->redirect_in = NULL;
 	cmd->redirect_out = NULL;
 	cmd->has_pipe = 0;
-	cmd->output_file = NULL;
-	cmd->input_file = NULL;
+	cmd->output_files = NULL;
+	cmd->input_files = NULL;
 	cmd->arguments = NULL;
 	cmd->args = NULL;
 	cmd->next = NULL;
@@ -59,4 +59,32 @@ t_cmd *add_cmd(t_cmd *head, t_cmd *cmd)
 	tmp->next = cmd;
 	cmd->prev = tmp;
 	return (head);
+}
+
+t_token *add_file(char ***files, t_token *token)
+{
+	int i;
+	char **new_files;
+
+	if (!token)
+		return (NULL);
+	while (token && not_a_shell_command(token) && ft_strncmp(token->type, WORD, 4) != 0)
+		token = token->next;
+	i = 0;
+	while ((*files) && (*files)[i])
+		i++;
+	new_files = (char **)malloc(sizeof(char *) * (i + 2));
+	i = 0;
+	while ((*files) && (*files)[i])
+	{
+		new_files[i] = ft_strdup((*files)[i]);
+		free((*files)[i]);
+		i++;
+	}
+	new_files[i] = ft_strdup(token->value);
+	new_files[i + 1] = NULL;
+	if (*files)
+		free(*files);
+	*files = new_files;
+	return (token->next);
 }

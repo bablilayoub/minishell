@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/28 21:28:03 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/29 02:17:23 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 
 	if (cmd->redirect_in || cmd->redirect_out)
 	{
-		if (cmd->redirect_in && !ft_strncmp(cmd->redirect_in, "<<", 2))
-			fd_in = open(cmd->input_file, O_RDONLY);
-		else if (cmd->redirect_in)
-			fd_in = open(cmd->input_file, O_RDONLY);
-		if (cmd->redirect_out && !ft_strncmp(cmd->redirect_out, ">>", 2))
-			fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else if (cmd->redirect_out)
-			fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		// Rah 9adi redirects (Double pointer dyal input_file w output_file), ta t3awd 3la had l'partie
+		return;
+		// if (cmd->redirect_in && !ft_strncmp(cmd->redirect_in, "<<", 2))
+		// 	fd_in = open(cmd->input_file, O_RDONLY);
+		// else if (cmd->redirect_in)
+		// 	fd_in = open(cmd->input_file, O_RDONLY);
+		// if (cmd->redirect_out && !ft_strncmp(cmd->redirect_out, ">>", 2))
+		// 	fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		// else if (cmd->redirect_out)
+		// 	fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	}
 	else
 	{

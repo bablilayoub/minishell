@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/28 21:28:11 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/29 02:10:45 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 			if (tmp->next)
 				tmp = skip_white_spaces(tmp->next);
 			if (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
-				cmd->output_file = tmp->value;
-			else
-				cmd->output_file = NULL;
+				tmp = add_file(&cmd->output_files, tmp);
+			else if(!cmd->output_files)
+				cmd->output_files = NULL;
 		}
 		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0) && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
 		{
@@ -84,9 +84,9 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 			if (tmp->next)
 				tmp = skip_white_spaces(tmp->next);
 			if (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
-				cmd->input_file = tmp->value;
-			else
-				cmd->input_file = NULL;
+				tmp = add_file(&cmd->input_files, tmp);
+			else if(!cmd->input_files)
+				cmd->input_files = NULL;
 		}
 		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, HERE_DOC, 2) == 0) && (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE))
 			head = add_arg(head, tmp->value, 1);
@@ -113,7 +113,10 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 			printf(PREFIX_ERROR "Syntax error\n");
 			return (NULL);
 		}
-		tmp = tmp->next;
+		if (tmp && tmp->next)
+			tmp = tmp->next;
+		else
+			break;
 	}
 	if (tmp && ft_strncmp(tmp->type, PIPE_LINE, 1) == 0 && tmp->state != IN_DQUOTE && tmp->state != IN_QUOTE)
 		cmd->has_pipe = 1;

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/28 21:29:15 by abablil          ###   ########.fr       */
+/*   Updated: 2024/02/29 02:03:34 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ struct s_cmd
 	char			*path;
 	char			*redirect_in;
 	char			*redirect_out;
-	char			*input_file;
-	char			*output_file;
+	char			**input_files;
+	char			**output_files;
 	bool			has_pipe;
 	char 			**arguments;
 	bool			built_in;
@@ -110,6 +110,7 @@ void handle_cases(t_token_params *params, char *line);
 void	convert_tokens_to_commands(t_data *data);
 int		not_a_shell_command(t_token *token);
 void	get_env_vars(t_data *data);
+t_token *add_file(char ***files, t_token *token);
 
 // Converter utils
 t_cmd	*new_cmd(t_token *token);
