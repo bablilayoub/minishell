@@ -6,15 +6,15 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 21:25:19 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 16:06:45 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-void handle_special_char(t_token_params *params, char *value, int len)
+void	handle_special_char(t_token_params *params, char *value, int len)
 {
-	char *temp;
+	char	*temp;
 
 	if (value[0] == '$' && value[1] == '\0')
 	{
@@ -34,30 +34,32 @@ void handle_special_char(t_token_params *params, char *value, int len)
 		params->i++;
 }
 
-void handle_quotes(t_token_params *params, int quote, char *quote_type)
+void	handle_quotes(t_token_params *params, int quote, char *quote_type)
 {
 	if (quote == 1 && params->in_dquote)
 	{
 		handle_special_char(params, quote_type, 1);
-		return;
+		return ;
 	}
 	set_in_quotes(params, quote);
 	set_states(params, quote);
 	params->value = ft_strdup(quote_type);
 	params->type = ft_strdup(quote_type);
-	params->token = new_token(params->value, params->type, GENERAL, ft_strlen(params->value));
+	params->token = new_token(params->value, params->type,
+			GENERAL, ft_strlen(params->value));
 	params->head = add_token(params->head, params->token);
 }
 
-void handle_word(t_token_params *params, char *line)
+void	handle_word(t_token_params *params, char *line)
 {
 	params->value = get_word(line, &params->i);
 	params->type = ft_strdup(WORD);
-	params->token = new_token(params->value, params->type, params->state, ft_strlen(params->value));
+	params->token = new_token(params->value, params->type,
+			params->state, ft_strlen(params->value));
 	params->head = add_token(params->head, params->token);
 }
 
-void handle_more_cases(t_token_params *params, char *line)
+void	handle_more_cases(t_token_params *params, char *line)
 {
 	if (line[params->i] == '>' && line[params->i + 1] == '>')
 		handle_special_char(params, APPEND_OUT, 2);
@@ -75,7 +77,7 @@ void handle_more_cases(t_token_params *params, char *line)
 		handle_word(params, line);
 }
 
-void handle_cases(t_token_params *params, char *line)
+void	handle_cases(t_token_params *params, char *line)
 {
 	if (line[params->i] == '\'')
 		handle_quotes(params, 1, QUOTE);
@@ -91,6 +93,6 @@ void handle_cases(t_token_params *params, char *line)
 		handle_special_char(params, PIPE_LINE, 1);
 	else if (line[params->i] == '<' && line[params->i + 1] == '<')
 		handle_special_char(params, HERE_DOC, 2);
-	else 
+	else
 		handle_more_cases(params, line);
 }

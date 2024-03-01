@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/29 02:27:46 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 17:01:56 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ t_token *get_command_name(t_token *head)
 	return (tmp);
 }
 
-
 void convert_tokens_to_commands(t_data *data)
 {
 	if (!data->token)
@@ -183,15 +182,15 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(data->cmd);
+	print_args(data->cmd);
 }
 
-char *get_env(char *env, t_data *data)
+char	*get_env(char *env, t_data *data)
 {
-	int i;
-	int j;
-	char *env_var;
-	char *env_value;
+	int		i;
+	int		j;
+	char	*env_var;
+	char	*env_value;
 
 	i = 0;
 	while (data->env[i])
@@ -200,7 +199,7 @@ char *get_env(char *env, t_data *data)
 		while (data->env[i][j] && data->env[i][j] != '=')
 			j++;
 		env_var = ft_substr(data->env[i], 0, j);
-		if (ft_strncmp(env_var, env, ft_strlen(env_var)) == 0)
+		if (ft_strncmp(env, env_var, ft_strlen(env)) == 0)
 		{
 			env_value = ft_strdup(data->env[i] + j + 1);
 			free(env_var);
@@ -212,35 +211,48 @@ char *get_env(char *env, t_data *data)
 	return (NULL);
 }
 
-void get_env_vars(t_data *data)
+void	handle_env_var(t_data *data, t_cmd *tmp, char *env_var, char *exit_status)
 {
-	t_cmd *tmp = data->cmd;
-	t_arg *arg;
-	char *env_var;
-	char *exit_status;
+	if (ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1)
+	{
+		if (ft_strncmp(tmp->args->arg, "$?", 2) == 0)
+		{
+			exit_status = ft_itoa(data->exit_status);
+			tmp->args->arg = ft_strjoin(exit_status, tmp->args->arg + 2);
+		}
+		else
+		{
+			env_var = get_env(tmp->args->arg + 1, data);
+			if (!env_var)
+				tmp->args->arg = ft_strdup("");
+			else
+				tmp->args->arg = ft_strdup(env_var);
+		}
+	}
+	tmp->args = tmp->args->next;
+}
 
+void	get_env_vars(t_data *data)
+{
+	t_cmd	*tmp;
+	t_arg	*arg;
+	char	*env_var;
+	char	*exit_status;
+
+	tmp = data->cmd;
 	while (tmp)
 	{
+		if (ft_strncmp(tmp->cmd, "export", 6) == 0)
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		arg = tmp->args;
 		while (tmp->args)
 		{
-			if (ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1)
-			{
-				if (ft_strncmp(tmp->args->arg, "$?", 2) == 0)
-				{
-					exit_status = ft_itoa(data->exit_status);
-					tmp->args->arg = ft_strjoin(exit_status, tmp->args->arg + 2);
-				}
-				else
-				{
-					env_var = get_env(tmp->args->arg + 1, data);
-					if (!env_var)
-						tmp->args->arg = ft_strdup("");
-					else
-						tmp->args->arg = ft_strdup(env_var);
-				}
-			}
-			tmp->args = tmp->args->next;
+			env_var = NULL;
+			exit_status = NULL;
+			handle_env_var(data, tmp, env_var, exit_status);
 		}
 		tmp->args = arg;
 		tmp = tmp->next;

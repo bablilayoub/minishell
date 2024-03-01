@@ -6,17 +6,19 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:23:16 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 20:27:47 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 16:32:41 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-void check_quotes(t_token *token)
+int	check_quotes(t_token *token)
 {
-	t_token *tmp = token;
-	int quotes_count = 0;
-	int dquotes_count = 0;
+	t_token	*tmp;
+	int		quotes_count;
+	int		dquotes_count;
+
+	(1 == 1) && (tmp = token, quotes_count = 0, dquotes_count = 0);
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->type, QUOTE, 1) == 0)
@@ -31,13 +33,18 @@ void check_quotes(t_token *token)
 		tmp = tmp->next;
 	}
 	if (quotes_count % 2 != 0 || dquotes_count % 2 != 0)
+	{
 		printf("%s\n", PREFIX_ERROR "Syntax error");
+		return (0);
+	}
+	return (1);
 }
 
-void check_pipes(t_cmd *cmd)
+int	check_pipes(t_cmd *cmd)
 {
-	t_cmd *tmp = cmd;
-	
+	t_cmd	*tmp;
+
+	tmp = cmd;
 	while (tmp)
 	{
 		if (tmp->has_pipe)
@@ -45,15 +52,19 @@ void check_pipes(t_cmd *cmd)
 			if (!tmp->next)
 			{
 				printf("%s\n", PREFIX_ERROR "Syntax error");
-				return;
+				return (0);
 			}
 		}
 		tmp = tmp->next;
 	}
+	return (1);
 }
 
-void check_syntax(t_data *data)
+int	check_syntax(t_data *data)
 {
-	check_quotes(data->token);
-	check_pipes(data->cmd);
+	if (!check_quotes(data->token))
+		return (0);
+	if (!check_pipes(data->cmd))
+		return (0);
+	return (1);
 }

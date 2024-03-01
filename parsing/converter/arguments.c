@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/29 02:10:45 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 15:44:15 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 {
 	if (!token || !cmd)
 		return (NULL);
-	t_token *tmp = token;
-	t_arg *head = NULL;
+	t_token *tmp;
+	t_arg *head;
+
+	tmp = token;
+	head = NULL;
 
 	head = add_arg(head, cmd->cmd, 1);
 	tmp = skip_white_spaces(tmp);

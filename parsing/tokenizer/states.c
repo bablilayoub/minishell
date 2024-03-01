@@ -6,13 +6,13 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:21:56 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 21:22:03 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 16:02:49 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-void set_in_quotes(t_token_params *params, int quote)
+void	set_in_quotes(t_token_params *params, int quote)
 {
 	if (quote == 1)
 	{
@@ -30,7 +30,7 @@ void set_in_quotes(t_token_params *params, int quote)
 	}
 }
 
-void set_states(t_token_params *params, int quote)
+void	set_states(t_token_params *params, int quote)
 {
 	if (quote == 1 && params->in_quote)
 	{

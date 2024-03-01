@@ -6,15 +6,15 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:51:56 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/26 21:21:56 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 16:03:26 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-void *tokenizer(char *line)
+void	*tokenizer(char *line)
 {
-	t_token_params params;
+	t_token_params	params;
 
 	params.i = 0;
 	params.state = GENERAL;
