@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:50:50 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 16:08:45 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 23:28:06 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ t_cmd	*new_cmd(t_token *token)
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	cmd->cmd = token->value;
 	cmd->path = NULL;
+	cmd->has_pipe = 0;
+	cmd->arguments = NULL;
+	cmd->has_redir_in = 0;
+	cmd->has_redir_out = 0;
 	cmd->redirect_in = NULL;
 	cmd->redirect_out = NULL;
-	cmd->has_pipe = 0;
-	cmd->output_files = NULL;
-	cmd->input_files = NULL;
-	cmd->arguments = NULL;
 	cmd->args = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
@@ -65,31 +65,44 @@ t_cmd	*add_cmd(t_cmd *head, t_cmd *cmd)
 	return (head);
 }
 
-t_token	*add_file(char ***files, t_token *token)
+t_redirection	*new_redirect(char *type, char *file)
 {
-	int		i;
-	char	**new_files;
+	t_redirection	*redirect;
 
+	redirect = (t_redirection *)malloc(sizeof(t_redirection));
+	redirect->type = type;
+	redirect->file = file;
+	redirect->next = NULL;
+	return (redirect);
+}
+
+t_redirection	*add_redirect(t_redirection *head, t_redirection *redirect)
+{
+	t_redirection	*tmp;
+
+	tmp = head;
+	if (!head)
+		return (redirect);
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = redirect;
+	redirect->prev = tmp;
+	return (head);
+}
+
+t_token	*add_file(t_redirection **head, t_token *token, char *type)
+{
 	if (!token)
 		return (NULL);
-	while (token && not_a_shell_command(token)
-		&& ft_strncmp(token->type, WORD, 4) != 0)
+
+	while (token && not_a_shell_command(token) && ft_strncmp(token->type, WORD, 4) != 0)
 		token = token->next;
-	i = 0;
-	while ((*files) && (*files)[i])
-		i++;
-	new_files = (char **)malloc(sizeof(char *) * (i + 2));
-	i = 0;
-	while ((*files) && (*files)[i])
+	if (!token)
+		return (NULL);
+	if (ft_strncmp(token->type, WORD, 4) == 0)
 	{
-		new_files[i] = ft_strdup((*files)[i]);
-		free((*files)[i]);
-		i++;
+		*head = add_redirect(*head, new_redirect(type, token->value));
+		token = token->next;
 	}
-	new_files[i] = ft_strdup(token->value);
-	new_files[i + 1] = NULL;
-	if (*files)
-		free(*files);
-	*files = new_files;
-	return (token->next);
+	return (token);
 }

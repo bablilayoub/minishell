@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 17:01:56 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 23:43:08 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void print_args(t_cmd *head)
 {
 	t_cmd *tmp = head;
 	t_arg *arg;
-	int i;
 
 	if (!tmp)
 		return;
@@ -56,36 +55,40 @@ void print_args(t_cmd *head)
 			}
 			tmp->args = arg;
 		}
-		if (tmp->redirect_in)
-			printf("| Red In   : '%s' %*s |\n", tmp->redirect_in, 26 - (int)ft_strlen(tmp->redirect_in), " ");
-		else
-			printf("| Red In   : '%s' %*s |\n", "NULL", 26 - 4, " ");
-		if (tmp->input_files)
+		if (tmp->has_redir_in)
 		{
-			i = 0;
-			while (tmp->input_files[i])
+			t_redirection *redir = tmp->redirect_in;
+			printf("|------------------------------------------|\n");
+			printf("| Redirection In %*s |\n", 25, " ");
+			while (redir)
 			{
-				printf("| In File  : '%s' %*s |\n", tmp->input_files[i], 26 - (int)ft_strlen(tmp->input_files[i]), " ");
-				i++;
+				printf("| Type     : '%s' %*s |\n", redir->type, 26 - (int)ft_strlen(redir->type), " ");
+				printf("| File     : '%s' %*s |\n", redir->file, 26 - (int)ft_strlen(redir->file), " ");
+				if (redir->next)
+					printf("|%*s|\n", 42, " ");
+				redir = redir->next;
 			}
+			printf("|------------------------------------------|\n");
 		}
 		else
-			printf("| In File  : '%s' %*s |\n", "NULL", 26 - 4, " ");
-		if (tmp->redirect_out)
-			printf("| Red Out  : '%s' %*s |\n", tmp->redirect_out, 26 - (int)ft_strlen(tmp->redirect_out), " ");
-		else
-			printf("| Red Out  : '%s' %*s |\n", "NULL", 26 - 4, " ");
-		if (tmp->output_files)
+			printf("| No Redirection In %*s |\n", 22, " ");
+		if (tmp->has_redir_out)
 		{
-			i = 0;
-			while (tmp->output_files[i])
+			t_redirection *redir = tmp->redirect_out;
+			printf("|------------------------------------------|\n");
+			printf("| Redirection Out %*s |\n", 24, " ");
+			while (redir)
 			{
-				printf("| Out File : '%s' %*s |\n", tmp->output_files[i], 26 - (int)ft_strlen(tmp->output_files[i]), " ");
-				i++;
+				printf("| Type     : '%s' %*s |\n", redir->type, 26 - (int)ft_strlen(redir->type), " ");
+				printf("| File     : '%s' %*s |\n", redir->file, 26 - (int)ft_strlen(redir->file), " ");
+				if (redir->next)
+					printf("|%*s|\n", 42, " ");
+				redir = redir->next;
 			}
+			printf("|------------------------------------------|\n");
 		}
 		else
-			printf("| Out File : '%s' %*s |\n", "NULL", 26 - 4, " ");
+			printf("| No Redirection Out %*s |\n", 21, " ");
 		if (tmp->has_pipe)
 			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
 		else
@@ -148,20 +151,22 @@ void convert_tokens_to_commands(t_data *data)
 				cmd = new_cmd(tmp);
 				while (tmp && ((ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0) || (ft_strncmp(tmp->type, HERE_DOC, 2) == 0 || ft_strncmp(tmp->type, REDIR_IN, 1) == 0)))
 				{
-					if (cmd->redirect_out)
-						free(cmd->redirect_out);
-					if (cmd->redirect_in)
-						free(cmd->redirect_in);
-					if (ft_strncmp(tmp->type, REDIR_IN, 1) == 0 || ft_strncmp(tmp->type, HERE_DOC, 2) == 0)
-						cmd->redirect_in = ft_strdup(tmp->type);
-					else if (ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0)
-						cmd->redirect_out = ft_strdup(tmp->type);
 					if (ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0)
-						tmp = add_file(&cmd->output_files, tmp->next);
+						cmd->has_redir_out = 1;
 					else if (ft_strncmp(tmp->type, HERE_DOC, 2) == 0 || ft_strncmp(tmp->type, REDIR_IN, 1) == 0)
-						tmp = add_file(&cmd->input_files, tmp->next);
+						cmd->has_redir_in = 1;
+					if (ft_strncmp(tmp->type, APPEND_OUT, 2) == 0)
+						tmp = add_file(&cmd->redirect_out, tmp->next, APPEND_OUT);
+					else if (ft_strncmp(tmp->type, REDIR_OUT, 1) == 0)
+						tmp = add_file(&cmd->redirect_out, tmp->next, REDIR_OUT);
+					else if (ft_strncmp(tmp->type, HERE_DOC, 2) == 0)
+						tmp = add_file(&cmd->redirect_in, tmp->next, HERE_DOC);
+					else if (ft_strncmp(tmp->type, REDIR_IN, 1) == 0)
+						tmp = add_file(&cmd->redirect_in, tmp->next, REDIR_IN);
 					tmp = skip_white_spaces(tmp);
 				}
+				if (!tmp)
+					break;
 				cmd->cmd = tmp->value;
 				head = add_cmd(head, cmd);
 				tmp = get_command_name(tmp);
@@ -182,79 +187,5 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	print_args(data->cmd);
-}
-
-char	*get_env(char *env, t_data *data)
-{
-	int		i;
-	int		j;
-	char	*env_var;
-	char	*env_value;
-
-	i = 0;
-	while (data->env[i])
-	{
-		j = 0;
-		while (data->env[i][j] && data->env[i][j] != '=')
-			j++;
-		env_var = ft_substr(data->env[i], 0, j);
-		if (ft_strncmp(env, env_var, ft_strlen(env)) == 0)
-		{
-			env_value = ft_strdup(data->env[i] + j + 1);
-			free(env_var);
-			return (env_value);
-		}
-		free(env_var);
-		i++;
-	}
-	return (NULL);
-}
-
-void	handle_env_var(t_data *data, t_cmd *tmp, char *env_var, char *exit_status)
-{
-	if (ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1)
-	{
-		if (ft_strncmp(tmp->args->arg, "$?", 2) == 0)
-		{
-			exit_status = ft_itoa(data->exit_status);
-			tmp->args->arg = ft_strjoin(exit_status, tmp->args->arg + 2);
-		}
-		else
-		{
-			env_var = get_env(tmp->args->arg + 1, data);
-			if (!env_var)
-				tmp->args->arg = ft_strdup("");
-			else
-				tmp->args->arg = ft_strdup(env_var);
-		}
-	}
-	tmp->args = tmp->args->next;
-}
-
-void	get_env_vars(t_data *data)
-{
-	t_cmd	*tmp;
-	t_arg	*arg;
-	char	*env_var;
-	char	*exit_status;
-
-	tmp = data->cmd;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->cmd, "export", 6) == 0)
-		{
-			tmp = tmp->next;
-			continue ;
-		}
-		arg = tmp->args;
-		while (tmp->args)
-		{
-			env_var = NULL;
-			exit_status = NULL;
-			handle_env_var(data, tmp, env_var, exit_status);
-		}
-		tmp->args = arg;
-		tmp = tmp->next;
-	}
+	// print_args(data->cmd);
 }

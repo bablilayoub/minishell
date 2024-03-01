@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 16:22:06 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 23:10:46 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,31 @@ typedef struct s_arg
 	struct s_arg	*prev;
 }	t_arg;
 
+typedef struct s_redirection
+{
+	char					*type;
+	char					*file;
+	struct s_redirection	*next;
+	struct s_redirection	*prev;
+}	t_redirection;
+
 typedef struct s_cmd
 {
-	char			*cmd;
-	char			*path;
-	char			*redirect_in;
-	char			*redirect_out;
-	char			**input_files;
-	char			**output_files;
-	bool			has_pipe;
-	char			**arguments;
-	bool			built_in;
-	char			*pwd;
-	char			*old_pwd;
-	int				found;
-	struct s_arg	*args;
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
+	char					*cmd;
+	char					*path;
+	bool					has_pipe;
+	char					**arguments;
+	bool					built_in;
+	char					*pwd;
+	char					*old_pwd;
+	int						found;
+	int						has_redir_in;
+	int						has_redir_out;
+	struct s_redirection	*redirect_in;
+	struct s_redirection	*redirect_out;
+	struct s_arg			*args;
+	struct s_cmd			*next;
+	struct s_cmd			*prev;
 }	t_cmd;
 
 // Colors

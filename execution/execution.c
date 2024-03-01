@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/29 02:17:23 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 23:04:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 	int fd_in = 0;
 	int fd_out = 1;
 
-	if (cmd->redirect_in || cmd->redirect_out)
+	if (cmd->has_redir_in || cmd->has_redir_in)
 	{
 		// Rah 9adi redirects (Double pointer dyal input_file w output_file), ta t3awd 3la had l'partie
 		return;

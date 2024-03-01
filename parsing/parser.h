@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 16:32:56 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 23:10:40 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ void	handle_cases(t_token_params *params, char *line);
 // Converter
 void	convert_tokens_to_commands(t_data *data);
 int		not_a_shell_command(t_token *token);
-void	get_env_vars(t_data *data);
-t_token	*add_file(char ***files, t_token *token);
+t_token	*add_file(t_redirection **head, t_token *token, char *type);
 
 // Converter utils
 t_cmd	*new_cmd(t_token *token);
@@ -83,4 +82,9 @@ int		check_quotes(t_token *token);
 int		check_pipes(t_cmd *cmd);
 int		check_syntax(t_data *data);
 
+// Env
+void	handle_env_var(t_data *data, t_cmd *tmp,
+			char *env_var, char *exit_status);
+char	*get_env(char *env_var, t_data *data);
+void	get_env_vars(t_data *data);
 #endif

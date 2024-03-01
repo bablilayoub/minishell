@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 15:44:15 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 23:39:01 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 		return (NULL);
 	t_token *tmp;
 	t_arg *head;
-
+	char *tmp_type;
+	
 	tmp = token;
 	head = NULL;
 
@@ -73,23 +74,31 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 			head = add_arg(head, tmp->value, (tmp->state == IN_QUOTE));
 		else if ((ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0) && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
 		{
-			cmd->redirect_out = tmp->type;
+			tmp_type = tmp->type;
 			if (tmp->next)
 				tmp = skip_white_spaces(tmp->next);
 			if (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
-				tmp = add_file(&cmd->output_files, tmp);
-			else if(!cmd->output_files)
-				cmd->output_files = NULL;
+			{
+				cmd->has_redir_out = 1;
+				if (ft_strncmp(tmp_type, APPEND_OUT, 2) == 0)
+					tmp = add_file(&cmd->redirect_out, tmp, APPEND_OUT);
+				else if (ft_strncmp(tmp_type, REDIR_OUT, 1) == 0)
+					tmp = add_file(&cmd->redirect_out, tmp, REDIR_OUT);
+			}
 		}
 		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0) && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
 		{
-			cmd->redirect_in = tmp->type;
+			tmp_type = tmp->type;
 			if (tmp->next)
 				tmp = skip_white_spaces(tmp->next);
 			if (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
-				tmp = add_file(&cmd->input_files, tmp);
-			else if(!cmd->input_files)
-				cmd->input_files = NULL;
+			{
+				cmd->has_redir_in = 1;
+				if (ft_strncmp(tmp_type, HERE_DOC, 2) == 0)
+					tmp = add_file(&cmd->redirect_in, tmp, HERE_DOC);
+				else if (ft_strncmp(tmp_type, REDIR_IN, 1) == 0)
+					tmp = add_file(&cmd->redirect_in, tmp, REDIR_IN);
+			}
 		}
 		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, HERE_DOC, 2) == 0) && (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE))
 			head = add_arg(head, tmp->value, 1);
