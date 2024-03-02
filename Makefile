@@ -10,7 +10,7 @@ HEADER = minishell.h
 READLINE_LIB = $(shell brew --prefix readline)/lib
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror  -g #-fsanitize=address
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a

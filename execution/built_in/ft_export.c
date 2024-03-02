@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/02 01:42:19 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/02 23:05:50 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char **load_key_value(char *key, char *value)
 {
     char **key_value;
     int i;
-    
+
     i = 0;
     key_value = malloc(sizeof(char *) * 3);
     if (!key_value)
@@ -63,7 +63,7 @@ char *check_dollar_sign(char **env, char *value)
         if (value[i] == '$')
         {
             k = i;
-            tmp = ft_substr(value, 0, i);                                        
+            tmp = ft_substr(value, 0, i);
             while (value[k] && value[k] != ' ' && value[k] != '=')
                 k++;
             if (value[k] == '=' && value[k + 1] == '\0')
@@ -71,7 +71,6 @@ char *check_dollar_sign(char **env, char *value)
             else
                 rest = ft_strdup(value + k);
             var = ft_substr(value, i + 1, k - i - 1);
-            printf("var: %s\n", var);
             j = -1;
             while (env[++j])
             {
@@ -85,7 +84,7 @@ char *check_dollar_sign(char **env, char *value)
                 else
                     value = ft_strjoin(tmp, rest);
             }
-        }   
+        }
     }
     return value;
 }
@@ -139,7 +138,7 @@ void ret_same_env(char **env)
 void add_variable(int fd_out, char *exported, int *found)
 {
     if (*found == 1)
-        return ;
+        return;
     write(fd_out, exported, ft_strlen(exported));
     write(fd_out, "\n", 1);
 }
@@ -152,6 +151,35 @@ void update_key_value(int fd_out, char *key, char *value, int *found)
     write(fd_out, "\n", 1);
     *found = 1;
 }
+
+int ft_strdoublelen(char **str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+        i++;
+    return i;
+}
+
+char **add_var(char **env, char *exported)
+{
+    int i;
+    char **new_env;
+
+    i = 0;
+    new_env = malloc(sizeof(char *) * (ft_strdoublelen(env) + 2));
+    if (!new_env)
+        exit(EXIT_FAILURE);
+    while (env[i])
+    {
+        new_env[i] = env[i];
+        i++;
+    }
+    new_env[i] = exported;
+    new_env[i + 1] = NULL;
+    return new_env;
+}
 void ft_export(t_data *data, char **env)
 {
     char **key_val;
@@ -159,33 +187,41 @@ void ft_export(t_data *data, char **env)
     int found;
     size_t k;
     int i;
-    char *tmp;
     char *exported;
 
-    tmp = ft_strdup("");
     if (!check_exported(data->cmd->arguments[1]))
         ret_same_env(data->env);
-    i = 0;
-    while (data->cmd->arguments[++i])
-        tmp = ft_strjoin(tmp, data->cmd->arguments[i]);
-    key_val = key_value(tmp, env);
-    fd_out = open("export.txt", O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0644);
+    fd_out = open("export.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
     if (fd_out == -1)
         return check_error(fd_out, "open", 0);
-    (1 == 1) && (i = -1, found = 0);
-    while (env[++i])
+    i = 0;
+    int j = 0;
+    while (data->cmd->arguments[++j])
     {
-        k = 0;
-        while (env[i][k] && env[i][k] != '=')
-            k++;
-        if ((ft_strncmp(env[i], key_val[0], k) == 0) && (k == ft_strlen(key_val[0])))
-            update_key_value(fd_out, key_val[0], key_val[1], &found);
-        else
-             write(fd_out, env[i], ft_strlen(env[i]));
-        write(fd_out, "\n", 1);
+        key_val = key_value(data->cmd->arguments[j], env);
+        if (!key_val)
+            exit(EXIT_FAILURE);
+        (1 == 1) && (i = -1, found = 0);
+        while (env[++i])
+        {
+            k = 0;
+            while (env[i][k] && env[i][k] != '=')
+                k++;
+            if ((ft_strncmp(env[i], key_val[0], k) == 0) && (k == ft_strlen(key_val[0])))
+            {
+                update_key_value(fd_out, key_val[0], key_val[1], &found);
+                env[i] = ft_strjoin(key_val[0], "=");
+                env[i] = ft_strjoin(env[i], key_val[1]);
+            }
+            else
+                write(fd_out, env[i], ft_strlen(env[i]));
+            write(fd_out, "\n", 1);
+        }
+        exported = ft_strjoin(key_val[0], "=");
+        exported = ft_strjoin(exported, key_val[1]);
+        add_variable(fd_out, exported, &found);
+        if (ft_strdoublelen(data->cmd->arguments) > 2 && !found)
+            env =  add_var(env, exported);
     }
-    exported = ft_strjoin(key_val[0], "=");
-    exported = ft_strjoin(exported, key_val[1]);
-    add_variable(fd_out, exported, &found);
     close(fd_out);
 }

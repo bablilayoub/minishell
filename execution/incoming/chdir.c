@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chdir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 18:38:29 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/01 21:09:36 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/02 19:01:25 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char **update_envpwd(char **env, char *oldpwd, char *pwd, char *path)
 {
 	// char	*temp;
-	int		i;
+	int i;
 
 	i = -1;
 	while (env[++i])
@@ -46,25 +46,28 @@ void change_path(t_data *data)
 	char *path;
 	char *new_prefix;
 
-	fd_in = open("cd.txt", O_RDONLY, 0644);
-	check_error(fd_in, "open", 1);
-	path = malloc(sizeof(char) * 1024);
-	if (!path)
-		return check_error_null(path, "malloc", 1);
-	int bytes = read(fd_in, path, 1024);
-	check_error(bytes, "read", 1);
-	path[bytes] = '\0';
-	unlink("cd.txt");
-	close(fd_in);
-	oldpwd = getcwd(NULL, 0);
-	if (!oldpwd)
-		return check_error_null(oldpwd, "getcwd", 1);
-	check_error(chdir(path), "chdir", 1);
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return check_error_null(pwd, "getcwd", 1);
-	data->env = update_envpwd(data->env, oldpwd, pwd, path);
-	new_prefix = ft_strrchr(pwd, '/');
-	update_prefix(data, new_prefix + 1);
-	free_triplet(oldpwd, pwd, path);
+	fd_in = open("cd.txt", O_RDONLY);
+	if (fd_in != -1)
+	{
+		check_error(fd_in, "open", 1);
+		path = malloc(sizeof(char) * 1024);
+		if (!path)
+			return check_error_null(path, "malloc", 1);
+		int bytes = read(fd_in, path, sizeof(char) * 1024);
+		check_error(bytes, "read", 1);
+		path[bytes] = '\0';
+		oldpwd = getcwd(NULL, 0);
+		if (!oldpwd)
+			return check_error_null(oldpwd, "getcwd", 1);
+		check_error(chdir(path), "chdir", 1);
+		pwd = getcwd(NULL, 0);
+		if (!pwd)
+			return check_error_null(pwd, "getcwd", 1);
+		data->env = update_envpwd(data->env, oldpwd, pwd, path);
+		new_prefix = ft_strrchr(pwd, '/');
+		update_prefix(data, new_prefix + 1);
+		free_triplet(oldpwd, pwd, path);
+		unlink("cd.txt");
+		close(fd_in);
+	}
 }
