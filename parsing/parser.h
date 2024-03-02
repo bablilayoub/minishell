@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 23:10:40 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/02 20:33:03 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_token	*new_token(char *value, char *type, int state, size_t len);
 t_token	*add_token(t_token *head, t_token *token);
 char	*get_word(char *line, size_t *i);
 t_token	*skip_white_spaces(t_token *token);
+void	print_tokens(t_token *token);
 
 // States
 void	set_in_quotes(t_token_params *params, int quote);
