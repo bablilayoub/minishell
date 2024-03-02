@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/01 16:10:14 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/01 23:09:06 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <sys/wait.h>
 # include <stdlib.h>
 # include "../utils/libft/libft.h"
-# include "../parsing/parser.h"
 # include "../minishell.h"
+# include "../parsing/parser.h"
 # include <fcntl.h>
 
 # define CLEAR "\033[H\033[2J"
@@ -40,7 +40,7 @@ void  excute_builtin(t_cmd *cmd_list, t_data *data);
 void  ft_echo(t_cmd *cmd);
 void  ft_chdir(t_cmd *cmd, t_data *data);
 void  ft_pwd();
-void  ft_export(t_data *data,  char **env);
+void ft_export(t_data *data, char **env);
 void  ft_env(char **env);
 void  ft_exit(t_cmd *cmd);
 void  ft_unset(t_cmd *cmd, char **env);
@@ -55,5 +55,8 @@ void  exit_shell(void);
 
 void    free_double(char **env);
 void    free_triplet(char *s1, char *s2, char *s3);
-void free_two(char *s1, char *s2);
+void    free_two(char *s1, char *s2);
+
+
+char *ft_getenv(char *name, char **env);
 #endif
