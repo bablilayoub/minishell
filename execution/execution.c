@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 00:34:22 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 02:41:04 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
 	else if (ft_strncmp(current->cmd, "exit", 4) == 0)
 	{
 		waitpid(pid[k], NULL, 0);
-		exit_shell();
+		exit_shell(data);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 18:38:29 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 01:53:01 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 02:47:35 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void change_path(t_data *data)
 	char *path;
 	char *new_prefix;
 
-    char *cd_path = ft_strjoin(data->shell_path, "/cd.txt");
-	fd_in = open(cd_path, O_RDONLY, 0777);
+	fd_in = open(ft_strjoin(data->shell_path, "/cd.txt"), O_RDONLY, 0777);
 	if (fd_in != -1)
 	{
 		check_error(fd_in, "open", 1);

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/27 15:29:05 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/03 02:47:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-void ft_unset(t_cmd *cmd, char **env)
+void ft_unset(t_data *data, t_cmd *cmd, char **env)
 {
     char **new_env;
     char **check;
@@ -20,8 +20,8 @@ void ft_unset(t_cmd *cmd, char **env)
     int fd_out;
     int i;
     int j;
-
-    fd_out = open("unset.txt", O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0644);
+    
+    fd_out = open(ft_strjoin(data->shell_path, "/unset.txt"), O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0644);
     i = 0;
     while (env[i])
         i++;

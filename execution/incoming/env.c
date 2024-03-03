@@ -3,28 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:18:24 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/02 22:25:40 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/03 02:48:08 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-
-int set_fd(int *fd_in, char *cmd)
+int set_fd(t_data *data, int *fd_in, char *cmd)
 {
 	if (ft_strncmp(cmd, "export", 6) == 0)
 		*fd_in = open("export.txt", O_RDONLY);
 	else
-		*fd_in = open("unset.txt", O_RDONLY);
+		*fd_in = open(ft_strjoin(data->shell_path, "/unset.txt"), O_RDONLY);
 	if (*fd_in == -1)
 		return -1;
 	return *fd_in;
 }
 
-int unlink_file_and_update(char *cmd, char ***to_update, char *env, char *buff)
+int unlink_file_and_update(t_data *data, char *cmd, char ***to_update, char *env, char *buff)
 {
 	char	**temp;
 	char    **envp;
@@ -34,7 +33,7 @@ int unlink_file_and_update(char *cmd, char ***to_update, char *env, char *buff)
 	if (ft_strncmp(cmd, "export", 6) == 0)
 		result = unlink("export.txt");
 	else
-		result = unlink("unset.txt");
+		result = unlink(ft_strjoin(data->shell_path, "/unset.txt"));
 	if (result == -1)
 	{
 		free_two(env, buff);
@@ -89,7 +88,7 @@ void update_env(t_data *data, char *cmd_name)
 	buff = malloc(sizeof(char) * 1024);
 	if (!buff)
 		return ;
-	fd_in = set_fd(&fd_in, cmd_name);
+	fd_in = set_fd(data, &fd_in, cmd_name);
 	if (fd_in == -1)
 	{
 		free_two(env, buff);
@@ -101,7 +100,7 @@ void update_env(t_data *data, char *cmd_name)
 		close(fd_in);
 		return ;
 	}
-	if (unlink_file_and_update(cmd_name, &data->env, env, buff) == -1)
+	if (unlink_file_and_update(data, cmd_name, &data->env, env, buff) == -1)
 	{
 		free_two(env, buff);
 		close(fd_in);
