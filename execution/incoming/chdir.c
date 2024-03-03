@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chdir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 18:38:29 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:47:35 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 02:59:05 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void change_path(t_data *data)
 		new_prefix = ft_strrchr(pwd, '/');
 		update_prefix(data, new_prefix + 1);
 		free_triplet(oldpwd, pwd, path);
-		unlink(cd_path);
+		unlink(ft_strjoin(data->shell_path, "/cd.txt"));
 		close(fd_in);
 	}
 }

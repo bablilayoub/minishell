@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 01:58:50 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 02:56:45 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,4 +129,13 @@ void free_two(char *s1, char *s2)
         free(s1);
     if (s2)
         free(s2);
+}
+int ft_strdoublelen(char **str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+        i++;
+    return i;
 }

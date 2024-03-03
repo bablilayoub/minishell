@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:18:24 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:48:08 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 02:56:34 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ int set_fd(t_data *data, int *fd_in, char *cmd)
 
 int unlink_file_and_update(t_data *data, char *cmd, char ***to_update, char *env, char *buff)
 {
-	char	**temp;
-	char    **envp;
-	int		result;
-	
+	char **temp;
+	char **envp;
+	int result;
+
 	envp = *to_update;
 	if (ft_strncmp(cmd, "export", 6) == 0)
 		result = unlink("export.txt");
@@ -54,11 +54,11 @@ int read_incoming(int *fd_in, char *buff, char **env)
 {
 	int bytes;
 	char *temp;
-	
+
 	bytes = 1;
 	while (bytes != 0)
 	{
-		temp = *env;	
+		temp = *env;
 		bytes = read(*fd_in, buff, 1024);
 		if (bytes == -1)
 			return -1;
@@ -76,7 +76,45 @@ int read_incoming(int *fd_in, char *buff, char **env)
 	return 0;
 }
 
-void update_env(t_data *data, char *cmd_name)
+void extract_exported(char **env, char ***export, char **args)
+{
+	int i;
+	int j;
+	char **tmp;
+	int argc;
+	static int extract = 0;
+
+	extract += ft_strdoublelen(args) - 1;
+	argc = extract;
+	tmp = malloc(sizeof(char *) * (argc + 1));
+	i = 0;
+	j = 0;
+	while (env[i])
+	{
+		if ((ft_strdoublelen(env) - extract) == i)
+		{
+			tmp[j] = ft_strdup("declare -x ");
+			tmp[j] = ft_strjoin(tmp[j], env[i]);
+			j++;
+		}
+		i++;
+	}
+	tmp[j] = NULL;
+	*export = tmp;
+}
+
+void print(char **export)
+{
+	int i;
+
+	i = 0;
+	while (export[i])
+	{
+		printf("%s\n", export[i]);
+		i++;
+	}
+}
+void update_env(t_data *data, char *cmd_name, char **args)
 {
 	int fd_in;
 	char *buff;
@@ -84,7 +122,7 @@ void update_env(t_data *data, char *cmd_name)
 
 	env = ft_strdup("");
 	if (!env)
-		return ;
+		return;
 	buff = malloc(sizeof(char) * 1024);
 	if (!buff)
 		return ;
@@ -98,14 +136,15 @@ void update_env(t_data *data, char *cmd_name)
 	{
 		free_two(env, buff);
 		close(fd_in);
-		return ;
+		return;
 	}
 	if (unlink_file_and_update(data, cmd_name, &data->env, env, buff) == -1)
 	{
 		free_two(env, buff);
 		close(fd_in);
-		return ;
+		return;
 	}
+	extract_exported(data->env, &data->export, args);
 	free_two(env, buff);
 	close(fd_in);
 }

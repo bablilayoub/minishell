@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:42:20 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 02:58:33 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,10 @@ void  ft_unset(t_data *data, t_cmd *cmd, char **env);
 void   update_prefix(t_data *data, char *prefix);
 char  **update_envpwd(char **env, char *oldpwd, char *pwd, char *path);
 void  change_path(t_data *data);
-void  update_env(t_data *data, char *cmd);
 void  exit_shell(t_data *data);
+void    update_env(t_data *data, char *cmd_name, char **args);
+void  exit_shell(t_data *data);
+int ft_strdoublelen(char **str);
 
 // frees
 
@@ -57,6 +59,6 @@ void    free_double(char **env);
 void    free_triplet(char *s1, char *s2, char *s3);
 void    free_two(char *s1, char *s2);
 
-
+void print(char **export);
 char *ft_getenv(char *name, char **env);
 #endif

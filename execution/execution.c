@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:41:04 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 02:56:37 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,12 +109,13 @@ void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 
 void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
 {
-
-	if (ft_strncmp(current->cmd, "export", 6) == 0
+	if ((ft_strncmp(current->cmd, "export", 6) == 0) && !current->arguments[1])
+		print(data->export);
+	else if (ft_strncmp(current->cmd, "export", 6) == 0
 		|| (ft_strncmp(current->cmd, "unset", 5) == 0))
 	{
 		waitpid(pid[k], NULL, 0);
-		update_env(data, current->cmd);
+		update_env(data, current->cmd, current->arguments);
 	}
 	else if (ft_strncmp(current->cmd, "cd", 2) == 0)
 	{

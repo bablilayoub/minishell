@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_chdir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:09 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:46:51 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 02:55:54 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ void ft_chdir(t_cmd *cmd, t_data *data)
     {
         if (chdir(dirname) == 0)
             write(fd_out, dirname, ft_strlen(dirname));
-        else
-            write(fd_out, "", 7);
     }
     close(fd_out);
     exit(EXIT_FAILURE);

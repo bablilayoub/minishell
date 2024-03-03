@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/02 23:05:50 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/03 02:31:11 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,15 +152,6 @@ void update_key_value(int fd_out, char *key, char *value, int *found)
     *found = 1;
 }
 
-int ft_strdoublelen(char **str)
-{
-    int i;
-
-    i = 0;
-    while (str[i])
-        i++;
-    return i;
-}
 
 char **add_var(char **env, char *exported)
 {
@@ -189,15 +180,16 @@ void ft_export(t_data *data, char **env)
     int i;
     char *exported;
 
-    if (!check_exported(data->cmd->arguments[1]))
-        ret_same_env(data->env);
-    fd_out = open("export.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
-    if (fd_out == -1)
-        return check_error(fd_out, "open", 0);
+
     i = 0;
     int j = 0;
     while (data->cmd->arguments[++j])
     {
+        if (!check_exported(data->cmd->arguments[j]))
+            ret_same_env(data->env);
+        fd_out = open("export.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (fd_out == -1)
+            return check_error(fd_out, "open", 0);
         key_val = key_value(data->cmd->arguments[j], env);
         if (!key_val)
             exit(EXIT_FAILURE);
@@ -221,7 +213,7 @@ void ft_export(t_data *data, char **env)
         exported = ft_strjoin(exported, key_val[1]);
         add_variable(fd_out, exported, &found);
         if (ft_strdoublelen(data->cmd->arguments) > 2 && !found)
-            env =  add_var(env, exported);
+            env = add_var(env, exported);
+        close(fd_out);
     }
-    close(fd_out);
 }
