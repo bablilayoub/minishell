@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:31:11 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/03 03:54:19 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ int check_exported(char *exported)
 char **load_key_value(char *key, char *value)
 {
     char **key_value;
-    int i;
 
-    i = 0;
     key_value = malloc(sizeof(char *) * 3);
     if (!key_value)
     {
@@ -116,13 +114,13 @@ char **key_value(char *exported, char **env)
     key_value = load_key_value(key, value);
     return key_value;
 }
-void ret_same_env(char **env)
+void ret_same_env(t_data *data, char **env)
 {
     int i;
     int fd_out;
 
     i = 0;
-    fd_out = open("export.txt", O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0644);
+    fd_out = open(ft_strjoin(data->shell_path, "/export.txt"), O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0644);
     if (fd_out == -1)
         return check_error(fd_out, "open", 0);
     while (env[i])
@@ -186,8 +184,8 @@ void ft_export(t_data *data, char **env)
     while (data->cmd->arguments[++j])
     {
         if (!check_exported(data->cmd->arguments[j]))
-            ret_same_env(data->env);
-        fd_out = open("export.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            ret_same_env(data, data->env);
+        fd_out = open(ft_strjoin(data->shell_path, "/export.txt"), O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd_out == -1)
             return check_error(fd_out, "open", 0);
         key_val = key_value(data->cmd->arguments[j], env);
