@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/28 16:55:26 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/03 01:58:50 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void  update_prefix(t_data *data, char *prefix)
 {
     char *new_prefix;
     
+    if (!prefix || !prefix[0])
+        prefix = "root";
     free(data->prefix);
     new_prefix = ft_strjoin(RESET, BLUE);
     new_prefix = ft_strjoin(new_prefix, BOLD);
