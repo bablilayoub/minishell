@@ -6,29 +6,75 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/01 23:04:28 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 00:34:22 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+int here_doc(char *file_and_search_for)
+{
+	int fd[2];
+	int ret;
+	char *line;
+	
+	pipe(fd);
+	ret = fork();
+	if (ret == 0)
+	{
+		close(fd[0]);
+		while (1)
+		{
+			line = readline(YELLOW"> "RESET);
+			if (ft_strncmp(line, file_and_search_for, ft_strlen(file_and_search_for)) == 0)
+			{
+				free(line);
+				break;
+			}
+			write(fd[1], line, ft_strlen(line));
+			write(fd[1], "\n", 1);
+			free(line);
+		}
+		close(fd[1]);
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		close(fd[1]);
+		waitpid(ret, NULL, 0);
+	}
+	return (fd[0]);
+}
 
 void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 {
 	int fd_in = 0;
 	int fd_out = 1;
 
-	if (cmd->has_redir_in || cmd->has_redir_in)
+	if (cmd->has_redir_in || cmd->has_redir_out)
 	{
-		// Rah 9adi redirects (Double pointer dyal input_file w output_file), ta t3awd 3la had l'partie
-		return;
-		// if (cmd->redirect_in && !ft_strncmp(cmd->redirect_in, "<<", 2))
-		// 	fd_in = open(cmd->input_file, O_RDONLY);
-		// else if (cmd->redirect_in)
-		// 	fd_in = open(cmd->input_file, O_RDONLY);
-		// if (cmd->redirect_out && !ft_strncmp(cmd->redirect_out, ">>", 2))
-		// 	fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		// else if (cmd->redirect_out)
-		// 	fd_out = open(cmd->output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (cmd->has_redir_out)
+		{
+			while (cmd->redirect_out)
+			{
+				if (ft_strncmp(cmd->redirect_out->type, ">>", 2) == 0)
+					fd_out = open(cmd->redirect_out->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				else
+					fd_out = open(cmd->redirect_out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				cmd->redirect_out = cmd->redirect_out->next;
+			}
+		}
+		if (cmd->has_redir_in)
+		{
+			while (cmd->redirect_in)
+			{
+				if (ft_strncmp(cmd->redirect_in->type, "<<", 2) == 0)
+					fd_in = here_doc(cmd->redirect_in->file);
+				else
+					fd_in = open(cmd->redirect_in->file, O_RDONLY);
+				cmd->redirect_in = cmd->redirect_in->next;
+			}
+		}
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 23:10:46 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 01:44:36 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_data
 {
 	char			*prefix;
 	char			**env;
+	char			*shell_path;
 	int				exit_status;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
