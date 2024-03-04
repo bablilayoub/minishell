@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/02 23:29:28 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/04 22:17:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ void convert_tokens_to_commands(t_data *data)
 		&& ft_strncmp(tmp->type, HERE_DOC, 2) != 0
 		&& ft_strncmp(tmp->type, REDIR_IN, 1) != 0 
 		&& ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) != 0
-		&& ft_strncmp(tmp->type, QUOTE, 1) != 0)
+		&& ft_strncmp(tmp->type, QUOTE, 1) != 0
+		&& ft_strncmp(tmp->type, ENV, 1) != 0)
 	{
 		printf("%s\n", PREFIX_ERROR "Syntax error");
 		return;
@@ -161,7 +162,7 @@ void convert_tokens_to_commands(t_data *data)
 					full_arg = NULL;
 				}
 			}
-			else if (ft_strncmp(tmp->type, WORD, 4) == 0 && !found_cmd)
+			else if ((ft_strncmp(tmp->type, WORD, 4) == 0 || ft_strncmp(tmp->type, ENV, 1) == 0) && !found_cmd)
 			{
 				found_cmd = 1;
 				cmd = new_cmd(tmp);

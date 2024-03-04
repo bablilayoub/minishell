@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_chdir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:09 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:55:54 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:53:35 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void ft_chdir(t_cmd *cmd, t_data *data)
     const char  *dirname;
     int         fd_out;
 
-    fd_out = open(ft_strjoin(data->shell_path, "/cd.txt"), O_WRONLY | O_CREAT | O_TRUNC, 0777);
+    fd_out = open(ft_strjoin(data->shell_path, "/.cd.txt"), O_WRONLY | O_CREAT | O_TRUNC, 0777);
     check_error(fd_out, "open", 0);
     dirname = cmd->arguments[1];
     if (!dirname || (dirname[0] == '~' && dirname[1] == '\0'))

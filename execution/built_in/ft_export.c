@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 03:54:19 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/03 20:56:02 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,6 @@ void update_key_value(int fd_out, char *key, char *value, int *found)
     *found = 1;
 }
 
-
 char **add_var(char **env, char *exported)
 {
     int i;
@@ -169,6 +168,7 @@ char **add_var(char **env, char *exported)
     new_env[i + 1] = NULL;
     return new_env;
 }
+
 void ft_export(t_data *data, char **env)
 {
     char **key_val;

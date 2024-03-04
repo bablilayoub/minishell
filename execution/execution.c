@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:56:37 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/04 22:09:02 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int here_doc(char *file_and_search_for)
 	int fd[2];
 	int ret;
 	char *line;
-	
+
 	pipe(fd);
 	ret = fork();
 	if (ret == 0)
@@ -25,7 +25,7 @@ int here_doc(char *file_and_search_for)
 		close(fd[0]);
 		while (1)
 		{
-			line = readline(YELLOW"> "RESET);
+			line = readline(YELLOW "> " RESET);
 			if (ft_strncmp(line, file_and_search_for, ft_strlen(file_and_search_for)) == 0)
 			{
 				free(line);
@@ -46,11 +46,48 @@ int here_doc(char *file_and_search_for)
 	return (fd[0]);
 }
 
-void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
+char *get_next_line(int fd, char **line)
+{
+	char *buf;
+	char *tmp;
+	int ret;
+
+	buf = malloc(2);
+	if (!buf)
+		return (NULL);
+	ret = read(fd, buf, 1);
+	if (ret == 0)
+	{
+		free(buf);
+		return (NULL);
+	}
+	buf[1] = '\0';
+	*line = ft_strdup(buf);
+	while (1)
+	{
+		ret = read(fd, buf, 1);
+		if (ret == 0)
+			break;
+		buf[1] = '\0';
+		tmp = ft_strjoin(*line, buf);
+		free(*line);
+		*line = tmp;
+		if (ft_strncmp(buf, "\n", 1) == 0)
+			break;
+	}
+	free(buf);
+	return (*line);
+}
+
+void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
 {
 	int fd_in = 0;
 	int fd_out = 1;
-
+	char *tmp_path;
+	char *line;
+	int fd_tmp;
+	
+	tmp_path = ft_strjoin(data->shell_path, "/tmp");
 	if (cmd->has_redir_in || cmd->has_redir_out)
 	{
 		if (cmd->has_redir_out)
@@ -71,7 +108,19 @@ void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 				if (ft_strncmp(cmd->redirect_in->type, "<<", 2) == 0)
 					fd_in = here_doc(cmd->redirect_in->file);
 				else
+				{
 					fd_in = open(cmd->redirect_in->file, O_RDONLY);
+					fd_tmp = open(tmp_path, O_RDWR | O_CREAT | O_APPEND, 0644);
+					while (get_next_line(fd_in, &line) > 0)
+					{
+						write(fd_tmp, line, ft_strlen(line));
+						free(line);
+					}
+					write(fd_tmp, "\n", 1);
+					close(fd_in);
+					close(fd_tmp);
+					fd_in = open("tmp", O_RDONLY);
+				}
 				cmd->redirect_in = cmd->redirect_in->next;
 			}
 		}
@@ -105,14 +154,15 @@ void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 	}
 	dup2(fd_in, STDIN_FILENO);
 	dup2(fd_out, STDOUT_FILENO);
+	if (access(tmp_path, F_OK) == 0)
+		unlink(tmp_path);
 }
 
 void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
 {
 	if ((ft_strncmp(current->cmd, "export", 6) == 0) && !current->arguments[1])
 		print(data->export);
-	else if (ft_strncmp(current->cmd, "export", 6) == 0
-		|| (ft_strncmp(current->cmd, "unset", 5) == 0))
+	else if (ft_strncmp(current->cmd, "export", 6) == 0 || (ft_strncmp(current->cmd, "unset", 5) == 0))
 	{
 		waitpid(pid[k], NULL, 0);
 		update_env(data, current->cmd, current->arguments);
@@ -132,7 +182,7 @@ void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
 void excute_child(t_cmd *current, t_data *data, int fd[][2], int k, int fd_c)
 {
 
-	handle_redirections(current, fd, k, fd_c);
+	handle_redirections(data, current, fd, k, fd_c);
 	close_fds(fd, fd_c);
 	if (current->built_in)
 	{

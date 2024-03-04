@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 22:49:43 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/04 22:21:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ void	get_env_vars(t_data *data)
 		{
 			tmp = tmp->next;
 			continue ;
+		}
+		if (ft_strncmp(tmp->cmd, "$", 1) == 0)
+		{
+			tmp->cmd = get_env(tmp->cmd + 1, data);
+			if (!tmp->cmd)
+				tmp->cmd = ft_strdup("");
 		}
 		arg = tmp->args;
 		while (tmp->args)
