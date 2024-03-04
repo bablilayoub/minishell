@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 16:06:45 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/04 23:02:19 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handle_special_char(t_token_params *params, char *value, int len)
 	if (value[0] == '$' && value[1] == '\0')
 	{
 		params->i++;
-		temp = get_word(params->line, &params->i);
+		temp = get_word(params->line, &params->i, 1);
 		params->value = ft_strjoin(value, temp);
 		free(temp);
 		params->i--;
@@ -52,7 +52,7 @@ void	handle_quotes(t_token_params *params, int quote, char *quote_type)
 
 void	handle_word(t_token_params *params, char *line)
 {
-	params->value = get_word(line, &params->i);
+	params->value = get_word(line, &params->i, 0);
 	params->type = ft_strdup(WORD);
 	params->token = new_token(params->value, params->type,
 			params->state, ft_strlen(params->value));

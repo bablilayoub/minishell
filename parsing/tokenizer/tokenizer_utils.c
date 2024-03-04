@@ -6,15 +6,15 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/04 22:13:20 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/04 23:03:32 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-t_token	*new_token(char *value, char *type, int state, size_t len)
+t_token *new_token(char *value, char *type, int state, size_t len)
 {
-	t_token	*token;
+	t_token *token;
 
 	token = malloc(sizeof(t_token));
 	if (!token)
@@ -28,9 +28,9 @@ t_token	*new_token(char *value, char *type, int state, size_t len)
 	return (token);
 }
 
-t_token	*add_token(t_token *head, t_token *token)
+t_token *add_token(t_token *head, t_token *token)
 {
-	t_token	*tmp;
+	t_token *tmp;
 
 	if (!head)
 		return (token);
@@ -42,23 +42,29 @@ t_token	*add_token(t_token *head, t_token *token)
 	return (head);
 }
 
-int	not_a_special_char(char c)
+int not_a_special_char(char c)
 {
-	if (c != ' ' && c != '\t' && c != '\n' && c != '\''
-		&& c != '\"' && c != '$' && c != '|' && c != '<'
-		&& c != '>' && c != '\\')
+	if (c != ' ' && c != '\t' && c != '\n' && c != '\'' && c != '\"' && c != '$' && c != '|' && c != '<' && c != '>' && c != '\\')
 		return (1);
 	return (0);
 }
 
-char	*get_word(char *line, size_t *i)
+char *get_word(char *line, size_t *i, int alpha_num)
 {
-	size_t	start;
-	char	*word;
+	size_t start;
+	char *word;
 
 	start = *i;
-	while (line[*i] && not_a_special_char(line[*i]))
-		(*i)++;
+	if (alpha_num)
+	{
+		while (line[*i] && ft_isalnum(line[*i]))
+			(*i)++;
+	}
+	else
+	{
+		while (line[*i] && not_a_special_char(line[*i]))
+			(*i)++;
+	}
 	word = ft_substr(line, start, *i - start);
 	if (!word)
 		return (NULL);
@@ -67,9 +73,9 @@ char	*get_word(char *line, size_t *i)
 	return (word);
 }
 
-t_token	*skip_white_spaces(t_token *token)
+t_token *skip_white_spaces(t_token *token)
 {
-	t_token	*tmp;
+	t_token *tmp;
 
 	if (!token)
 		return (NULL);
@@ -84,7 +90,7 @@ void print_tokens(t_token *token)
 	t_token *tmp;
 	int i;
 	int space_left;
-	
+
 	tmp = token;
 	printf("-------------------------------------------------------------------------------\n");
 	printf("|    Value           |    Lenght        |    State         |    Type          |\n");
@@ -93,7 +99,7 @@ void print_tokens(t_token *token)
 	{
 		i = 0;
 		space_left = 14 - ft_strlen(tmp->value);
-		
+
 		if (ft_strncmp(tmp->type, NEW_LINE, 1) != 0 && ft_strncmp(tmp->type, TAB_SPACE, 1) != 0)
 			printf("|    '%s'", tmp->value);
 		else if (ft_strncmp(tmp->type, NEW_LINE, 1) == 0)
@@ -121,28 +127,28 @@ void print_tokens(t_token *token)
 		}
 		i = 0;
 		switch (tmp->state)
-		{		
-			case 0:
-				printf("|    GENERAL");
-				break;
-			case 1:
-				printf("|    IN_QUOTE");
-				break;
-			case 2:
-				printf("|    IN_DQUOTE");
-				break;
+		{
+		case 0:
+			printf("|    GENERAL");
+			break;
+		case 1:
+			printf("|    IN_QUOTE");
+			break;
+		case 2:
+			printf("|    IN_DQUOTE");
+			break;
 		}
 		switch (tmp->state)
 		{
-			case 0:
-				space_left = 14 - ft_strlen("GENERAL");
-				break;
-			case 1:
-				space_left = 14 - ft_strlen("IN_QUOTE");
-				break;
-			case 2:
-				space_left = 14 - ft_strlen("IN_DQUOTE");
-				break;
+		case 0:
+			space_left = 14 - ft_strlen("GENERAL");
+			break;
+		case 1:
+			space_left = 14 - ft_strlen("IN_QUOTE");
+			break;
+		case 2:
+			space_left = 14 - ft_strlen("IN_DQUOTE");
+			break;
 		}
 		while (i < space_left)
 		{

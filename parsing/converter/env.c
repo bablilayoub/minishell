@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/04 22:21:27 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/04 22:57:44 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*get_env(char *env, t_data *data)
 		while (data->env[i][j] && data->env[i][j] != '=')
 			j++;
 		env_var = ft_substr(data->env[i], 0, j);
-		if (ft_strncmp(env, env_var, ft_strlen(env)) == 0)
+		if (ft_strncmp(env, env_var, ft_strlen(env_var)) == 0 && ft_strlen(env) == ft_strlen(env_var))
 		{
 			env_value = ft_strdup(data->env[i] + j + 1);
 			free(env_var);

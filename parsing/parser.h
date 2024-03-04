@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/02 20:33:03 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/04 23:03:38 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	*tokenizer(char *line);
 // Tokenizer utils
 t_token	*new_token(char *value, char *type, int state, size_t len);
 t_token	*add_token(t_token *head, t_token *token);
-char	*get_word(char *line, size_t *i);
+char	*get_word(char *line, size_t *i, int alpha_num);
 t_token	*skip_white_spaces(t_token *token);
 void	print_tokens(t_token *token);
 
