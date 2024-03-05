@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 21:39:55 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:40:49 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
 				}
 				cmd->redirect_in = cmd->redirect_in->next;
 			}
+			fd_out = fd[k][1];
 		}
 	}
 	else
@@ -153,8 +154,6 @@ void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
 	}
 	dup2(fd_in, STDIN_FILENO);
 	dup2(fd_out, STDOUT_FILENO);
-	if (access(tmp_path, F_OK) == 0)
-		unlink(tmp_path);
 	free(tmp_path);
 }
 
@@ -206,7 +205,8 @@ void start_execution(t_data *data, int fd_c)
 	int fd[fd_c][2];
 	pid_t pid[fd_c];
 	t_cmd *current;
-
+	char *tmp_path;
+	
 	k = 0;
 	i = -1;
 	current = data->cmd;
@@ -223,6 +223,10 @@ void start_execution(t_data *data, int fd_c)
 		current = current->next;
 	}
 	close_fds_and_wait(fd, pid, fd_c, data);
+	tmp_path = ft_strjoin(data->shell_path, "/tmp");
+	if (access(tmp_path, F_OK) == 0)
+		unlink(tmp_path);
+	free(tmp_path);
 }
 
 void prepare_for_excution(t_data *data)

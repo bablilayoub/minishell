@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 21:40:21 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:33:57 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,6 @@ void ft_export(t_data *data, char **env)
     int i;
     char *exported;
 
-
     i = 0;
     int j = 0;
     while (data->cmd->arguments[++j])
@@ -192,7 +191,7 @@ void ft_export(t_data *data, char **env)
             return check_error(fd_out, "open", 0);
         key_val = key_value(data->cmd->arguments[j], env);
         if (!key_val)
-            exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE); 
         (1 == 1) && (i = -1, found = 0);
         while (env[++i])
         {
@@ -216,4 +215,4 @@ void ft_export(t_data *data, char **env)
             env = add_var(env, exported);
         close(fd_out);
     }
-} 
+}
