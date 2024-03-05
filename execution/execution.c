@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 21:36:33 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/05 21:39:55 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,12 @@ void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
 void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
 {
 	if ((ft_strncmp(current->cmd, "export", 6) == 0) && !current->arguments[1])
+	{
+		waitpid(pid[k], NULL, 0);
 		print(data->export);
-	else if (ft_strncmp(current->cmd, "export", 6) == 0 || (ft_strncmp(current->cmd, "unset", 5) == 0))
+	}
+	else if (ft_strncmp(current->cmd, "export", 6) == 0
+		|| (ft_strncmp(current->cmd, "unset", 5) == 0))
 	{
 		waitpid(pid[k], NULL, 0);
 		update_env(data, current->cmd, current->arguments);

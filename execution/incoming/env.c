@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:18:24 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 21:00:16 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/05 21:40:05 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int set_fd(t_data *data, int *fd_in, char *cmd)
 {
 	if (ft_strncmp(cmd, "export", 6) == 0)
-		*fd_in = open("export.txt", O_RDONLY);
+		*fd_in = open(ft_strjoin(data->shell_path, "/export.txt"), O_RDONLY);
 	else
 		*fd_in = open(ft_strjoin(data->shell_path, "/unset.txt"), O_RDONLY);
 	if (*fd_in == -1)
@@ -31,7 +31,7 @@ int unlink_file_and_update(t_data *data, char *cmd, char ***to_update, char *env
 
 	envp = *to_update;
 	if (ft_strncmp(cmd, "export", 6) == 0)
-		result = unlink("export.txt");
+		result = unlink(ft_strjoin(data->shell_path, "/export.txt"));
 	else
 		result = unlink(ft_strjoin(data->shell_path, "/unset.txt"));
 	if (result == -1)
@@ -81,32 +81,35 @@ void extract_exported(char **env, char ***export, char **args)
 	int i;
 	int j;
 	char **tmp;
-	int argc;
 	static int extract = 0;
+	static int argc = 0;
 
-	extract += ft_strdoublelen(args) - 1;
-	argc = extract;
-	tmp = malloc(sizeof(char *) * (argc + 1));
 	i = 0;
-	j = 0;
-	while (env[i])
+	while (args[++i])
 	{
-		if ((ft_strdoublelen(env) - extract) == i)
-		{
-			tmp[j] = ft_strdup("declare -x ");
-			tmp[j] = ft_strjoin(tmp[j], env[i]);
-			j++;
-		}
-		i++;
+		if (ft_strchr(args[i], '=') != NULL)
+			argc++;
+	}
+	extract = ft_strdoublelen(env) - argc;
+	tmp = malloc(sizeof(char *) * (argc + 1));
+	printf("argc = %d\n", argc);
+	j = 0;
+	while (env[extract])
+	{
+		printf("env[%d] = %s\n", extract, env[extract]);
+		tmp[j] = ft_strdup("declare -x ");
+		tmp[j] = ft_strjoin(tmp[j], env[extract++]);
+		j++;
 	}
 	tmp[j] = NULL;
 	*export = tmp;
 }
-
 void print(char **export)
 {
 	int i;
 
+	if (!export)
+		return;
 	i = 0;
 	while (export[i])
 	{
@@ -125,7 +128,7 @@ void update_env(t_data *data, char *cmd_name, char **args)
 		return;
 	buff = malloc(sizeof(char) * 1024);
 	if (!buff)
-		return ;
+		return;
 	fd_in = set_fd(data, &fd_in, cmd_name);
 	if (fd_in == -1)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 20:56:02 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/05 21:40:21 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ void ret_same_env(t_data *data, char **env)
         i++;
     }
     close(fd_out);
-    exit(EXIT_FAILURE);
 }
 
 void add_variable(int fd_out, char *exported, int *found)
@@ -184,7 +183,10 @@ void ft_export(t_data *data, char **env)
     while (data->cmd->arguments[++j])
     {
         if (!check_exported(data->cmd->arguments[j]))
-            ret_same_env(data, data->env);
+        {
+            ret_same_env(data, env);
+            continue;
+        }
         fd_out = open(ft_strjoin(data->shell_path, "/export.txt"), O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd_out == -1)
             return check_error(fd_out, "open", 0);
@@ -214,4 +216,4 @@ void ft_export(t_data *data, char **env)
             env = add_var(env, exported);
         close(fd_out);
     }
-}
+} 
