@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/04 22:09:02 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/05 21:36:33 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int here_doc(char *file_and_search_for)
 		while (1)
 		{
 			line = readline(YELLOW "> " RESET);
-			if (ft_strncmp(line, file_and_search_for, ft_strlen(file_and_search_for)) == 0)
+			if (ft_strncmp(line, file_and_search_for, ft_strlen(line)) == 0)
 			{
 				free(line);
 				break;
@@ -86,7 +86,6 @@ void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
 	char *tmp_path;
 	char *line;
 	int fd_tmp;
-	
 	tmp_path = ft_strjoin(data->shell_path, "/tmp");
 	if (cmd->has_redir_in || cmd->has_redir_out)
 	{
@@ -111,7 +110,7 @@ void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
 				{
 					fd_in = open(cmd->redirect_in->file, O_RDONLY);
 					fd_tmp = open(tmp_path, O_RDWR | O_CREAT | O_APPEND, 0644);
-					while (get_next_line(fd_in, &line) > 0)
+					while (get_next_line(fd_in, &line))
 					{
 						write(fd_tmp, line, ft_strlen(line));
 						free(line);
@@ -156,6 +155,7 @@ void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
 	dup2(fd_out, STDOUT_FILENO);
 	if (access(tmp_path, F_OK) == 0)
 		unlink(tmp_path);
+	free(tmp_path);
 }
 
 void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
@@ -181,7 +181,6 @@ void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
 
 void excute_child(t_cmd *current, t_data *data, int fd[][2], int k, int fd_c)
 {
-
 	handle_redirections(data, current, fd, k, fd_c);
 	close_fds(fd, fd_c);
 	if (current->built_in)
