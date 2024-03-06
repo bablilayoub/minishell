@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 22:33:57 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/06 00:38:37 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ char *check_dollar_sign(char **env, char *value)
     char *rest;
 
     i = -1;
-
     while (value[++i])
     {
         if (value[i] == '$')

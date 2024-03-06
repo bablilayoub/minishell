@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:58:33 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:55:44 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void  prepare_for_excution(t_data *data);
 void  initialize_arguments(t_cmd *cmd_list);
 void  close_fds(int fd[][2], int cmd);
 void  close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c, t_data *data);
+char **key_value(char *exported, char **env);
 // b uilt_in
 void  excute_builtin(t_cmd *cmd_list, t_data *data);
 void  ft_echo(t_cmd *cmd);

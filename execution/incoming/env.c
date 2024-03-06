@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:18:24 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 21:40:05 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/06 01:48:08 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,33 +76,65 @@ int read_incoming(int *fd_in, char *buff, char **env)
 	return 0;
 }
 
+void update_export(char ***export, char **tmp)
+{
+	char **temp;
+	int i;
+	int j;
+
+	i = 0;
+	temp = *export;
+	*export = malloc(sizeof(char *) * (ft_strdoublelen(*export) + ft_strdoublelen(tmp) + 1));
+	if (!*export)
+		exit(EXIT_FAILURE);
+	while (temp[i])
+	{
+		(*export)[i] = temp[i];
+		i++;
+	}
+	j = 0;
+	while (tmp[j])
+	{
+		(*export)[i] = tmp[j];
+		i++;
+		j++;
+	}
+	(*export)[i] = NULL;
+}
 void extract_exported(char **env, char ***export, char **args)
 {
 	int i;
 	int j;
+	int k;
 	char **tmp;
-	static int extract = 0;
 	static int argc = 0;
 
 	i = 0;
+	while (args[++i] != NULL)
+			argc++;
+	printf("argc = %d\n", argc);
+	tmp = malloc(sizeof(char *) * (argc + 1));
+	i = 0;
+	k = 0;
 	while (args[++i])
 	{
-		if (ft_strchr(args[i], '=') != NULL)
-			argc++;
+		j = -1;
+		if (!ft_strchr(args[i], '='))
+		{
+			tmp[k++] = ft_strjoin("declare -x ", args[i]);
+			continue;
+		}
+		while (env[++j])
+		{
+			if (ft_strncmp(env[j], args[i], ft_strlen(args[i])) == 0)
+				tmp[k++] = ft_strjoin("declare -x ", env[j]);
+		}
 	}
-	extract = ft_strdoublelen(env) - argc;
-	tmp = malloc(sizeof(char *) * (argc + 1));
-	printf("argc = %d\n", argc);
-	j = 0;
-	while (env[extract])
-	{
-		printf("env[%d] = %s\n", extract, env[extract]);
-		tmp[j] = ft_strdup("declare -x ");
-		tmp[j] = ft_strjoin(tmp[j], env[extract++]);
-		j++;
-	}
-	tmp[j] = NULL;
-	*export = tmp;
+	tmp[k] = NULL;
+	if (!*export)
+		*export = tmp;
+	else
+		update_export(export, tmp);
 }
 void print(char **export)
 {
