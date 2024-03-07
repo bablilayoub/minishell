@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/06 00:55:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 21:53:14 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int here_doc(char *file_and_search_for)
 		while (1)
 		{
 			line = readline(YELLOW "> " RESET);
+			if (!line)
+				break;
 			if (ft_strncmp(line, file_and_search_for, ft_strlen(line)) == 0)
 			{
 				free(line);

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 01:59:18 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 21:17:30 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	parser(char *line, t_data *data)
 	if (only_spaces(line))
 		return (0);
 	data->token = tokenizer(line);
-	print_tokens(data->token);
+	// print_tokens(data->token);
 	convert_tokens_to_commands(data);
 	get_env_vars(data);
 	if (!check_syntax(data))
@@ -49,3 +49,6 @@ void	reader(t_data *data)
 	}
 	rl_clear_history();
 }
+
+
+//  rm -rf ../../../tijs/ll/ppp/
