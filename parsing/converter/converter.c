@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 22:28:12 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 22:40:15 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void convert_tokens_to_commands(t_data *data)
 	int found_cmd = 0;
 	char *full_arg = NULL;
 
-	tmp = filtrate_tokens(tmp);
+	// tmp = filtrate_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
 	if (ft_strncmp(tmp->type, WORD, 1) != 0 && ft_strncmp(tmp->type, APPEND_OUT, 2) != 0 && ft_strncmp(tmp->type, REDIR_OUT, 1) != 0 && ft_strncmp(tmp->type, HERE_DOC, 2) != 0 && ft_strncmp(tmp->type, REDIR_IN, 1) != 0 && ft_strncmp(tmp->type, ENV, 1) != 0)
 	{
@@ -274,5 +274,5 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	print_args(data->cmd);
+	// print_args(data->cmd);
 }

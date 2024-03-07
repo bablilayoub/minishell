@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 21:17:30 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 22:29:12 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,3 @@ void	reader(t_data *data)
 	}
 	rl_clear_history();
 }
-
-
-//  rm -rf ../../../tijs/ll/ppp/
