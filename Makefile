@@ -7,8 +7,8 @@ NAME = minishell
 HEADER = minishell.h
 
 # FLAGS
-READLINE_LIB = $(shell brew --prefix readline)/lib
-READLINE_INCLUDE = $(shell brew --prefix readline)/include
+READLINE_LIB = /Users/alaalalm/.brew/Cellar/readline/8.2.7/lib
+READLINE_INCLUDE = /Users/alaalalm/.brew/Cellar/readline/8.2.7/include
 
 CFLAGS = -Wall -Wextra -Werror  -g #-fsanitize=address
 

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 23:55:44 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/07 02:33:29 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,6 @@ void    free_two(char *s1, char *s2);
 
 void print(char **export);
 char *ft_getenv(char *name, char **env);
+void export_env_to_exp(char **env, char ***export);
+void join_double(char ***join, char **tmp);
 #endif

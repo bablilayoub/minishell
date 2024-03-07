@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 23:37:48 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/07 02:33:19 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,8 @@ void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
 	if ((ft_strncmp(current->cmd, "export", 6) == 0) && !current->arguments[1])
 	{
 		waitpid(pid[k], NULL, 0);
+		export_env_to_exp(data->env, &data->export);
+		join_double(&data->export, data->in_valid);
 		print(data->export);
 	}
 	else if (ft_strncmp(current->cmd, "export", 6) == 0 || (ft_strncmp(current->cmd, "unset", 5) == 0))

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/04 22:31:13 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/06 22:00:25 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int total, char **args, char **env)
 	data.token = NULL;
 	data.cmd = NULL;
 	data.export = NULL;
+	data.in_valid = NULL;
 	data.exit_status = 0;
 	data.prefix = ft_strdup(PREFIX);
 	data.shell_path = getcwd(NULL, 0);
