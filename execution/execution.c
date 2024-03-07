@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 22:40:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/06 00:55:49 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,9 +207,8 @@ void start_execution(t_data *data, int fd_c)
 	t_cmd *current;
 	char *tmp_path;
 	
-	k = 0;
-	i = -1;
-	current = data->cmd;
+	(1 == 1) && (k = 0, i = -1, current = data->cmd);
+	tmp_path = ft_strjoin(data->shell_path, "/tmp");
 	while (++i < fd_c)
 		pipe(fd[i]);
 	while (current)
@@ -223,7 +222,6 @@ void start_execution(t_data *data, int fd_c)
 		current = current->next;
 	}
 	close_fds_and_wait(fd, pid, fd_c, data);
-	tmp_path = ft_strjoin(data->shell_path, "/tmp");
 	if (access(tmp_path, F_OK) == 0)
 		unlink(tmp_path);
 	free(tmp_path);

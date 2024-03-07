@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/04 23:03:32 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 02:37:07 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ char *get_word(char *line, size_t *i, int alpha_num)
 	{
 		while (line[*i] && not_a_special_char(line[*i]))
 			(*i)++;
+	}
+	if (*i == start)
+	{
+		if (line[*i] && line[*i] == '?')
+			(*i)++;
+		else
+			return (NULL);
 	}
 	word = ft_substr(line, start, *i - start);
 	if (!word)

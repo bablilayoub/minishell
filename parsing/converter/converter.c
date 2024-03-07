@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/05 23:08:24 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 02:15:50 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ t_token *get_command_name(t_token *head)
 	return (tmp);
 }
 
+
 void convert_tokens_to_commands(t_data *data)
 {
 	if (!data->token)
@@ -120,6 +121,7 @@ void convert_tokens_to_commands(t_data *data)
 	t_cmd *head = NULL;
 	int found_cmd = 0;
 	char *full_arg = NULL;
+	
 	tmp = skip_white_spaces(tmp);
 	if (ft_strncmp(tmp->type, WORD, 1) != 0 
 		&& ft_strncmp(tmp->type, APPEND_OUT, 2) != 0 
@@ -191,7 +193,10 @@ void convert_tokens_to_commands(t_data *data)
 						tmp = add_file(&cmd->redirect_in, tmp->next, HERE_DOC);
 					else if (ft_strncmp(tmp->type, REDIR_IN, 1) == 0)
 						tmp = add_file(&cmd->redirect_in, tmp->next, REDIR_IN);
-					tmp = skip_white_spaces(tmp);
+					if (tmp)
+						tmp = tmp->next;
+				    if (tmp)
+						tmp = skip_white_spaces(tmp);
 				}
 				if (!tmp)
 					break;
@@ -216,5 +221,5 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(data->cmd);
+	print_args(data->cmd);
 }

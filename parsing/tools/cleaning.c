@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/02/27 02:52:58 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/06 00:56:30 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void free_data(t_data *data)
 		free_cmd(data->cmd);
 	if (data->token)
 		free_tokens(data->token);
+	ft_free_array(data->env);
 	data->cmd = NULL;
 	data->token = NULL;
 	// printf("All data has been freed\n");
