@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 21:46:08 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 22:26:39 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int total, char **args, char **env)
 	data.token = NULL;
 	data.cmd = NULL;
 	data.export = NULL;
+	data.in_valid = NULL;
 	data.exit_status = 0;
 	data.prefix = ft_strdup(PREFIX);
 	data.shell_path = getcwd(NULL, 0);

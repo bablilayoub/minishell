@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 22:33:57 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 22:22:59 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-int check_exported(char *exported)
+int check_exported(char *exported, char *arg)
 {
     int i;
 
@@ -20,11 +20,11 @@ int check_exported(char *exported)
     if (!ft_strchr(exported, '='))
         return false;
     else if ((exported[i] == '=' && exported[i + 1] == '\0'))
-        return (printf(PREFIX_ERROR "bad assignment\n"), false);
+        return (printf(PREFIX_ERROR "export: `%s': not an valid identifier\n", arg), false);
     else if (exported[i] == '=' && ft_isascii(exported[i + 1]))
-        return (printf(PREFIX_ERROR "not found\n"), false);
+        return (printf(PREFIX_ERROR "export: `%s': not an valid identifier\n", arg), false);
     else if (ft_isdigit(exported[i]))
-        return (printf(PREFIX_ERROR "export: not an identifier\n"), false);
+        return (printf(PREFIX_ERROR "export: `%s': not an valid identifier\n", arg), false);
     return true;
 }
 
@@ -55,7 +55,6 @@ char *check_dollar_sign(char **env, char *value)
     char *rest;
 
     i = -1;
-
     while (value[++i])
     {
         if (value[i] == '$')
@@ -181,7 +180,7 @@ void ft_export(t_data *data, char **env)
     int j = 0;
     while (data->cmd->arguments[++j])
     {
-        if (!check_exported(data->cmd->arguments[j]))
+        if (!check_exported(data->cmd->arguments[j], data->cmd->arguments[j]))
         {
             ret_same_env(data, env);
             continue;

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:56:45 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/06 23:13:00 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ int ft_strdoublelen(char **str)
 {
     int i;
 
+    if (!str)
+        return 0;
     i = 0;
     while (str[i])
         i++;

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:18:24 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/05 21:40:05 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/07 22:24:18 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,53 +76,140 @@ int read_incoming(int *fd_in, char *buff, char **env)
 	return 0;
 }
 
-void extract_exported(char **env, char ***export, char **args)
+
+void export_env_to_exp(char **env, char ***export)
+{
+	int i;
+	int lenght;
+
+	lenght = ft_strdoublelen(env);
+	*export = (char **)malloc(sizeof(char *) * (lenght + 1));
+	if (!export)
+		exit(EXIT_FAILURE);
+	i = -1;
+	while (env[++i])
+		(*export)[i] = ft_strjoin("declare -x ", env[i]);
+	(*export)[i] = NULL;
+}
+void *ft_realloc(void *ptr, size_t size)
+{
+	void *new;
+
+	new = malloc(size);
+	if (!new)
+		return NULL;
+	if (ptr)
+	{
+		ft_memcpy(new, ptr, size);
+		free(ptr);
+	}
+	return new;
+}
+
+int isDuplicate(char **arr, int n, char *str)
+{
+    int i = 0;
+    while (i < n) 
+	{
+        if (ft_strncmp(arr[i], str, ft_strlen(str)) == 0)
+            return 1;
+        i++;
+    }
+    return 0;
+}
+
+void removeDuplicates(char ***invalid, int n)
+{
+    char **newArr = NULL;
+    int count = 0;
+    int i = 0;
+	char **arr;
+	
+	arr = *invalid;
+    while (i < n)
+	{
+        if (!isDuplicate(newArr, count, arr[i]))
+		{
+            newArr = realloc(newArr, (count + 1) * sizeof(char *));
+            newArr[count] = ft_strdup(arr[i]);
+            count++;
+        }
+        i++;
+    }
+	newArr = realloc(newArr, (count + 1) * sizeof(char *));
+	newArr[count] = NULL;
+	free_double(*invalid);
+    *invalid = newArr;
+}
+
+void join_double(char ***join, char **tmp)
 {
 	int i;
 	int j;
+	char **new;
+
+	if (!tmp)
+		return ;
+	i = ft_strdoublelen(*join);
+	j = ft_strdoublelen(tmp);
+	new = (char **)malloc(sizeof(char *) * (i + j + 1));
+	if (!new)
+		exit(EXIT_FAILURE);
+	i = -1;
+	while ((*join)[++i])
+		new[i] = ft_strdup((*join)[i]);
+	j = -1;    
+	while (tmp[++j])
+		new[i++] = ft_strdup(tmp[j]);
+	new[i] = NULL;
+	free_double(*join);
+	*join = new;
+}
+void add_invalid_exp(char **args, t_data *data)
+{
+	int i;
+	int k;
 	char **tmp;
-	static int extract = 0;
-	static int argc = 0;
+	int argc = 0;
 
 	i = 0;
 	while (args[++i])
 	{
-		if (ft_strchr(args[i], '=') != NULL)
+		if (!ft_strchr(args[i], '='))
 			argc++;
 	}
-	extract = ft_strdoublelen(env) - argc;
 	tmp = malloc(sizeof(char *) * (argc + 1));
-	printf("argc = %d\n", argc);
-	j = 0;
-	while (env[extract])
+	i = 0;
+	k = 0;
+	while (args[++i])
 	{
-		printf("env[%d] = %s\n", extract, env[extract]);
-		tmp[j] = ft_strdup("declare -x ");
-		tmp[j] = ft_strjoin(tmp[j], env[extract++]);
-		j++;
+		if (!ft_strchr(args[i], '='))
+			tmp[k++] = ft_strjoin("declare -x ", args[i]);
 	}
-	tmp[j] = NULL;
-	*export = tmp;
+	tmp[k] = NULL;
+	if (!data->in_valid)
+		data->in_valid = tmp;
+	else
+		join_double(&data->in_valid, tmp);
+	removeDuplicates(&data->in_valid, ft_strdoublelen(data->in_valid));
 }
 void print(char **export)
 {
 	int i;
 
-	if (!export)
+	if (!export || !*export)
 		return;
-	i = 0;
-	while (export[i])
-	{
+	i = -1;
+	while (export[++i])
 		printf("%s\n", export[i]);
-		i++;
-	}
 }
 void update_env(t_data *data, char *cmd_name, char **args)
-{
+{        
 	int fd_in;
 	char *buff;
 	char *env;
 
+	(void)args;
 	env = ft_strdup("");
 	if (!env)
 		return;
@@ -147,7 +234,7 @@ void update_env(t_data *data, char *cmd_name, char **args)
 		close(fd_in);
 		return;
 	}
-	extract_exported(data->env, &data->export, args);
+	add_invalid_exp(args, data);
 	free_two(env, buff);
 	close(fd_in);
 }
