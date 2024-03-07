@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/04 22:57:44 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/06 22:09:48 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	handle_env_var(t_data *data, t_cmd *tmp,
 	char *env_var, char *exit_status)
 {
-	if (ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1)
+	if (ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1 && ft_strlen(tmp->args->arg) > 1)
 	{
 		if (ft_strncmp(tmp->args->arg, "$?", 2) == 0)
 		{
@@ -49,7 +49,7 @@ void	get_env_vars(t_data *data)
 			tmp = tmp->next;
 			continue ;
 		}
-		if (ft_strncmp(tmp->cmd, "$", 1) == 0)
+		if (ft_strncmp(tmp->cmd, "$", 1) == 0 && ft_strlen(tmp->cmd) > 1)
 		{
 			tmp->cmd = get_env(tmp->cmd + 1, data);
 			if (!tmp->cmd)

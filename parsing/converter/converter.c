@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   converter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 22:16:31 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/07 22:40:15 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,63 @@ t_token *get_command_name(t_token *head)
 	return (tmp);
 }
 
+t_token *filtrate_tokens(t_token *head)
+{
+	t_token *tmp = head;
+	t_token *new_head = NULL;
+	if (!tmp)
+		return (NULL);
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) == 0 && tmp->state == GENERAL)
+		{
+			tmp = tmp->next;
+			continue;
+		}
+		else if (ft_strncmp(tmp->type, QUOTE, 1) == 0 && tmp->state == GENERAL)
+		{
+			tmp = tmp->next;
+			continue;
+		}
+		else
+			new_head = add_token(new_head, new_token(tmp->value, tmp->type, tmp->state, tmp->len));
+		tmp = tmp->next;
+	}
+	tmp = new_head;
+	char *value = NULL;
+	t_token *final_head = NULL;
+	tmp = skip_white_spaces(tmp);
+	if (!tmp)
+		return (NULL);
+	if (ft_strncmp(tmp->type, WORD, 1) == 0)
+		tmp->state = GENERAL;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->type, WORD, 4) == 0 && tmp->state == GENERAL)
+		{
+			while (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
+			{
+				if (value == NULL)
+					value = ft_strdup(tmp->value);
+				else
+					value = ft_strjoin(value, tmp->value);
+				tmp = tmp->next;
+			}
+			if (value)
+			{
+				final_head = add_token(final_head, new_token(value, WORD, GENERAL, ft_strlen(value)));
+				value = NULL;
+			}
+		}
+		else
+		{
+			final_head = add_token(final_head, new_token(tmp->value, tmp->type, tmp->state, tmp->len));
+			tmp = tmp->next;
+		}
+	}
+	return (final_head);
+}
+
 void convert_tokens_to_commands(t_data *data)
 {
 	if (!data->token)
@@ -120,15 +177,10 @@ void convert_tokens_to_commands(t_data *data)
 	t_cmd *head = NULL;
 	int found_cmd = 0;
 	char *full_arg = NULL;
+
+	// tmp = filtrate_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
-	if (ft_strncmp(tmp->type, WORD, 1) != 0 
-		&& ft_strncmp(tmp->type, APPEND_OUT, 2) != 0 
-		&& ft_strncmp(tmp->type, REDIR_OUT, 1) != 0 
-		&& ft_strncmp(tmp->type, HERE_DOC, 2) != 0
-		&& ft_strncmp(tmp->type, REDIR_IN, 1) != 0 
-		&& ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) != 0
-		&& ft_strncmp(tmp->type, QUOTE, 1) != 0
-		&& ft_strncmp(tmp->type, ENV, 1) != 0)
+	if (ft_strncmp(tmp->type, WORD, 1) != 0 && ft_strncmp(tmp->type, APPEND_OUT, 2) != 0 && ft_strncmp(tmp->type, REDIR_OUT, 1) != 0 && ft_strncmp(tmp->type, HERE_DOC, 2) != 0 && ft_strncmp(tmp->type, REDIR_IN, 1) != 0 && ft_strncmp(tmp->type, ENV, 1) != 0)
 	{
 		printf("%s\n", PREFIX_ERROR "Syntax error");
 		return;
@@ -141,7 +193,7 @@ void convert_tokens_to_commands(t_data *data)
 		{
 			if (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0 && tmp->state != IN_DQUOTE && tmp->state != IN_QUOTE)
 				break;
-			if (ft_strncmp(tmp->type, WORD, 4) == 0 && ft_strncmp(tmp->value, "export", 6) == 0  && !found_cmd)
+			if (ft_strncmp(tmp->type, WORD, 4) == 0 && ft_strncmp(tmp->value, "export", 6) == 0 && !found_cmd)
 			{
 				found_cmd = 1;
 				cmd = new_cmd(tmp);
@@ -191,10 +243,16 @@ void convert_tokens_to_commands(t_data *data)
 						tmp = add_file(&cmd->redirect_in, tmp->next, HERE_DOC);
 					else if (ft_strncmp(tmp->type, REDIR_IN, 1) == 0)
 						tmp = add_file(&cmd->redirect_in, tmp->next, REDIR_IN);
-					tmp = skip_white_spaces(tmp);
+					if (tmp)
+						tmp = tmp->next;
+					if (tmp)
+						tmp = skip_white_spaces(tmp);
 				}
 				if (!tmp)
+				{
+					printf("%s\n", PREFIX_ERROR "Syntax error");
 					break;
+				}
 				cmd->cmd = tmp->value;
 				head = add_cmd(head, cmd);
 				tmp = get_command_name(tmp);
@@ -209,12 +267,12 @@ void convert_tokens_to_commands(t_data *data)
 				tmp = tmp->next;
 			if (tmp)
 				tmp = skip_white_spaces(tmp);
-		} 
+		}
 		if (tmp)
 			tmp = tmp->next;
 		if (tmp && (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0))
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	print_args(data->cmd);
+	// print_args(data->cmd);
 }

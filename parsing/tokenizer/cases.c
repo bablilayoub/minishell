@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/04 23:02:19 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 02:37:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,55 @@
 void	handle_special_char(t_token_params *params, char *value, int len)
 {
 	char	*temp;
-
-	if (value[0] == '$' && value[1] == '\0')
+	int		parent_pid;
+	int		expandable = 1;
+	
+	if (value[0] == '$' && value[1] == '\0' && params->line[params->i + 1] != '$')
 	{
 		params->i++;
+		if (params->line[params->i] >= '1' && params-> line[params->i] <= '9')
+		{
+			expandable = 0;
+			params->i++;
+		}
 		temp = get_word(params->line, &params->i, 1);
-		params->value = ft_strjoin(value, temp);
-		free(temp);
+		if (temp)
+		{
+			if (expandable)
+				params->value = ft_strjoin(value, temp);
+			else
+				params->value = ft_strdup(temp);
+			free(temp);
+		}
+		else
+		{
+			if (params->state == IN_DQUOTE || params->state == IN_QUOTE || params->line[params->i] == '\0')
+				params->value = ft_strdup(value);
+			else
+				params->value = ft_strdup("");
+		}
 		params->i--;
 		len = ft_strlen(params->value);
+		if (params->value[0] == '$' && ft_strlen(params->value) == 1)
+			params->type = ft_strdup(WORD);
+		else
+			params->type = ft_strdup(ENV);
+	}
+	else if (value[0] == '$' && value[1] == '\0' && params->line[params->i + 1] == '$')
+	{
+		parent_pid = fork();
+		if (parent_pid == 0)
+			exit(0);
+		waitpid(parent_pid, NULL, 0);
+		params->value = ft_itoa(parent_pid - 1);
+		params->type = ft_strdup(WORD);
+		params->i++;
 	}
 	else
+	{
 		params->value = ft_strdup(value);
-	params->type = ft_strdup(value);
+		params->type = ft_strdup(value);
+	}
 	params->token = new_token(params->value, params->type, params->state, len);
 	params->head = add_token(params->head, params->token);
 	if (len > 1)

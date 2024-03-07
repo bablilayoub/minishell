@@ -7,10 +7,10 @@ NAME = minishell
 HEADER = minishell.h
 
 # FLAGS
-READLINE_LIB = /Users/alaalalm/.brew/Cellar/readline/8.2.7/lib
-READLINE_INCLUDE = /Users/alaalalm/.brew/Cellar/readline/8.2.7/include
+READLINE_LIB = $(shell brew --prefix readline)/lib
+READLINE_INCLUDE = $(shell brew --prefix readline)/include
 
-CFLAGS = -Wall -Wextra -Werror  -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror  -g -fsanitize=address
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a
