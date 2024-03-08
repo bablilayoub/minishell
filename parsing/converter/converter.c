@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 22:40:15 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/08 02:27:55 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,59 +114,36 @@ t_token *get_command_name(t_token *head)
 
 t_token *filtrate_tokens(t_token *head)
 {
-	t_token *tmp = head;
 	t_token *new_head = NULL;
-	if (!tmp)
+	if (!head)
 		return (NULL);
+	while (head)
+	{
+		if ((ft_strncmp(head->type, DOUBLE_QUOTE, 1) == 0 || ft_strncmp(head->type, QUOTE, 1) == 0) && head->state == GENERAL)
+		{
+			head = head->next;
+			continue;
+		}
+		new_head = add_token(new_head, new_token(head->value, head->type, head->state, head->len));
+		head = head->next;
+	}
+	t_token *tmp = new_head;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) == 0 && tmp->state == GENERAL)
+		while (tmp && (ft_strncmp(tmp->type, WHITE_SPACE, 1) != 0 || ft_strlen(tmp->value) == 0))
 		{
-			tmp = tmp->next;
-			continue;
+			if (tmp->next && (ft_strncmp(tmp->next->type, WHITE_SPACE, 1) != 0  || ft_strlen(tmp->next->value) == 0))
+			{
+				tmp->value = ft_strjoin(tmp->value, tmp->next->value);
+				tmp->len = ft_strlen(tmp->value);
+				tmp->next = tmp->next->next;
+			}
+			else
+				break;
 		}
-		else if (ft_strncmp(tmp->type, QUOTE, 1) == 0 && tmp->state == GENERAL)
-		{
-			tmp = tmp->next;
-			continue;
-		}
-		else
-			new_head = add_token(new_head, new_token(tmp->value, tmp->type, tmp->state, tmp->len));
 		tmp = tmp->next;
 	}
-	tmp = new_head;
-	char *value = NULL;
-	t_token *final_head = NULL;
-	tmp = skip_white_spaces(tmp);
-	if (!tmp)
-		return (NULL);
-	if (ft_strncmp(tmp->type, WORD, 1) == 0)
-		tmp->state = GENERAL;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->type, WORD, 4) == 0 && tmp->state == GENERAL)
-		{
-			while (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
-			{
-				if (value == NULL)
-					value = ft_strdup(tmp->value);
-				else
-					value = ft_strjoin(value, tmp->value);
-				tmp = tmp->next;
-			}
-			if (value)
-			{
-				final_head = add_token(final_head, new_token(value, WORD, GENERAL, ft_strlen(value)));
-				value = NULL;
-			}
-		}
-		else
-		{
-			final_head = add_token(final_head, new_token(tmp->value, tmp->type, tmp->state, tmp->len));
-			tmp = tmp->next;
-		}
-	}
-	return (final_head);
+	return (new_head);
 }
 
 void convert_tokens_to_commands(t_data *data)
@@ -178,8 +155,11 @@ void convert_tokens_to_commands(t_data *data)
 	int found_cmd = 0;
 	char *full_arg = NULL;
 
-	// tmp = filtrate_tokens(tmp);
+	tmp = filtrate_tokens(tmp);
+	// print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
+	if (!tmp)
+		return;
 	if (ft_strncmp(tmp->type, WORD, 1) != 0 && ft_strncmp(tmp->type, APPEND_OUT, 2) != 0 && ft_strncmp(tmp->type, REDIR_OUT, 1) != 0 && ft_strncmp(tmp->type, HERE_DOC, 2) != 0 && ft_strncmp(tmp->type, REDIR_IN, 1) != 0 && ft_strncmp(tmp->type, ENV, 1) != 0)
 	{
 		printf("%s\n", PREFIX_ERROR "Syntax error");

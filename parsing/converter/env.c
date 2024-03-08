@@ -6,14 +6,14 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/06 22:09:48 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/08 02:01:39 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-void	handle_env_var(t_data *data, t_cmd *tmp,
-	char *env_var, char *exit_status)
+void handle_env_var(t_data *data, t_cmd *tmp,
+					char *env_var, char *exit_status)
 {
 	if (ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1 && ft_strlen(tmp->args->arg) > 1)
 	{
@@ -34,45 +34,39 @@ void	handle_env_var(t_data *data, t_cmd *tmp,
 	tmp->args = tmp->args->next;
 }
 
-void	get_env_vars(t_data *data)
+void get_env_vars(t_data *data)
 {
-	t_cmd	*tmp;
-	t_arg	*arg;
-	char	*env_var;
-	char	*exit_status;
+	t_token *tmp;
 
-	tmp = data->cmd;
+	tmp = data->token;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->cmd, "export", 6) == 0)
+		if (ft_strncmp(tmp->value, "$?", 2) == 0)
 		{
-			tmp = tmp->next;
-			continue ;
+			tmp->value = ft_itoa(data->exit_status);
+			tmp->type = ft_strdup(WORD);
 		}
-		if (ft_strncmp(tmp->cmd, "$", 1) == 0 && ft_strlen(tmp->cmd) > 1)
+		else if (ft_strncmp(tmp->type, ENV, ft_strlen(ENV)) == 0 && ft_strlen(tmp->value) > 1 && tmp->state != IN_QUOTE)
 		{
-			tmp->cmd = get_env(tmp->cmd + 1, data);
-			if (!tmp->cmd)
-				tmp->cmd = ft_strdup("");
+			tmp->value = get_env(tmp->value + 1, data);
+			if (!tmp->value)
+			{
+				tmp->value = ft_strdup("");
+				tmp->type = ft_strdup(WHITE_SPACE);
+			}
 		}
-		arg = tmp->args;
-		while (tmp->args)
-		{
-			env_var = NULL;
-			exit_status = NULL;
-			handle_env_var(data, tmp, env_var, exit_status);
-		}
-		tmp->args = arg;
+		else if (ft_strncmp(tmp->value, "$", 1) == 0)
+			tmp->type = ft_strdup(WORD);
 		tmp = tmp->next;
 	}
 }
 
-char	*get_env(char *env, t_data *data)
+char *get_env(char *env, t_data *data)
 {
-	int		i;
-	int		j;
-	char	*env_var;
-	char	*env_value;
+	int i;
+	int j;
+	char *env_var;
+	char *env_value;
 
 	i = 0;
 	while (data->env[i])

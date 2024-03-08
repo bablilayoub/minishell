@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/07 22:37:05 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 22:47:05 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,42 +93,22 @@ void redirections_out(t_cmd *cmd, int *fd_out)
 	}
 }
 
-void redirections_in(t_cmd *cmd, int *fd_in, char *tmp_path)
+void redirections_in(t_cmd *cmd, int *fd_in)
 {
-	int fd_tmp;
-	char *line;
-
-	if (cmd->redirect_in)
+	while (cmd->redirect_in)
 	{
-		while (cmd->redirect_in)
-		{
-			if (ft_strncmp(cmd->redirect_in->type, "<<", 2) == 0)
-				*fd_in = here_doc(cmd->redirect_in->file);
-			else
-			{
-				*fd_in = open(cmd->redirect_in->file, O_RDONLY);
-				fd_tmp = open(tmp_path, O_RDWR | O_CREAT | O_APPEND, 0644);
-				while (get_next_line(*fd_in, &line))
-				{
-					write(fd_tmp, line, ft_strlen(line));
-					free(line);
-				}
-				write(fd_tmp, "\n", 1);
-				close(*fd_in);
-				close(fd_tmp);
-				*fd_in = open("tmp", O_RDONLY);
-			}
-			cmd->redirect_in = cmd->redirect_in->next;
-		}
+		if (ft_strncmp(cmd->redirect_in->type, "<<", 2) == 0)
+			*fd_in = here_doc(cmd->redirect_in->file);
+		else
+			*fd_in = open(cmd->redirect_in->file, O_RDONLY);
+		cmd->redirect_in = cmd->redirect_in->next;
 	}
 }
-void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
+void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 {
 	int fd_in = 0;
 	int fd_out = 1;
-	char *tmp_path;
 
-	tmp_path = ft_strjoin(data->shell_path, "/tmp");
 	if (cmd->has_redir_in || cmd->has_redir_out)
 	{
 		if (cmd->has_redir_out)
@@ -141,7 +121,7 @@ void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
 		}
 		if (cmd->has_redir_in)
 		{
-			redirections_in(cmd, &fd_in, tmp_path);
+			redirections_in(cmd, &fd_in);
 			if (k == fd_c - 1)
 				fd_out = STDOUT_FILENO;
 			else
@@ -161,7 +141,6 @@ void handle_redirections(t_data *data, t_cmd *cmd, int fd[][2], int k, int fd_c)
 	}
 	dup2(fd_in, STDIN_FILENO);
 	dup2(fd_out, STDOUT_FILENO);
-	free(tmp_path);
 }
 
 void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
@@ -192,7 +171,7 @@ void incoming_data(t_cmd *current, t_data *data, int k, pid_t pid[])
 
 void excute_child(t_cmd *current, t_data *data, int fd[][2], int k, int fd_c)
 {
-	handle_redirections(data, current, fd, k, fd_c);
+	handle_redirections(current, fd, k, fd_c);
 	close_fds(fd, fd_c);
 	if (current->built_in)
 	{
@@ -213,10 +192,8 @@ void start_execution(t_data *data, int fd_c)
 	int fd[fd_c][2];
 	pid_t pid[fd_c];
 	t_cmd *current;
-	char *tmp_path;
-	
+
 	(1 == 1) && (k = 0, i = -1, current = data->cmd);
-	tmp_path = ft_strjoin(data->shell_path, "/tmp");
 	while (++i < fd_c)
 		pipe(fd[i]);
 	while (current)
@@ -230,9 +207,6 @@ void start_execution(t_data *data, int fd_c)
 		current = current->next;
 	}
 	close_fds_and_wait(fd, pid, fd_c, data);
-	if (access(tmp_path, F_OK) == 0)
-		unlink(tmp_path);
-	free(tmp_path);
 }
 
 void prepare_for_excution(t_data *data)

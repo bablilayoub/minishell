@@ -6,15 +6,15 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 02:37:07 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 23:46:04 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-t_token *new_token(char *value, char *type, int state, size_t len)
+t_token	*new_token(char *value, char *type, int state, size_t len)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = malloc(sizeof(t_token));
 	if (!token)
@@ -28,9 +28,9 @@ t_token *new_token(char *value, char *type, int state, size_t len)
 	return (token);
 }
 
-t_token *add_token(t_token *head, t_token *token)
+t_token	*add_token(t_token *head, t_token *token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	if (!head)
 		return (token);
@@ -42,17 +42,18 @@ t_token *add_token(t_token *head, t_token *token)
 	return (head);
 }
 
-int not_a_special_char(char c)
+int	not_a_special_char(char c)
 {
-	if (c != ' ' && c != '\t' && c != '\n' && c != '\'' && c != '\"' && c != '$' && c != '|' && c != '<' && c != '>' && c != '\\')
+	if (c != ' ' && c != '\t' && c != '\n' && c != '\'' && c
+		!= '\"' && c != '$' && c != '|' && c != '<' && c != '>' && c != '\\')
 		return (1);
 	return (0);
 }
 
-char *get_word(char *line, size_t *i, int alpha_num)
+char	*get_word(char *line, size_t *i, int alpha_num)
 {
-	size_t start;
-	char *word;
+	size_t	start;
+	char	*word;
 
 	start = *i;
 	if (alpha_num)
@@ -61,10 +62,8 @@ char *get_word(char *line, size_t *i, int alpha_num)
 			(*i)++;
 	}
 	else
-	{
 		while (line[*i] && not_a_special_char(line[*i]))
 			(*i)++;
-	}
 	if (*i == start)
 	{
 		if (line[*i] && line[*i] == '?')
@@ -80,9 +79,9 @@ char *get_word(char *line, size_t *i, int alpha_num)
 	return (word);
 }
 
-t_token *skip_white_spaces(t_token *token)
+t_token	*skip_white_spaces(t_token *token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	if (!token)
 		return (NULL);

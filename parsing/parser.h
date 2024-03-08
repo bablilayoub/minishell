@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 02:37:09 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/08 01:30:17 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_token	*find_args(t_cmd *cmd, t_token *token);
 
 // Cleaning
 void	free_data(t_data *data);
+void	free_token(t_token *token);
 
 // Signals
 void	signal_handler(int sig);

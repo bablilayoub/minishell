@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/05 23:09:04 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/07 22:58:02 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,11 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 					tmp = add_file(&cmd->redirect_out, tmp, APPEND_OUT);
 				else if (ft_strncmp(tmp_type, REDIR_OUT, 1) == 0)
 					tmp = add_file(&cmd->redirect_out, tmp, REDIR_OUT);
+			} 
+			else 
+			{
+				cmd->has_redir_out = 1;
+				tmp = add_file(&cmd->redirect_out, NULL, REDIR_OUT);
 			}
 		}
 		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0) && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
@@ -98,6 +103,11 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 					tmp = add_file(&cmd->redirect_in, tmp, HERE_DOC);
 				else if (ft_strncmp(tmp_type, REDIR_IN, 1) == 0)
 					tmp = add_file(&cmd->redirect_in, tmp, REDIR_IN);
+			} 
+			else 
+			{
+				cmd->has_redir_in = 1;
+				tmp = add_file(&cmd->redirect_in, NULL, REDIR_IN);
 			}
 		}
 		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, HERE_DOC, 2) == 0) && (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE))

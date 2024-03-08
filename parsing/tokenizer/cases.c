@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 02:37:27 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/08 00:12:18 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ void	handle_special_char(t_token_params *params, char *value, int len)
 {
 	char	*temp;
 	int		parent_pid;
-	int		expandable = 1;
-	
+	int		expandable;
+
+	expandable = 1;
 	if (value[0] == '$' && value[1] == '\0' && params->line[params->i + 1] != '$')
 	{
 		params->i++;
@@ -62,7 +63,10 @@ void	handle_special_char(t_token_params *params, char *value, int len)
 	else
 	{
 		params->value = ft_strdup(value);
-		params->type = ft_strdup(value);
+		if (params->state == IN_DQUOTE || params->state == IN_QUOTE)
+			params->type = ft_strdup(WORD);
+		else
+			params->type = ft_strdup(value);
 	}
 	params->token = new_token(params->value, params->type, params->state, len);
 	params->head = add_token(params->head, params->token);
