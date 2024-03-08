@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/08 02:27:55 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/08 16:54:05 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void convert_tokens_to_commands(t_data *data)
 	char *full_arg = NULL;
 
 	tmp = filtrate_tokens(tmp);
-	// print_tokens(tmp);
+	print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
 	if (!tmp)
 		return;
@@ -254,5 +254,5 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(data->cmd);
+	print_args(data->cmd);
 }
