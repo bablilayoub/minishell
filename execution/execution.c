@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/09 21:26:53 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/09 21:43:40 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void start_execution(t_data *data, int fd_c)
 	{
 		handle_redirections(current, fd, k, fd_c);
 		excute_builtin(current, data);
+		close_fds(fd, fd_c);
 		return;
 	}
 	while (++i < fd_c)
