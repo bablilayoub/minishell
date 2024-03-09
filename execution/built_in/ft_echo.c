@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:11:39 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/08 01:39:05 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/09 21:28:32 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,7 @@ void ft_echo(t_cmd *cmd)
     i++;
     while (tmp->arguments[i])
     {
-        if (tmp->arguments[i][0] == '\\' && (tmp->arguments[i][1] == 'n'
-            || tmp->arguments[i][1] == 't'))
-        {
-            if (tmp->arguments[i][1] == 'n')
-                printf("\n");
-            else
-                printf("\t");
-        }
-        else
-            printf("%s", tmp->arguments[i]);
+        printf("%s", tmp->arguments[i]);
         i++;
     }
     // if (ft_strncmp(tmp->arguments[1], "-n", ft_strlen(tmp->arguments[1])) != 0)

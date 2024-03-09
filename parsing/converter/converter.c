@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/09 00:03:07 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/09 21:27:29 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void print_args(t_cmd *head)
 			arg = tmp->args;
 			while (tmp->args)
 			{
+				if (!tmp->args->arg)
+					break;
 				if (ft_strncmp(tmp->args->arg, NEW_LINE, 1) != 0 && ft_strncmp(tmp->args->arg, TAB_SPACE, 1) != 0)
 					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", tmp->args->arg, 8 - (int)ft_strlen(tmp->args->arg), " ", tmp->args->env_var);
 				else if (ft_strncmp(tmp->args->arg, NEW_LINE, 1) == 0)
@@ -114,59 +116,48 @@ t_token *get_command_name(t_token *head)
 
 t_token *filtrate_tokens(t_token *head)
 {
-	t_token *tmp = head;
 	t_token *new_head = NULL;
-	if (!tmp)
+	if (!head)
 		return (NULL);
+	while (head)
+	{
+		if ((ft_strncmp(head->type, DOUBLE_QUOTE, 1) == 0 || ft_strncmp(head->type, QUOTE, 1) == 0 || ft_strlen(head->value) == 0) && head->state == GENERAL)
+		{
+			head = head->next;
+			continue;
+		}
+		new_head = add_token(new_head, new_token(head->value, head->type, head->state, head->len));
+		head = head->next;
+	}
+	t_token *tmp = new_head;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) == 0 && tmp->state == GENERAL)
+		while (tmp && (ft_strncmp(tmp->type, WORD, 4) == 0))
 		{
-			tmp = tmp->next;
-			continue;
+			if (tmp->next && ft_strncmp(tmp->next->type, WORD, 4) == 0)
+			{
+				tmp->value = ft_strjoin(tmp->value, tmp->next->value);
+				tmp->len = ft_strlen(tmp->value);
+				tmp->next = tmp->next->next;
+			}
+			else
+				break;
 		}
-		else if (ft_strncmp(tmp->type, QUOTE, 1) == 0 && tmp->state == GENERAL)
+		while (tmp && (ft_strncmp(tmp->type, WHITE_SPACE, 1) != 0 || ft_strlen(tmp->value) == 0))
 		{
-			tmp = tmp->next;
-			continue;
+			if (tmp->next && ft_strlen(tmp->next->value) == 0)
+			{
+				tmp->type = ft_strdup(tmp->next->type);
+				tmp->value = ft_strjoin(tmp->value, tmp->next->value);
+				tmp->len = ft_strlen(tmp->value);
+				tmp->next = tmp->next->next;
+			}
+			else
+				break;
 		}
-		else
-			new_head = add_token(new_head, new_token(tmp->value, tmp->type, tmp->state, tmp->len));
 		tmp = tmp->next;
 	}
-	tmp = new_head;
-	char *value = NULL;
-	t_token *final_head = NULL;
-	tmp = skip_white_spaces(tmp);
-	if (!tmp)
-		return (NULL);
-	if (ft_strncmp(tmp->type, WORD, 1) == 0)
-		tmp->state = GENERAL;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->type, WORD, 4) == 0 && tmp->state == GENERAL)
-		{
-			while (tmp && ft_strncmp(tmp->type, WORD, 4) == 0)
-			{
-				if (value == NULL)
-					value = ft_strdup(tmp->value);
-				else
-					value = ft_strjoin(value, tmp->value);
-				tmp = tmp->next;
-			}
-			if (value)
-			{
-				final_head = add_token(final_head, new_token(value, WORD, GENERAL, ft_strlen(value)));
-				value = NULL;
-			}
-		}
-		else
-		{
-			final_head = add_token(final_head, new_token(tmp->value, tmp->type, tmp->state, tmp->len));
-			tmp = tmp->next;
-		}
-	}
-	return (final_head);
+	return (new_head);
 }
 
 void convert_tokens_to_commands(t_data *data)
@@ -176,10 +167,12 @@ void convert_tokens_to_commands(t_data *data)
 	t_token *tmp = data->token;
 	t_cmd *head = NULL;
 	int found_cmd = 0;
-	char *full_arg = NULL;
 
-	// tmp = filtrate_tokens(tmp);
+	tmp = filtrate_tokens(tmp);
+	// print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
+	if (!tmp)
+		return;
 	if (ft_strncmp(tmp->type, WORD, 1) != 0 && ft_strncmp(tmp->type, APPEND_OUT, 2) != 0 && ft_strncmp(tmp->type, REDIR_OUT, 1) != 0 && ft_strncmp(tmp->type, HERE_DOC, 2) != 0 && ft_strncmp(tmp->type, REDIR_IN, 1) != 0 && ft_strncmp(tmp->type, ENV, 1) != 0)
 	{
 		printf("%s\n", PREFIX_ERROR "Syntax error");
@@ -193,28 +186,7 @@ void convert_tokens_to_commands(t_data *data)
 		{
 			if (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0 && tmp->state != IN_DQUOTE && tmp->state != IN_QUOTE)
 				break;
-			if (ft_strncmp(tmp->type, WORD, 4) == 0 && ft_strncmp(tmp->value, "export", 6) == 0 && !found_cmd)
-			{
-				found_cmd = 1;
-				cmd = new_cmd(tmp);
-				head = add_cmd(head, cmd);
-				tmp = skip_white_spaces(tmp);
-				while (tmp && not_a_shell_command(tmp))
-				{
-					while (tmp && ft_strncmp(tmp->type, WHITE_SPACE, 1) != 0)
-					{
-						if (full_arg == NULL)
-							full_arg = ft_strdup(tmp->value);
-						else
-							full_arg = ft_strjoin(full_arg, tmp->value);
-						tmp = tmp->next;
-					}
-					cmd->args = add_arg(cmd->args, full_arg, 1);
-					tmp = skip_white_spaces(tmp);
-					full_arg = NULL;
-				}
-			}
-			else if ((ft_strncmp(tmp->type, WORD, 4) == 0 || ft_strncmp(tmp->type, ENV, 1) == 0) && !found_cmd)
+			if ((ft_strncmp(tmp->type, WORD, 4) == 0 || ft_strncmp(tmp->type, ENV, 1) == 0) && !found_cmd)
 			{
 				found_cmd = 1;
 				cmd = new_cmd(tmp);

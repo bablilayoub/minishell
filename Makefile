@@ -83,11 +83,10 @@ re: fclean all
 
 # GIT COMMANDS
 push:
-	@echo "pushing"
-	@make fclean
-	@git add .
-	@git commit -m "$(m)"
-	@git push
+	@read -p "Enter commit message: " message; \
+	git add .; \
+	git commit -m "$$message"; \
+	git push
 	@echo "pushed"
  
 force:
