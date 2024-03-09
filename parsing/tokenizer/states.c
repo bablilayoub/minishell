@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:21:56 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/01 16:02:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/09 04:09:06 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	set_in_quotes(t_token_params *params, int quote)
 		else
 			params->in_quote = 1;
 	}
-	else
+	else if (quote == 2)
 	{
 		if (params->in_dquote)
 			params->in_dquote = 0;

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/08 02:01:39 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/09 04:17:12 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 void handle_env_var(t_data *data, t_cmd *tmp,
 					char *env_var, char *exit_status)
 {
-	if (ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1 && ft_strlen(tmp->args->arg) > 1)
+	if (!tmp->args)
+		return ;
+	if (tmp->args->arg && ft_strncmp(tmp->args->arg, "$", 1) == 0 && tmp->args->env_var == 1 && ft_strlen(tmp->args->arg) > 1)
 	{
-		if (ft_strncmp(tmp->args->arg, "$?", 2) == 0)
+		if (tmp->args->arg && ft_strncmp(tmp->args->arg, "$?", 2) == 0)
 		{
 			exit_status = ft_itoa(data->exit_status);
 			tmp->args->arg = ft_strjoin(exit_status, tmp->args->arg + 2);
@@ -41,12 +43,12 @@ void get_env_vars(t_data *data)
 	tmp = data->token;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->value, "$?", 2) == 0)
+		if (tmp->value && (ft_strncmp(tmp->value, "$?", 2) == 0) && tmp->state != IN_QUOTE)
 		{
 			tmp->value = ft_itoa(data->exit_status);
 			tmp->type = ft_strdup(WORD);
 		}
-		else if (ft_strncmp(tmp->type, ENV, ft_strlen(ENV)) == 0 && ft_strlen(tmp->value) > 1 && tmp->state != IN_QUOTE)
+		else if (tmp->value && ft_strncmp(tmp->type, ENV, ft_strlen(ENV)) == 0 && ft_strlen(tmp->value) > 1 && tmp->state != IN_QUOTE && ft_strncmp(tmp->value, "$?", 2) != 0)
 		{
 			tmp->value = get_env(tmp->value + 1, data);
 			if (!tmp->value)
@@ -55,7 +57,7 @@ void get_env_vars(t_data *data)
 				tmp->type = ft_strdup(WHITE_SPACE);
 			}
 		}
-		else if (ft_strncmp(tmp->value, "$", 1) == 0)
+		else if (tmp->value && ft_strncmp(tmp->value, "$", 1) == 0)
 			tmp->type = ft_strdup(WORD);
 		tmp = tmp->next;
 	}

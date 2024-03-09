@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 23:46:04 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/09 02:52:34 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*get_word(char *line, size_t *i, int alpha_num)
 	char	*word;
 
 	start = *i;
+	if (!line)
+		return (NULL);
 	if (alpha_num)
 	{
 		while (line[*i] && ft_isalnum(line[*i]))
@@ -105,19 +107,7 @@ void print_tokens(t_token *token)
 	{
 		i = 0;
 		space_left = 14 - ft_strlen(tmp->value);
-
-		if (ft_strncmp(tmp->type, NEW_LINE, 1) != 0 && ft_strncmp(tmp->type, TAB_SPACE, 1) != 0)
-			printf("|    '%s'", tmp->value);
-		else if (ft_strncmp(tmp->type, NEW_LINE, 1) == 0)
-		{
-			space_left = 14 - ft_strlen("\\n");
-			printf("|    '\\n'");
-		}
-		else
-		{
-			space_left = 14 - ft_strlen("\\t");
-			printf("|    '\\t'");
-		}
+		printf("|    '%s'", tmp->value);
 		while (i < space_left)
 		{
 			printf(" ");
