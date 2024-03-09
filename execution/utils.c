@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/06 23:13:00 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/09 00:10:01 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int args_lenght(t_arg *args)
 {
     t_arg *tmp = args;
-    
+
     int i = 0;
     while (tmp)
     {
@@ -28,7 +28,7 @@ int args_lenght(t_arg *args)
 int cmd_lenght(t_cmd *cmd)
 {
     t_cmd *tmp = cmd;
-    
+
     int i = 0;
     while (tmp)
     {
@@ -57,10 +57,10 @@ void close_fds(int fd[][2], int fd_c)
     }
 }
 
-void  update_prefix(t_data *data, char *prefix)
+void update_prefix(t_data *data, char *prefix)
 {
     char *new_prefix;
-    
+
     if (!prefix || !prefix[0])
         prefix = "root";
     free(data->prefix);
@@ -74,15 +74,15 @@ void  update_prefix(t_data *data, char *prefix)
 }
 void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c, t_data *data)
 {
-	int i;
-	int status;
+    int i;
+    int status;
 
-	status = 0;
-	close_fds(fd, fd_c);
-	i = -1;
-	while (++i < fd_c)
-		waitpid(pid[i], &status, 0);
-	data->exit_status = WEXITSTATUS(status);
+    status = 0;
+    close_fds(fd, fd_c);
+    i = -1;
+    while (++i < fd_c)
+        waitpid(pid[i], &status, 0);
+    data->exit_status = WEXITSTATUS(status);
 }
 void check_error(int fd, const char *msg, int flag)
 {
@@ -90,21 +90,21 @@ void check_error(int fd, const char *msg, int flag)
     {
         perror(msg);
         if (flag)
-            return ;
+            return;
         else
             exit(EXIT_FAILURE);
     }
 }
 
-void check_error_null(void *ptr, const char *msg, int flag)
+void check_error_null(void *ptr, const char *msg, t_cmd *cmd)
 {
     if (!ptr)
     {
-        perror(msg);
-        if (flag)
-            return ;
-        else
+        printf(PREFIX_ERROR "%s : %s\n", msg, strerror(errno));
+        if (cmd->next || cmd->args)
             exit(EXIT_FAILURE);
+        else
+            return;
     }
 }
 void free_triplet(char *s1, char *s2, char *s3)
@@ -117,7 +117,7 @@ void free_triplet(char *s1, char *s2, char *s3)
 void free_double(char **ptr)
 {
     int i;
-    
+
     i = -1;
     while (ptr[++i])
         free(ptr[i]);
@@ -140,4 +140,24 @@ int ft_strdoublelen(char **str)
     while (str[i])
         i++;
     return i;
+}
+
+void print_error(t_cmd *cmd, char *dirname)
+{
+	printf(PREFIX_ERROR "cd: %s: %s\n", dirname, strerror(errno));
+	if (cmd->next || cmd->prev)
+		exit(EXIT_FAILURE);
+	else
+		return;
+}
+
+void print(char **export)
+{
+	int i;
+
+	if (!export || !*export)
+		return;
+	i = -1;
+	while (export[++i])
+		printf("%s\n", export[i]);
 }

@@ -3,16 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 22:26:39 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/09 00:19:20 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing/parser.h"
 
+
+char **allocate_export(char **env)
+{
+	int i;
+
+	int lenght;
+	char **tmp;
+
+	lenght = ft_strdoublelen(env);
+	tmp = malloc(sizeof(char *) * (lenght + 1));
+	if (!tmp)
+		exit(EXIT_FAILURE);
+	i = -1;
+	while (env[++i])
+		tmp[i] = ft_strjoin("declare -x ", env[i]);
+	tmp[i] = NULL;
+	return (tmp);
+}
 int	main(int total, char **args, char **env)
 {
 	t_data	data;
@@ -24,9 +42,9 @@ int	main(int total, char **args, char **env)
 		return (1);
 	}
 	data.env = allocate_env(env);
+	data.export = allocate_export(data.env);
 	data.token = NULL;
 	data.cmd = NULL;
-	data.export = NULL;
 	data.in_valid = NULL;
 	data.exit_status = 0;
 	data.prefix = ft_strdup(PREFIX);

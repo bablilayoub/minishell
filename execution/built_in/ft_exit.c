@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:14:21 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/03 02:47:08 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/09 04:56:40 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,22 @@
 
 void ft_exit(t_data *data, t_cmd *cmd)
 {
-    int fd_out;
-
-    fd_out = open(ft_strjoin(data->shell_path, "/exit.txt"), O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0644);
-    if (cmd->arguments[1] == NULL)
+    (void)data;
+    if (cmd->arguments[2])
     {
-        write(fd_out, "exit", 4);
-        close(fd_out);
-        exit(EXIT_SUCCESS);
+        printf(PREFIX_ERROR"exit: too many arguments\n");
+        if (cmd->next || cmd->prev)
+            exit(1);
+        else
+            return;
     }
+    if (!cmd->arguments[1])
+        exit(0);
     else
-    {
-        write(fd_out, cmd->arguments[1], ft_strlen(cmd->arguments[1]));
-        close(fd_out);
-        exit(atoi(cmd->arguments[1]));
+    {        
+        if (cmd->arguments[1][0] == '-')
+            exit(256 - ft_atoi(cmd->arguments[1] + 1));
+        else
+            exit(ft_atoi(cmd->arguments[1]));
     }
 }

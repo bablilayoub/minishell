@@ -6,25 +6,78 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/07 22:22:59 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/09 21:00:39 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-int check_exported(char *exported, char *arg)
+int ft_is_alphanumeric(char *key)
 {
     int i;
+
+    i = -1;
+    while (key[++i])
+    {
+        if (!ft_isalnum(key[i]) && key[i] != '_')
+            return false;
+    }
+    return true;
+}
+
+void export_env_to_exp(char ***export, char **args)
+{
+    int i;
+    int j;
+    char *sub;
+    char **key;
+    int found;
+    char **key_arg;
+
+    i = 0;
+    while (args[++i])
+    {
+        j = -1;
+        found = 0;
+        key_arg = ft_split(args[i], '=');
+        while ((*export)[++j])
+        {
+            sub = ft_substr((*export)[j], 11, ft_strlen((*export)[j]));
+            key = ft_split(sub, '=');
+            if (ft_strncmp(key_arg[0], key[0], ft_strlen(key[0])) == 0)
+            {
+                if (ft_strchr(args[i], '='))
+                    (*export)[j] = ft_strjoin("declare -x ", args[i]);
+                found = 1;
+            }
+            else
+                (*export)[j] = (*export)[j];
+        }
+        if (!found)
+            *export = add_var(*export, ft_strjoin("declare -x ", args[i]));
+    }
+}
+
+int check_exported(char *exported)
+{
+    int i;
+    char **key_val;
+    char *key;
 
     i = 0;
     if (!ft_strchr(exported, '='))
         return false;
-    else if ((exported[i] == '=' && exported[i + 1] == '\0'))
-        return (printf(PREFIX_ERROR "export: `%s': not an valid identifier\n", arg), false);
-    else if (exported[i] == '=' && ft_isascii(exported[i + 1]))
-        return (printf(PREFIX_ERROR "export: `%s': not an valid identifier\n", arg), false);
-    else if (ft_isdigit(exported[i]))
-        return (printf(PREFIX_ERROR "export: `%s': not an valid identifier\n", arg), false);
+    else if (exported[i] == '=' || (exported[i] == '$' && exported[i + 1] == '\0'))
+        return (printf(PREFIX_ERROR "export: not an identifier\n"), false);
+    key_val = key_value(exported);
+    key = key_val[0];
+    if (ft_isdigit(key[i]) || (key[i] == '_' && !key[i + 1]) || !ft_is_alphanumeric(key))
+    {
+        if ((key[i] == '_' && !key[i + 1]))
+            return false;
+        else
+            return (printf(PREFIX_ERROR "export: not an identifier\n"), false);
+    }
     return true;
 }
 
@@ -45,47 +98,7 @@ char **load_key_value(char *key, char *value)
     return key_value;
 }
 
-char *check_dollar_sign(char **env, char *value)
-{
-    int i;
-    int k;
-    int j;
-    char *tmp;
-    char *var;
-    char *rest;
-
-    i = -1;
-    while (value[++i])
-    {
-        if (value[i] == '$')
-        {
-            k = i;
-            tmp = ft_substr(value, 0, i);
-            while (value[k] && value[k] != ' ' && value[k] != '=')
-                k++;
-            if (value[k] == '=' && value[k + 1] == '\0')
-                rest = ft_strdup("=");
-            else
-                rest = ft_strdup(value + k);
-            var = ft_substr(value, i + 1, k - i - 1);
-            j = -1;
-            while (env[++j])
-            {
-                if (ft_strncmp(env[j], var, ft_strlen(var)) == 0)
-                {
-                    value = ft_strjoin(tmp, ft_getenv(var, env));
-                    value = ft_strjoin(value, rest);
-                    i = -1;
-                    break;
-                }
-                else
-                    value = ft_strjoin(tmp, rest);
-            }
-        }
-    }
-    return value;
-}
-char **key_value(char *exported, char **env)
+char **key_value(char *exported)
 {
     char *value;
     char *key;
@@ -103,8 +116,6 @@ char **key_value(char *exported, char **env)
     while (exported[k])
         k++;
     value = ft_substr(exported, i + 1, k);
-    if (ft_strchr(value, '$'))
-        value = check_dollar_sign(env, value);
     if (!value)
     {
         free(key);
@@ -112,40 +123,6 @@ char **key_value(char *exported, char **env)
     }
     key_value = load_key_value(key, value);
     return key_value;
-}
-void ret_same_env(t_data *data, char **env)
-{
-    int i;
-    int fd_out;
-
-    i = 0;
-    fd_out = open(ft_strjoin(data->shell_path, "/export.txt"), O_WRONLY | O_CREAT | O_APPEND | O_TRUNC, 0644);
-    if (fd_out == -1)
-        return check_error(fd_out, "open", 0);
-    while (env[i])
-    {
-        write(fd_out, env[i], ft_strlen(env[i]));
-        write(fd_out, "\n", 1);
-        i++;
-    }
-    close(fd_out);
-}
-
-void add_variable(int fd_out, char *exported, int *found)
-{
-    if (*found == 1)
-        return;
-    write(fd_out, exported, ft_strlen(exported));
-    write(fd_out, "\n", 1);
-}
-
-void update_key_value(int fd_out, char *key, char *value, int *found)
-{
-    write(fd_out, key, ft_strlen(key));
-    write(fd_out, "=", 1);
-    write(fd_out, value, ft_strlen(value));
-    write(fd_out, "\n", 1);
-    *found = 1;
 }
 
 char **add_var(char **env, char *exported)
@@ -167,51 +144,40 @@ char **add_var(char **env, char *exported)
     return new_env;
 }
 
-void ft_export(t_data *data, char **env)
+void ft_export(t_data *data, char ***env)
 {
     char **key_val;
-    int fd_out;
     int found;
     size_t k;
     int i;
-    char *exported;
 
     i = 0;
     int j = 0;
     while (data->cmd->arguments[++j])
     {
-        if (!check_exported(data->cmd->arguments[j], data->cmd->arguments[j]))
-        {
-            ret_same_env(data, env);
+        if (!check_exported(data->cmd->arguments[j]))
             continue;
-        }
-        fd_out = open(ft_strjoin(data->shell_path, "/export.txt"), O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        if (fd_out == -1)
-            return check_error(fd_out, "open", 0);
-        key_val = key_value(data->cmd->arguments[j], env);
+        key_val = key_value(data->cmd->arguments[j]);
+
         if (!key_val)
-            exit(EXIT_FAILURE); 
+            exit(EXIT_FAILURE);
         (1 == 1) && (i = -1, found = 0);
-        while (env[++i])
+        while ((*env)[++i])
         {
             k = 0;
-            while (env[i][k] && env[i][k] != '=')
+            while ((*env)[i][k] && (*env)[i][k] != '=')
                 k++;
-            if ((ft_strncmp(env[i], key_val[0], k) == 0) && (k == ft_strlen(key_val[0])))
+            if ((ft_strncmp((*env)[i], key_val[0], k) == 0) && (k == ft_strlen(key_val[0])))
             {
-                update_key_value(fd_out, key_val[0], key_val[1], &found);
-                env[i] = ft_strjoin(key_val[0], "=");
-                env[i] = ft_strjoin(env[i], key_val[1]);
+                (*env)[i] = ft_strjoin(key_val[0], "=");
+                (*env)[i] = ft_strjoin((*env)[i], key_val[1]);
+                found = 1;
             }
             else
-                write(fd_out, env[i], ft_strlen(env[i]));
-            write(fd_out, "\n", 1);
+                (*env)[i] = (*env)[i];
         }
-        exported = ft_strjoin(key_val[0], "=");
-        exported = ft_strjoin(exported, key_val[1]);
-        add_variable(fd_out, exported, &found);
-        if (ft_strdoublelen(data->cmd->arguments) > 2 && !found)
-            env = add_var(env, exported);
-        close(fd_out);
+        if (!found)
+            *env = add_var(*env, data->cmd->arguments[j]);
     }
+    export_env_to_exp(&data->export, data->cmd->arguments);
 }

@@ -10,7 +10,7 @@ HEADER = minishell.h
 READLINE_LIB = $(shell brew --prefix readline)/lib
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 
-CFLAGS = -Wall -Wextra -Werror  -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror  -g #-fsanitize=address
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a
@@ -30,8 +30,7 @@ PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER)) $(addprefix converter/
 # EXECUTION
 EXECUTION_HEADER = ./execution/execution.h
 BUILTIN = built_in.c ft_chdir.c ft_echo.c ft_env.c ft_exit.c ft_export.c ft_pwd.c ft_unset.c
-INCOMING = chdir.c env.c exit_shell.c
-EXECUTION = execution.c  utils.c init.c $(addprefix built_in/, $(BUILTIN)) $(addprefix incoming/, $(INCOMING))
+EXECUTION = execution.c  utils.c init.c $(addprefix built_in/, $(BUILTIN))
 
 # SOURCES
 PARSING_SRCS = $(addprefix parsing/, $(PARSING))

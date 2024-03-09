@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:14:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/02/27 15:28:52 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/08 21:53:36 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ void ft_env(char **env)
 {
     int i;
 
-    i = 0;
-    while (env[i])
-    {
+    if (!env)
+        return;
+    i = -1;
+    while (env[++i])
         printf("%s\n", env[i]);
-        i++;
-    }
 }
