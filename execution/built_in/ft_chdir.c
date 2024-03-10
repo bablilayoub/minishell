@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:09 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/08 21:19:32 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/10 22:44:15 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char *ft_getenv(char *name, char **env)
     int i;
     int j;
 
+    if (!env || !name)
+        return NULL;
     i = -1;
     while (env[++i])
     {

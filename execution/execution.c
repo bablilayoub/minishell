@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/09 21:43:40 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/10 23:29:41 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,34 @@ void redirections_in(t_cmd *cmd, int *fd_in)
 		}
 	}
 }
+
+void no_redirections(t_cmd *cmd, int *fd_in, int *fd_out, int fd[][2], int k, int fd_c)
+{
+	if (cmd->next)
+	{
+		if (k == 0)
+			*fd_in = STDIN_FILENO;
+		else
+			*fd_in = fd[k - 1][0];
+		if (k == fd_c - 1)
+			*fd_out = STDOUT_FILENO;
+		else
+			*fd_out = fd[k][1];
+	}
+	else if (cmd->prev)
+	{
+		if (k == 0)
+			*fd_in = STDIN_FILENO;
+		else
+			*fd_in = fd[k - 1][0];
+		*fd_out = STDOUT_FILENO;
+	}
+	else
+	{
+		*fd_in = STDIN_FILENO;
+		*fd_out = STDOUT_FILENO;
+	}
+}
 void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 {
 	int fd_in = 0;
@@ -130,16 +158,7 @@ void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
 		}
 	}
 	else
-	{
-		if (k == 0)
-			fd_in = STDIN_FILENO;
-		else
-			fd_in = fd[k - 1][0];
-		if (k == fd_c - 1)
-			fd_out = STDOUT_FILENO;
-		else
-			fd_out = fd[k][1];
-	}
+		no_redirections(cmd, &fd_in, &fd_out, fd, k, fd_c);
 	dup2(fd_in, STDIN_FILENO);
 	dup2(fd_out, STDOUT_FILENO);
 }
@@ -149,13 +168,44 @@ void excute_child(t_cmd *current, t_data *data, int fd[][2], int k, int fd_c)
 	handle_redirections(current, fd, k, fd_c);
 	close_fds(fd, fd_c);
 	if (current->built_in)
+	{
 		excute_builtin(current, data);
+		exit(EXIT_SUCCESS);
+	}
 	else
 	{
 		execve(current->path, current->arguments, data->env);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
+}
+
+void handle_single_command_redirections(t_cmd *cmd)
+{
+	int fd_out = 1;
+	int fd_in = 0;
+	int flag = 0;
+
+	if (cmd->has_redir_in || cmd->has_redir_out)
+	{
+		if (cmd->has_redir_out)
+		{
+			redirections_out(cmd, &fd_out);
+			flag = 1;
+		}
+		if (cmd->has_redir_in)
+		{
+			redirections_in(cmd, &fd_in);
+			flag = 2;
+		}
+	}
+	dup2(fd_in, STDIN_FILENO);
+	dup2(fd_out, STDOUT_FILENO);
+	if (flag == 1)
+		close(fd_out);
+	if (flag == 2)
+		close(fd_in);
+
 }
 void start_execution(t_data *data, int fd_c)
 {
@@ -164,15 +214,22 @@ void start_execution(t_data *data, int fd_c)
 	int fd[fd_c][2];
 	pid_t pid[fd_c];
 	t_cmd *current;
-	
+	int tmp_in;
+	int tmp_out;
+
 	k = 0;
 	i = -1;
 	current = data->cmd;
 	if (current && !current->next && current->built_in)
 	{
-		handle_redirections(current, fd, k, fd_c);
+		tmp_in = dup(STDIN_FILENO);
+		tmp_out = dup(STDOUT_FILENO);
+		handle_single_command_redirections(current);
 		excute_builtin(current, data);
-		close_fds(fd, fd_c);
+		dup2(tmp_in, STDIN_FILENO);
+		dup2(tmp_out, STDOUT_FILENO);
+		close(tmp_in);
+		close(tmp_out);
 		return;
 	}
 	while (++i < fd_c)

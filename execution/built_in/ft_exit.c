@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:14:21 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/09 04:56:40 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/10 02:50:54 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void ft_exit(t_data *data, t_cmd *cmd)
     if (cmd->arguments[2])
     {
         printf(PREFIX_ERROR"exit: too many arguments\n");
+        exit(1);
         if (cmd->next || cmd->prev)
             exit(1);
         else

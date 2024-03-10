@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/08 21:02:51 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/10 23:53:41 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ bool initialize_path(t_cmd *head, t_data *data)
             continue;
         }
         env = ft_split(ft_getenv("PATH", data->env), ':');
+        if (!env)
+        {
+            printf(PREFIX_ERROR"%s: No such file or directory\n", head->cmd);
+            return (false);
+        }
         i = 0;
         while (env[i])
         {
