@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/09 04:17:12 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/10 22:23:57 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void get_env_vars(t_data *data)
 				tmp->value = ft_strdup("");
 				tmp->type = ft_strdup(WHITE_SPACE);
 			}
+			else
+				tmp->type = ft_strdup(WORD);
 		}
 		else if (tmp->value && ft_strncmp(tmp->value, "$", 1) == 0)
 			tmp->type = ft_strdup(WORD);
