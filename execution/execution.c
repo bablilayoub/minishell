@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/10 23:29:41 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/11 00:36:26 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,8 @@ void excute_child(t_cmd *current, t_data *data, int fd[][2], int k, int fd_c)
 	}
 	else
 	{
+		if (!current->path)
+			exit(EXIT_SUCCESS);
 		execve(current->path, current->arguments, data->env);
 		perror("execve");
 		exit(EXIT_FAILURE);
@@ -205,7 +207,6 @@ void handle_single_command_redirections(t_cmd *cmd)
 		close(fd_out);
 	if (flag == 2)
 		close(fd_in);
-
 }
 void start_execution(t_data *data, int fd_c)
 {

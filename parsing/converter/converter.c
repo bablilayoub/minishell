@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   converter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/09 21:27:29 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/11 00:24:07 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void convert_tokens_to_commands(t_data *data)
 	int found_cmd = 0;
 
 	tmp = filtrate_tokens(tmp);
-	// print_tokens(tmp);
+	print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
 	if (!tmp)
 		return;
@@ -220,12 +220,10 @@ void convert_tokens_to_commands(t_data *data)
 					if (tmp)
 						tmp = skip_white_spaces(tmp);
 				}
-				if (!tmp)
-				{
-					printf("%s\n", PREFIX_ERROR "Syntax error");
-					break;
-				}
-				cmd->cmd = tmp->value;
+				if (tmp)
+					cmd->cmd = tmp->value;
+				else
+					cmd->cmd = NULL;
 				head = add_cmd(head, cmd);
 				tmp = get_command_name(tmp);
 				tmp = skip_white_spaces(tmp);

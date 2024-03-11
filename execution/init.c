@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/10 23:53:41 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/11 00:21:06 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ bool initialize_path(t_cmd *head, t_data *data)
 
     while (head)
     {
+        if(!head->cmd)
+        {
+            head = head->next;
+            continue;
+        }
         if (head->built_in)
         {
             head = head->next;
