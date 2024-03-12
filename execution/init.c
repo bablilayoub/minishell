@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/11 19:30:18 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/12 21:17:33 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,12 @@ bool initialize_path(t_cmd *head, t_data *data)
         i = 0;
         while (env[i])
         {
+            data->temp = env[i];
             env[i] = ft_strjoin(env[i], "/");
+            free(data->temp);
+            data->temp = env[i];
             env[i] = ft_strjoin(env[i], head->cmd);
+            free(data->temp);
             if (access(env[i], F_OK | X_OK) == 0)
             {
                 head->path = env[i];
@@ -62,6 +66,7 @@ bool initialize_path(t_cmd *head, t_data *data)
             found_error = 1;
         }
         head = head->next;
+        free_array(env);
     }
     if (found_error)
     {
@@ -75,21 +80,25 @@ void initialize_arguments(t_cmd *cmd_list)
 {
     int i;
     t_cmd *temp;
-    t_arg *arg_temp;
+    t_arg *temp_arg;
 
     temp = cmd_list;
     while (temp)
     {
-        temp->arguments = malloc(sizeof(char *) * (args_lenght(temp->args) + 1));
         i = 0;
-        arg_temp = temp->args;
-        while (temp->args)
+        if (!temp->args)
         {
-
-            temp->arguments[i++] = temp->args->arg;
-            temp->args = temp->args->next;
+            temp = temp->next;
+            continue;
         }
-        temp->args = arg_temp;
+        temp->arguments = malloc(sizeof(char *) * (args_lenght(temp->args) + 1));
+        temp_arg = temp->args;
+        while (temp_arg)
+        {
+            temp->arguments[i] = ft_strdup(temp_arg->arg);
+            temp_arg = temp_arg->next;
+            i++;
+        }
         temp->arguments[i] = NULL;
         temp = temp->next;
     }

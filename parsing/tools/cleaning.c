@@ -6,39 +6,23 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/11 21:59:15 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/12 22:46:30 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	free_array(char **array)
+void	free_redirections(t_redirection *redir)
 {
-	int	i;
+	t_redirection	*tmp;
 
-	if (!array)
+	if (!redir)
 		return ;
-	i = 0;
-	while (array[i])
+	while (redir)
 	{
-		free(array[i]);
-		i++;
-	}
-	if (array)
-		free(array);
-}
-
-void	free_args(t_arg *args)
-{
-	t_arg	*tmp;
-
-	if (!args)
-		return ;
-	while (args)
-	{
-		tmp = args->next;
-		free(args);
-		args = tmp;
+		tmp = redir->next;
+		free(redir);
+		redir = tmp;
 	}
 }
 
@@ -54,6 +38,10 @@ void	free_cmd(t_cmd *cmd)
 			free_array(cmd->arguments);
 		if (cmd->args)
 			free_args(cmd->args);
+		if (cmd->redirect_in)
+			free_redirections(cmd->redirect_in);
+		if (cmd->redirect_out)
+			free_redirections(cmd->redirect_out);
 		tmp = cmd->next;
 		free(cmd);
 		cmd = tmp;

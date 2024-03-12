@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/09 20:35:30 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/12 21:22:19 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void  ft_exit(t_data *data, t_cmd *cmd);
 void ft_unset(t_cmd *cmd, char ***env, char ***export);
 // p arent incoming
 void   update_prefix(t_data *data, char *prefix);
-char **update_envpwd(char **env, char *oldpwd, char *pwd);
+char **update_envpwd(char **env, char *oldpwd, char *pwd, t_data *data);
 int ft_strdoublelen(char **str);
 
 // frees

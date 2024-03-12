@@ -6,13 +6,13 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/12 02:55:48 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/12 23:25:53 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-int not_a_shell_command(t_token *token)
+int	not_a_shell_command(t_token *token)
 {
 	if (!token)
 		return (0);
@@ -29,87 +29,15 @@ int not_a_shell_command(t_token *token)
 	return (1);
 }
 
-void print_args(t_cmd *head)
+t_token	*get_command_name(t_token *head)
 {
-	t_cmd *tmp = head;
-	t_arg *arg;
+	t_token	*tmp;
 
-	if (!tmp)
-		return;
-	while (tmp)
-	{
-		printf("--------------------------------------------\n");
-		printf("| Command  : %s %*s |\n", tmp->cmd, 28 - (int)ft_strlen(tmp->cmd), " ");
-		if (tmp->args)
-		{
-			arg = tmp->args;
-			while (tmp->args)
-			{
-				if (!tmp->args->arg)
-					break;
-				if (ft_strncmp(tmp->args->arg, NEW_LINE, 1) != 0 && ft_strncmp(tmp->args->arg, TAB_SPACE, 1) != 0)
-					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", tmp->args->arg, 8 - (int)ft_strlen(tmp->args->arg), " ", tmp->args->env_var);
-				else if (ft_strncmp(tmp->args->arg, NEW_LINE, 1) == 0)
-					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", "\\n", 8 - 2, " ", tmp->args->env_var);
-				else
-					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", "\\t", 8 - 2, " ", tmp->args->env_var);
-				tmp->args = tmp->args->next;
-			}
-			tmp->args = arg;
-		}
-		if (tmp->has_redir_in)
-		{
-			t_redirection *redir = tmp->redirect_in;
-			printf("|------------------------------------------|\n");
-			printf("| Redirection In %*s |\n", 25, " ");
-			while (redir)
-			{
-				printf("| Type     : '%s' %*s |\n", redir->type, 26 - (int)ft_strlen(redir->type), " ");
-				printf("| File     : '%s' %*s |\n", redir->file, 26 - (int)ft_strlen(redir->file), " ");
-				if (redir->next)
-					printf("|%*s|\n", 42, " ");
-				redir = redir->next;
-			}
-			printf("|------------------------------------------|\n");
-		}
-		else
-			printf("| No Redirection In %*s |\n", 22, " ");
-		if (tmp->has_redir_out)
-		{
-			t_redirection *redir = tmp->redirect_out;
-			printf("|------------------------------------------|\n");
-			printf("| Redirection Out %*s |\n", 24, " ");
-			while (redir)
-			{
-				printf("| Type     : '%s' %*s |\n", redir->type, 26 - (int)ft_strlen(redir->type), " ");
-				printf("| File     : '%s' %*s |\n", redir->file, 26 - (int)ft_strlen(redir->file), " ");
-				if (redir->next)
-					printf("|%*s|\n", 42, " ");
-				redir = redir->next;
-			}
-			printf("|------------------------------------------|\n");
-		}
-		else
-			printf("| No Redirection Out %*s |\n", 21, " ");
-		if (tmp->has_pipe)
-			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
-		else
-			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
-		if (tmp->built_in)
-			printf("| Built In : %d %*s |\n", tmp->built_in, 27, " ");
-		else
-			printf("| Built In : %d %*s |\n", tmp->built_in, 27, " ");
-		printf("--------------------------------------------\n");
-		tmp = tmp->next;
-	}
-}
-
-t_token *get_command_name(t_token *head)
-{
-	t_token *tmp = head;
+	tmp = head;
 	if (!tmp)
 		return (NULL);
-	while (tmp && not_a_shell_command(tmp) && ft_strncmp(tmp->type, WORD, 4) != 0)
+	while (tmp && not_a_shell_command(tmp)
+		&& ft_strncmp(tmp->type, WORD, 4) != 0)
 		tmp = tmp->next;
 	return (tmp);
 }
@@ -138,8 +66,11 @@ t_token *filtrate_tokens(t_data *data, t_token *head)
 		{
 			if (tmp->next && ft_strncmp(tmp->next->type, WORD, 4) == 0)
 			{
+				data->temp = tmp->value;
 				tmp->value = ft_strjoin(tmp->value, tmp->next->value);
+				free(data->temp);
 				tmp->len = ft_strlen(tmp->value);
+				free_tokens(tmp->next);
 				tmp->next = tmp->next->next;
 			}
 			else
@@ -149,9 +80,14 @@ t_token *filtrate_tokens(t_data *data, t_token *head)
 		{
 			if (tmp->next && ft_strlen(tmp->next->value) == 0)
 			{
+				data->temp = tmp->type;
 				tmp->type = ft_strdup(tmp->next->type);
+				free(data->temp);
+				data->temp = tmp->value;
 				tmp->value = ft_strjoin(tmp->value, tmp->next->value);
+				free(data->temp);
 				tmp->len = ft_strlen(tmp->value);
+				free_tokens(tmp->next);
 				tmp->next = tmp->next->next;
 			}
 			else
@@ -174,7 +110,7 @@ void convert_tokens_to_commands(t_data *data)
 	int found_cmd = 0;
 
 	tmp = filtrate_tokens(data, tmp);
-	print_tokens(tmp);
+	// print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
 	if (!tmp)
 		return;
@@ -229,6 +165,7 @@ void convert_tokens_to_commands(t_data *data)
 					cmd->cmd = tmp->value;
 				else
 					cmd->cmd = NULL;
+				cmd->built_in = is_built_in(cmd->cmd);
 				head = add_cmd(head, cmd);
 				tmp = get_command_name(tmp);
 				tmp = skip_white_spaces(tmp);
@@ -249,5 +186,5 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	// print_args(data->cmd);
+	print_args(data->cmd);
 }

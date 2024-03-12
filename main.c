@@ -6,13 +6,12 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/12 02:56:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/12 22:45:29 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing/parser.h"
-
 
 int	main(int total, char **args, char **env)
 {
@@ -26,7 +25,7 @@ int	main(int total, char **args, char **env)
 	}
 	data.env = allocate_env(env);
 	data.export = allocate_export(env);
-	data.token = NULL; 
+	data.token = NULL;
 	data.cmd = NULL;
 	data.in_valid = NULL;
 	data.exit_status = 0;
