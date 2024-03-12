@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/11 00:36:26 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/11 19:52:48 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void redirections_out(t_cmd *cmd, int *fd_out)
 	}
 }
 
-void redirections_in(t_cmd *cmd, int *fd_in)
+int redirections_in(t_cmd *cmd, int *fd_in)
 {
 	if (cmd->redirect_in)
 	{
@@ -100,10 +100,21 @@ void redirections_in(t_cmd *cmd, int *fd_in)
 			if (ft_strncmp(cmd->redirect_in->type, "<<", 2) == 0)
 				*fd_in = here_doc(cmd->redirect_in->file);
 			else
+			{
+				if (access(cmd->redirect_in->file, F_OK) == -1)
+				{
+					printf(PREFIX_ERROR"%s: no such file or directory\n", cmd->redirect_in->file);
+					if (!cmd->built_in)
+						exit(EXIT_FAILURE);
+					else
+						return (0);
+				}
 				*fd_in = open(cmd->redirect_in->file, O_RDONLY);
+			}
 			cmd->redirect_in = cmd->redirect_in->next;
 		}
 	}
+	return (1);
 }
 
 void no_redirections(t_cmd *cmd, int *fd_in, int *fd_out, int fd[][2], int k, int fd_c)
@@ -182,7 +193,7 @@ void excute_child(t_cmd *current, t_data *data, int fd[][2], int k, int fd_c)
 	}
 }
 
-void handle_single_command_redirections(t_cmd *cmd)
+int handle_single_command_redirections(t_cmd *cmd)
 {
 	int fd_out = 1;
 	int fd_in = 0;
@@ -197,7 +208,8 @@ void handle_single_command_redirections(t_cmd *cmd)
 		}
 		if (cmd->has_redir_in)
 		{
-			redirections_in(cmd, &fd_in);
+			if(!redirections_in(cmd, &fd_in))
+				return (0);
 			flag = 2;
 		}
 	}
@@ -207,6 +219,7 @@ void handle_single_command_redirections(t_cmd *cmd)
 		close(fd_out);
 	if (flag == 2)
 		close(fd_in);
+	return (1);
 }
 void start_execution(t_data *data, int fd_c)
 {
@@ -225,8 +238,8 @@ void start_execution(t_data *data, int fd_c)
 	{
 		tmp_in = dup(STDIN_FILENO);
 		tmp_out = dup(STDOUT_FILENO);
-		handle_single_command_redirections(current);
-		excute_builtin(current, data);
+		if (handle_single_command_redirections(current))
+			excute_builtin(current, data);
 		dup2(tmp_in, STDIN_FILENO);
 		dup2(tmp_out, STDOUT_FILENO);
 		close(tmp_in);

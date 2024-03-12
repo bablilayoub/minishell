@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/11 00:24:07 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/12 02:55:48 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,11 @@ t_token *get_command_name(t_token *head)
 	return (tmp);
 }
 
-t_token *filtrate_tokens(t_token *head)
+t_token *filtrate_tokens(t_data *data, t_token *head)
 {
 	t_token *new_head = NULL;
+	t_token *tmp = NULL;
+
 	if (!head)
 		return (NULL);
 	while (head)
@@ -126,10 +128,10 @@ t_token *filtrate_tokens(t_token *head)
 			head = head->next;
 			continue;
 		}
-		new_head = add_token(new_head, new_token(head->value, head->type, head->state, head->len));
+		new_head = add_token(new_head, new_token(ft_strdup(head->value), ft_strdup(head->type), head->state, head->len));
 		head = head->next;
 	}
-	t_token *tmp = new_head;
+	tmp = new_head;
 	while (tmp)
 	{
 		while (tmp && (ft_strncmp(tmp->type, WORD, 4) == 0))
@@ -155,8 +157,11 @@ t_token *filtrate_tokens(t_token *head)
 			else
 				break;
 		}
-		tmp = tmp->next;
+		if (tmp)
+			tmp = tmp->next;
 	}
+	free_tokens(data->token);
+	data->token = new_head;
 	return (new_head);
 }
 
@@ -168,7 +173,7 @@ void convert_tokens_to_commands(t_data *data)
 	t_cmd *head = NULL;
 	int found_cmd = 0;
 
-	tmp = filtrate_tokens(tmp);
+	tmp = filtrate_tokens(data, tmp);
 	print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
 	if (!tmp)
@@ -244,5 +249,5 @@ void convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	print_args(data->cmd);
+	// print_args(data->cmd);
 }

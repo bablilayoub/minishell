@@ -6,13 +6,13 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/08 01:30:04 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/11 21:59:15 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_free_array(char **array)
+void	free_array(char **array)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ void	free_cmd(t_cmd *cmd)
 	while (cmd)
 	{
 		if (cmd->arguments)
-			ft_free_array(cmd->arguments);
+			free_array(cmd->arguments);
 		if (cmd->args)
 			free_args(cmd->args);
 		tmp = cmd->next;
@@ -68,7 +68,8 @@ void	free_token(t_token *token)
 		free(token->type);
 	if (token->value)
 		free(token->value);
-	free(token);	
+	free(token);
+	token = NULL;
 }
 
 void	free_tokens(t_token *token)
@@ -80,22 +81,23 @@ void	free_tokens(t_token *token)
 	while (token)
 	{
 		tmp = token->next;
-		if (token->type)
-			free(token->type);
-		if (token->value)
-			free(token->value);
-		free(token);
+		free_token(token);
 		token = tmp;
 	}
 }
 
-void	free_data(t_data *data)
+void	free_data(t_data *data, int free_all)
 {
 	if (data->cmd)
 		free_cmd(data->cmd);
 	if (data->token)
 		free_tokens(data->token);
-	ft_free_array(data->env);
+	if (free_all)
+	{
+		free_array(data->env);
+		free_array(data->export);
+		free(data->shell_path);
+	}
 	data->cmd = NULL;
 	data->token = NULL;
 }

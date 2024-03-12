@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/07 23:05:34 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/11 22:07:51 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_data
 	char			**export;
 	char			**in_valid;
 	int				exit_status;
+	char			*temp;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
 }	t_data;

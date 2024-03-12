@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/04 18:11:20 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/11 01:08:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	only_spaces(char *str)
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == ' ')
+		if (str[i] == ' ' || str[i] == '\t')
 			count++;
 		i++;
 	}
@@ -56,4 +56,24 @@ char	**allocate_env(char **env)
 	}
 	new_env[i] = NULL;
 	return (new_env);
+}
+
+char **allocate_export(char **env)
+{
+	int i;
+
+	int lenght;
+	char **tmp;
+
+	lenght = 0;
+	while (env[lenght])
+		lenght++;
+	tmp = malloc(sizeof(char *) * (lenght + 1));
+	if (!tmp)
+		exit(EXIT_FAILURE);
+	i = -1;
+	while (env[++i])
+		tmp[i] = ft_strjoin("declare -x ", env[i]);
+	tmp[i] = NULL;
+	return (tmp);
 }

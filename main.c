@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/09 21:27:05 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/12 02:56:49 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,6 @@
 #include "parsing/parser.h"
 
 
-char **allocate_export(char **env)
-{
-	int i;
-
-	int lenght;
-	char **tmp;
-
-	lenght = ft_strdoublelen(env);
-	tmp = malloc(sizeof(char *) * (lenght + 1));
-	if (!tmp)
-		exit(EXIT_FAILURE);
-	i = -1;
-	while (env[++i])
-		tmp[i] = ft_strjoin("declare -x ", env[i]);
-	tmp[i] = NULL;
-	return (tmp);
-}
 int	main(int total, char **args, char **env)
 {
 	t_data	data;
@@ -42,13 +25,14 @@ int	main(int total, char **args, char **env)
 		return (1);
 	}
 	data.env = allocate_env(env);
-	data.export = allocate_export(data.env);
-	data.token = NULL;
+	data.export = allocate_export(env);
+	data.token = NULL; 
 	data.cmd = NULL;
 	data.in_valid = NULL;
 	data.exit_status = 0;
 	data.prefix = ft_strdup(PREFIX);
 	data.shell_path = getcwd(NULL, 0);
+	data.temp = NULL;
 	reader(&data);
 	return (0);
 }
