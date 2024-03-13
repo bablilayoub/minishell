@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/11 22:03:17 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 18:25:54 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void handle_special_char(t_token_params *params, char *value, int len)
 				params->value = ft_strdup(value);
 			else
 				params->value = ft_strdup("");
+
 		}
 		params->i--;
 		len = ft_strlen(params->value);

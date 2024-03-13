@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/13 00:43:33 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 18:15:47 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	free_data(t_data *data, int free_all);
 void	free_token(t_token *token);
 void	free_tokens(t_token *token);
 void	free_array(char **array);
+void	free_args(t_arg *args);
 
 // Signals
 void	signal_handler(int sig);

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/11 01:08:28 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 18:14:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,11 @@ char	**allocate_env(char **env)
 	return (new_env);
 }
 
-char **allocate_export(char **env)
+char	**allocate_export(char **env)
 {
-	int i;
-
-	int lenght;
-	char **tmp;
+	int		i;
+	int		lenght;
+	char	**tmp;
 
 	lenght = 0;
 	while (env[lenght])

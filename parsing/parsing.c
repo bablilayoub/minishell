@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/13 01:30:21 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 18:28:36 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	reader(t_data *data)
 			break ;
 		if (ft_strlen(line) > 0)
 		{
-			// parser(line, data);
 			if (parser(line, data))
 				prepare_for_excution(data);
 			free_data(data, 0);
