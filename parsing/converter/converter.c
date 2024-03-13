@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/12 02:55:48 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 01:03:35 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ t_token *filtrate_tokens(t_data *data, t_token *head)
 {
 	t_token *new_head = NULL;
 	t_token *tmp = NULL;
+	t_token *holder = NULL;
 
 	if (!head)
 		return (NULL);
@@ -138,9 +139,13 @@ t_token *filtrate_tokens(t_data *data, t_token *head)
 		{
 			if (tmp->next && ft_strncmp(tmp->next->type, WORD, 4) == 0)
 			{
+				holder = tmp->next;
+				data->temp = tmp->value;
 				tmp->value = ft_strjoin(tmp->value, tmp->next->value);
+				free(data->temp);
 				tmp->len = ft_strlen(tmp->value);
 				tmp->next = tmp->next->next;
+				free_token(holder);
 			}
 			else
 				break;
@@ -149,10 +154,16 @@ t_token *filtrate_tokens(t_data *data, t_token *head)
 		{
 			if (tmp->next && ft_strlen(tmp->next->value) == 0)
 			{
+				holder = tmp->next;
+				data->temp = tmp->type;
 				tmp->type = ft_strdup(tmp->next->type);
+				free(data->temp);
+				data->temp = tmp->value;
 				tmp->value = ft_strjoin(tmp->value, tmp->next->value);
+				free(data->temp);
 				tmp->len = ft_strlen(tmp->value);
 				tmp->next = tmp->next->next;
+				free_token(holder);
 			}
 			else
 				break;
@@ -174,7 +185,7 @@ void convert_tokens_to_commands(t_data *data)
 	int found_cmd = 0;
 
 	tmp = filtrate_tokens(data, tmp);
-	print_tokens(tmp);
+	// print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
 	if (!tmp)
 		return;
@@ -229,6 +240,7 @@ void convert_tokens_to_commands(t_data *data)
 					cmd->cmd = tmp->value;
 				else
 					cmd->cmd = NULL;
+				cmd->built_in = is_built_in(cmd->cmd);
 				head = add_cmd(head, cmd);
 				tmp = get_command_name(tmp);
 				tmp = skip_white_spaces(tmp);

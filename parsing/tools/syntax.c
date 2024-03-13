@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:23:16 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/09 02:04:21 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 01:03:53 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,6 @@ int	check_redirections(t_cmd *cmd)
 
 int	check_syntax(t_data *data)
 {
-	if (!check_quotes(data->token))
-		return (0);
 	if (!check_pipes(data->cmd))
 		return (0);
 	if (!check_redirections(data->cmd))

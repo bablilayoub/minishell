@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/11 23:35:35 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 00:43:33 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	handle_cases(t_token_params *params, char *line);
 void	convert_tokens_to_commands(t_data *data);
 int		not_a_shell_command(t_token *token);
 t_token	*add_file(t_redirection **head, t_token *token, char *type);
+bool	is_built_in(char *value);
 
 // Converter utils
 t_cmd	*new_cmd(t_token *token);
@@ -76,6 +77,7 @@ t_token	*find_args(t_cmd *cmd, t_token *token);
 void	free_data(t_data *data, int free_all);
 void	free_token(t_token *token);
 void	free_tokens(t_token *token);
+void	free_array(char **array);
 
 // Signals
 void	signal_handler(int sig);

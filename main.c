@@ -6,16 +6,21 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/12 02:56:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 01:05:23 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing/parser.h"
 
+void	f(void)
+{
+	system("leaks minishell");
+}
 
 int	main(int total, char **args, char **env)
 {
+	atexit(f);
 	t_data	data;
 
 	(void)args;

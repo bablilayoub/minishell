@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:14:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/10 23:52:16 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/13 01:07:35 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,25 @@
 void ft_env(char **env)
 {
     int i;
-
+    char **path;
+    int found;
+    
     if (!env)
         return;
-    char **path = ft_split(ft_getenv("PATH", env), ':');
+    path = ft_split(ft_getenv("PATH", env), ':');
     if (!path)
     {
         printf(PREFIX_ERROR"env: No such file or directory\n");
         return;
     }
-    int found = 0;
+    found = 0;
     i = -1;
     while (path[++i])
     {
         if (access(path[i], F_OK | X_OK) == 0)
             found = 1;
     }
+    free_array(path);
     if (!found)
     {
         printf(PREFIX_ERROR"env: No such file or directory\n");

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/11 19:30:18 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 00:51:48 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,12 @@ bool initialize_path(t_cmd *head, t_data *data)
         i = 0;
         while (env[i])
         {
+            data->temp = env[i];
             env[i] = ft_strjoin(env[i], "/");
+            free(data->temp);
+            data->temp = env[i];
             env[i] = ft_strjoin(env[i], head->cmd);
+            free(data->temp);
             if (access(env[i], F_OK | X_OK) == 0)
             {
                 head->path = env[i];
@@ -62,6 +66,7 @@ bool initialize_path(t_cmd *head, t_data *data)
             found_error = 1;
         }
         head = head->next;
+        free_array(env);
     }
     if (found_error)
     {
@@ -86,7 +91,7 @@ void initialize_arguments(t_cmd *cmd_list)
         while (temp->args)
         {
 
-            temp->arguments[i++] = temp->args->arg;
+            temp->arguments[i++] = ft_strdup(temp->args->arg);
             temp->args = temp->args->next;
         }
         temp->args = arg_temp;

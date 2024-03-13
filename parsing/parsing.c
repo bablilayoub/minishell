@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/12 02:57:14 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 01:30:21 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	parser(char *line, t_data *data)
 		return (0);
 	data->token = tokenizer(line);
 	get_env_vars(data);
+	if (!check_quotes(data->token))
+		return (0);
 	convert_tokens_to_commands(data);
 	if (!check_syntax(data))
 		return (0);
@@ -38,17 +40,17 @@ void	reader(t_data *data)
 			break ;
 		if (ft_strlen(line) > 0)
 		{
-			parser(line, data);
-			// if (parser(line, data))
-			// 	prepare_for_excution(data);
+			// parser(line, data);
+			if (parser(line, data))
+				prepare_for_excution(data);
 			free_data(data, 0);
 			add_history(line);
 		}
 		free(line);
 		line = NULL;
 	}
-	free_data(data, 1);
 	if (line)
 		free(line);
 	rl_clear_history();
+	free_data(data, 1);
 }

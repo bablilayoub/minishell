@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/11 21:59:15 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 01:04:40 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,20 @@ void	free_args(t_arg *args)
 	}
 }
 
+void	free_redirections(t_redirection *redirections)
+{
+	t_redirection	*tmp;
+
+	if (!redirections)
+		return ;
+	while (redirections)
+	{
+		tmp = redirections->next;
+		free(redirections);
+		redirections = tmp;
+	}
+}
+
 void	free_cmd(t_cmd *cmd)
 {
 	t_cmd	*tmp;
@@ -54,6 +68,10 @@ void	free_cmd(t_cmd *cmd)
 			free_array(cmd->arguments);
 		if (cmd->args)
 			free_args(cmd->args);
+		if (cmd->redirect_in)
+			free_redirections(cmd->redirect_in);
+		if (cmd->redirect_out)
+			free_redirections(cmd->redirect_out);
 		tmp = cmd->next;
 		free(cmd);
 		cmd = tmp;
