@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/13 00:43:33 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 01:32:54 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ void	handle_special_char(t_token_params *params, char *value, int len);
 void	handle_quotes(t_token_params *params, int quote, char *quote_type);
 void	handle_word(t_token_params *params, char *line);
 void	handle_cases(t_token_params *params, char *line);
+void	handle_env_var(t_token_params *params,
+			char *value, int len, int expandable);
+void	handle_double_dollar(t_token_params *params, char *value, int len);
 
 // Converter
 void	convert_tokens_to_commands(t_data *data);

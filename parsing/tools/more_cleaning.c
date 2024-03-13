@@ -1,28 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   more_cleaning.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/27 15:14:38 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/13 01:32:49 by abablil          ###   ########.fr       */
+/*   Created: 2024/03/12 22:46:31 by abablil           #+#    #+#             */
+/*   Updated: 2024/03/12 22:46:42 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../execution.h"
+#include "../../minishell.h"
 
-void ft_pwd(t_data *data)
+void	free_array(char **array)
 {
-    char *path;
+	int	i;
 
-    path = getcwd(NULL, 0);
-    if (!path)
-    {
-        printf("%s\n", strerror(errno));
-        free_data(data, 1);
-        exit(1);
-    }
-    printf("%s\n", path);
-    free(path);
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	if (array)
+		free(array);
+}
+
+void	free_args(t_arg *args)
+{
+	t_arg	*tmp;
+
+	if (!args)
+		return ;
+	while (args)
+	{
+		tmp = args->next;
+		free(args);
+		args = tmp;
+	}
 }
