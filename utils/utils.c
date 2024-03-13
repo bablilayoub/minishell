@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/12 22:56:26 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/11 01:08:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,12 @@ char	**allocate_env(char **env)
 	return (new_env);
 }
 
-char	**allocate_export(char **env)
+char **allocate_export(char **env)
 {
-	int		i;
-	int		lenght;
-	char	**tmp;
+	int i;
+
+	int lenght;
+	char **tmp;
 
 	lenght = 0;
 	while (env[lenght])
@@ -74,17 +75,5 @@ char	**allocate_export(char **env)
 	while (env[++i])
 		tmp[i] = ft_strjoin("declare -x ", env[i]);
 	tmp[i] = NULL;
-	return (tmp);
-}
-
-t_token	*skip_white_spaces(t_token *token)
-{
-	t_token	*tmp;
-
-	if (!token)
-		return (NULL);
-	tmp = token;
-	while (tmp && ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0)
-		tmp = tmp->next;
 	return (tmp);
 }

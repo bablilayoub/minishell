@@ -10,7 +10,7 @@ HEADER = minishell.h
 READLINE_LIB = $(shell brew --prefix readline)/lib
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a
@@ -24,7 +24,7 @@ UTILS_HEADER = ./utils/utils.h
 PARSING_HEADER = ./parsing/parsing.h
 TOKENIZER = tokenizer.c tokenizer_utils.c cases.c states.c
 CONVERTER = converter.c arguments.c commands.c env.c
-TOOLS = cleaning.c more_cleaning.c signals.c syntax.c
+TOOLS = cleaning.c signals.c syntax.c
 PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER)) $(addprefix converter/, $(CONVERTER)) $(addprefix tools/, $(TOOLS))
 
 # EXECUTION

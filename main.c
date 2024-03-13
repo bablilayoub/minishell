@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/13 01:31:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 01:05:23 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int total, char **args, char **env)
 	}
 	data.env = allocate_env(env);
 	data.export = allocate_export(env);
-	data.token = NULL;
+	data.token = NULL; 
 	data.cmd = NULL;
 	data.in_valid = NULL;
 	data.exit_status = 0;

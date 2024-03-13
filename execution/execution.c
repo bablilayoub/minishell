@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/12 22:40:04 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/11 19:52:48 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,35 +81,20 @@ char *get_next_line(int fd, char **line)
 
 void redirections_out(t_cmd *cmd, int *fd_out)
 {
-	t_redirection *tmp;
-
-	tmp = cmd->redirect_out;
 	while (cmd->redirect_out)
 	{
 		if (ft_strncmp(cmd->redirect_out->type, ">>", 2) == 0)
-		{
 			*fd_out = open(cmd->redirect_out->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (cmd->redirect_out->next)
-				close(*fd_out);
-		}
 		else
-		{
-			*fd_out = open(cmd->redirect_out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);	
-			if (cmd->redirect_out->next)
-				close(*fd_out);
-		}
+			*fd_out = open(cmd->redirect_out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		cmd->redirect_out = cmd->redirect_out->next;
 	}
-	cmd->redirect_out = tmp;
 }
 
 int redirections_in(t_cmd *cmd, int *fd_in)
-{	
-	t_redirection *tmp;
-	
+{
 	if (cmd->redirect_in)
 	{
-		tmp = cmd->redirect_in;
 		while (cmd->redirect_in)
 		{
 			if (ft_strncmp(cmd->redirect_in->type, "<<", 2) == 0)
@@ -128,7 +113,6 @@ int redirections_in(t_cmd *cmd, int *fd_in)
 			}
 			cmd->redirect_in = cmd->redirect_in->next;
 		}
-		cmd->redirect_in = tmp;
 	}
 	return (1);
 }
@@ -259,7 +243,7 @@ void start_execution(t_data *data, int fd_c)
 		dup2(tmp_in, STDIN_FILENO);
 		dup2(tmp_out, STDOUT_FILENO);
 		close(tmp_in);
-		close(tmp_out); 
+		close(tmp_out);
 		return;
 	}
 	while (++i < fd_c)
@@ -281,8 +265,6 @@ void prepare_for_excution(t_data *data)
 	t_cmd *cmd_list;
 
 	cmd_list = data->cmd;
-	if (!cmd_list)
-		return;
 	initialize_arguments(cmd_list);
 	if (!initialize_path(cmd_list, data))
 		return;

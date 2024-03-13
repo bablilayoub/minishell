@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/12 21:26:43 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/09 00:10:01 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,21 +65,11 @@ void update_prefix(t_data *data, char *prefix)
         prefix = "root";
     free(data->prefix);
     new_prefix = ft_strjoin(RESET, BLUE);
-    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, BOLD);
-    free(data->temp);
-    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, "➜  ");
-    free(data->temp);
-    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, prefix);
-    free(data->temp);
-    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, " : ");
-    free(data->temp);
-    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, RESET);
-    free(data->temp);
     data->prefix = new_prefix;
 }
 void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c, t_data *data)

@@ -3,30 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_chdir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:09 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/12 21:34:00 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/10 22:44:15 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-char **update_envpwd(char **env, char *oldpwd, char *pwd, t_data *data)
+char **update_envpwd(char **env, char *oldpwd, char *pwd)
 {
     int i;
 
     i = -1;
     while (env[++i])
     {
-        data->temp = env[i];
         if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
             env[i] = ft_strjoin("OLDPWD=", oldpwd);
         else if (ft_strncmp(env[i], "PWD", 3) == 0)
             env[i] = ft_strjoin("PWD=", pwd);
         else
             env[i] = ft_strdup(env[i]);
-        free(data->temp);
+
     }
     env[i] = NULL;
     return (env);
@@ -60,11 +59,9 @@ void start_process(t_data *data, char *oldpwd, char *pwd, char ***env)
     pwd = getcwd(NULL, 0);
     if (!pwd)
         return check_error_null(pwd, "getcwd", cmd);
-    *env = update_envpwd(*env, oldpwd, pwd, data);
+    *env = update_envpwd(*env, oldpwd, pwd);
     new_prefix = ft_strrchr(pwd, '/');
     update_prefix(data, new_prefix + 1);
-    free(pwd);
-    free(oldpwd);
     if (cmd->next || cmd->prev)
         exit(EXIT_SUCCESS);
     else
@@ -87,7 +84,6 @@ void ft_chdir(t_cmd *cmd, t_data *data)
             return start_process(data, oldpwd, pwd, &data->env);
         else
         {
-            free(oldpwd);
             printf(PREFIX_ERROR "HOME not set\n");
             if (cmd->next || cmd->prev)
                 exit(EXIT_FAILURE);
@@ -100,14 +96,8 @@ void ft_chdir(t_cmd *cmd, t_data *data)
         if (chdir(dirname) == 0)
             return start_process(data, oldpwd, pwd, &data->env);
         else
-        {
-            free(oldpwd);
-            return print_error(cmd, dirname);
-        }
+          return print_error(cmd, dirname);
     }
     else
-    {
-        free(oldpwd);
-        return print_error(cmd, dirname);
-    }
+       return print_error(cmd, dirname);
 }
