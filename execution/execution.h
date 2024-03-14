@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/13 01:21:50 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 18:19:57 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 # define CLEAR "\033[H\033[2J"
 void  check_error(int fd, const char *msg, int flag);
-void  check_error_null(void *ptr, const char *msg, t_cmd *cmd);
+void  check_error_null(void *ptr, const char *msg);
 bool  initialize_path(t_cmd *head, t_data *data);
 int  args_lenght(t_arg *args);
 int  cmd_lenght(t_cmd *cmd);
@@ -58,15 +58,14 @@ void    free_two(char *s1, char *s2);
 
 void print(char **export);
 char *ft_getenv(char *name, char **env);
-void export_env_to_exp(char ***export, char **args);
-void join_double(char ***join, char **tmp);
-int check_exported(char *exported);
+void export_env_to_exp(char ***export, char **args, t_data *data);
+// void join_double(char ***join, char **tmp);
+int check_exported(char *exported, int flag);
 
 
 
 /////////
 char *ft_getenv(char *name, char **env);
 void print_error(t_cmd *cmd, char *dirname);
-void add_invalid_exp(char **args, t_data *data, char **export);
-char **add_var(char **env, char *exported);
+void add_var(char ***env, char *exported, int flag);
 #endif

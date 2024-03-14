@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:14:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/13 01:07:35 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 16:43:35 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void ft_env(char **env)
     if (!path)
     {
         printf(PREFIX_ERROR"env: No such file or directory\n");
-        return;
+        exit(EXIT_FAILURE);
     }
     found = 0;
     i = -1;

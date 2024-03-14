@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/11 18:16:35 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/14 00:59:00 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int ft_is_alphanumeric(char *key)
     return true;
 }
 
-void export_env_to_exp(char ***export, char **args)
+void export_env_to_exp(char ***export, char **args, t_data *data)
 {
     int i;
     int j;
@@ -39,45 +39,69 @@ void export_env_to_exp(char ***export, char **args)
     {
         j = -1;
         found = 0;
+        if (!check_exported(args[i], 0))
+            continue;
         key_arg = ft_split(args[i], '=');
+        if (!key_arg)
+            exit(EXIT_FAILURE);
         while ((*export)[++j])
         {
             sub = ft_substr((*export)[j], 11, ft_strlen((*export)[j]));
+            check_error_null(sub, "malloc");
             key = ft_split(sub, '=');
+            if (!key)
+                exit(EXIT_FAILURE);
             if (ft_strncmp(key_arg[0], key[0], ft_strlen(key[0])) == 0)
             {
                 if (ft_strchr(args[i], '='))
+                {
+                    data->temp = (*export)[j];
                     (*export)[j] = ft_strjoin("declare -x ", args[i]);
+                    check_error_null((*export)[j], "malloc");
+                    free(data->temp);
+                }
                 found = 1;
             }
-            else
-                (*export)[j] = (*export)[j];
+            free_array(key);
+            free(sub);
         }
         if (!found)
-            *export = add_var(*export, ft_strjoin("declare -x ", args[i]));
+            add_var(export, ft_strjoin("declare -x ", args[i]), 1);
+        free_double(key_arg);
     }
 }
 
-int check_exported(char *exported)
+int check_exported(char *exported, int flag)
 {
     int i;
     char **key_val;
     char *key;
 
     i = 0;
-    if (!ft_strchr(exported, '='))
+    if (!ft_strchr(exported, '=') && flag == 1)
         return false;
     else if (exported[i] == '=' || (exported[i] == '$' && exported[i + 1] == '\0'))
-        return (printf(PREFIX_ERROR "export: not an identifier\n"), false);
+    {
+        if (flag == 1)
+            printf(PREFIX_ERROR "export: not an identifier\n");
+        return false;     
+    }
     key_val = key_value(exported);
+    if (!key_val)
+        exit(EXIT_FAILURE);
     key = key_val[0];
     if (ft_isdigit(key[i]) || (key[i] == '_' && !key[i + 1]) || !ft_is_alphanumeric(key))
     {
         if ((key[i] == '_' && !key[i + 1]))
             return false;
         else
-            return (printf(PREFIX_ERROR "export: not an identifier\n"), false);
+        {
+            if (flag == 1)
+                printf(PREFIX_ERROR "export: not an identifier\n");
+            return false;
+        }
     }
+    free_double(key_val);
     return true;
 }
 
@@ -105,43 +129,47 @@ char **key_value(char *exported)
     char **key_value;
     int i;
     int k;
+    
     i = 0;
-
     while (exported[i] && exported[i] != '=')
         i++;
     key = ft_substr(exported, 0, i);
-    if (!key)
-        exit(EXIT_FAILURE);
+    check_error_null(key, "malloc");
     k = i;
     while (exported[k])
         k++;
     value = ft_substr(exported, i + 1, k);
-    if (!value)
-    {
-        free(key);
-        exit(EXIT_FAILURE);
-    }
+    check_error_null(value, "malloc");
     key_value = load_key_value(key, value);
     return key_value;
 }
 
-char **add_var(char **env, char *exported)
+void add_var(char ***env, char *exported, int flag)
 {
     int i;
     char **new_env;
+    char **temp;
 
     i = 0;
-    new_env = malloc(sizeof(char *) * (ft_strdoublelen(env) + 2));
+    new_env = malloc(sizeof(char *) * (ft_strdoublelen(*env) + 2));
     if (!new_env)
         exit(EXIT_FAILURE);
-    while (env[i])
+    while ((*env)[i])
     {
-        new_env[i] = env[i];
+        new_env[i] = (*env)[i];
         i++;
     }
-    new_env[i] = exported;
+    if (!flag)
+    {
+        new_env[i] = ft_strdup(exported);
+        check_error_null(new_env[i], "malloc");
+    }
+    else
+         new_env[i] = exported;
     new_env[i + 1] = NULL;
-    return new_env;
+    temp = *env;
+    *env = new_env;
+    free(temp);
 }
 
 void ft_export(t_data *data, char ***env)
@@ -153,12 +181,12 @@ void ft_export(t_data *data, char ***env)
 
     i = 0;
     int j = 0;
+    key_val = NULL;
     while (data->cmd->arguments[++j])
     {
-        if (!check_exported(data->cmd->arguments[j]))
+        if (!check_exported(data->cmd->arguments[j], 1))
             continue;
         key_val = key_value(data->cmd->arguments[j]);
-
         if (!key_val)
             exit(EXIT_FAILURE);
         (1 == 1) && (i = -1, found = 0);
@@ -169,15 +197,22 @@ void ft_export(t_data *data, char ***env)
                 k++;
             if ((ft_strncmp((*env)[i], key_val[0], k) == 0) && (k == ft_strlen(key_val[0])))
             {
+                data->temp = (*env)[i];
                 (*env)[i] = ft_strjoin(key_val[0], "=");
+                check_error_null((*env)[i], "malloc");
+                free(data->temp);
+                data->temp = (*env)[i];
                 (*env)[i] = ft_strjoin((*env)[i], key_val[1]);
+                check_error_null((*env)[i], "malloc");
+                free(data->temp);
                 found = 1;
             }
-            else
-                (*env)[i] = (*env)[i];
         }
         if (!found)
-            *env = add_var(*env, data->cmd->arguments[j]);
+            add_var(env, data->cmd->arguments[j], 0);
+        free_double(key_val);
     }
-    export_env_to_exp(&data->export, data->cmd->arguments);
+    export_env_to_exp(&data->export, data->cmd->arguments, data);
+    if (!data->cmd->next || !data->cmd->prev)
+        return;
 }

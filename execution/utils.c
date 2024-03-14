@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/09 00:10:01 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/13 16:59:13 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,33 @@ void update_prefix(t_data *data, char *prefix)
         prefix = "root";
     free(data->prefix);
     new_prefix = ft_strjoin(RESET, BLUE);
+    if (!new_prefix)
+        exit(EXIT_FAILURE);
+    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, BOLD);
+    if (!new_prefix)
+        exit(EXIT_FAILURE);
+    free(data->temp);
+    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, "➜  ");
+    if (!new_prefix)
+        exit(EXIT_FAILURE);
+    free(data->temp);
+    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, prefix);
+    if (!new_prefix)
+        exit(EXIT_FAILURE);
+    free(data->temp);
+    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, " : ");
+    if (!new_prefix)
+        exit(EXIT_FAILURE);
+    free(data->temp);
+    data->temp = new_prefix;
     new_prefix = ft_strjoin(new_prefix, RESET);
+    if (!new_prefix)
+        exit(EXIT_FAILURE);
+    free(data->temp);
     data->prefix = new_prefix;
 }
 void close_fds_and_wait(int fd[][2], pid_t pid[], int fd_c, t_data *data)
@@ -96,15 +118,12 @@ void check_error(int fd, const char *msg, int flag)
     }
 }
 
-void check_error_null(void *ptr, const char *msg, t_cmd *cmd)
+void check_error_null(void *ptr, const char *msg)
 {
     if (!ptr)
     {
         printf(PREFIX_ERROR "%s : %s\n", msg, strerror(errno));
-        if (cmd->next || cmd->args)
-            exit(EXIT_FAILURE);
-        else
-            return;
+        exit(EXIT_FAILURE);
     }
 }
 void free_triplet(char *s1, char *s2, char *s3)
@@ -120,8 +139,12 @@ void free_double(char **ptr)
 
     i = -1;
     while (ptr[++i])
-        free(ptr[i]);
-    free(ptr);
+    {
+        if (ptr[i])
+            free(ptr[i]);
+    }
+    if (ptr)
+        free(ptr);
 }
 void free_two(char *s1, char *s2)
 {

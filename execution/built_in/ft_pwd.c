@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:14:38 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/13 01:22:07 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 16:56:16 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,6 @@ void ft_pwd(t_data *data)
     }
     printf("%s\n", path);
     free(path);
+    if (!data->cmd->next || !data->cmd->prev)
+        return;
 }
