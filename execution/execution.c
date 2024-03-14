@@ -6,11 +6,20 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/11 19:52:48 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/14 01:02:54 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+
+void here_doc_signal(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		exit(EXIT_SUCCESS);
+	}
+}
 
 int here_doc(char *file_and_search_for)
 {
@@ -22,10 +31,13 @@ int here_doc(char *file_and_search_for)
 	ret = fork();
 	if (ret == 0)
 	{
+		signal(SIGINT, here_doc_signal);
 		close(fd[0]);
 		while (1)
 		{
 			line = readline(YELLOW "> " RESET);
+			if (!line)
+				break;
 			if (ft_strncmp(line, file_and_search_for, ft_strlen(line)) == 0)
 			{
 				free(line);

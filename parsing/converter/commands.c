@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:50:50 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/13 00:54:29 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/13 23:38:59 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 bool	is_built_in(char *value)
 {
+	if (!value)
+		return (false);
 	if (ft_strncmp(value, "echo", 5) == 0)
 		return (true);
 	if (ft_strncmp(value, "cd", 3) == 0)

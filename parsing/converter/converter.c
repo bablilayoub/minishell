@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/13 18:22:48 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/14 01:03:14 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,8 +184,8 @@ void convert_tokens_to_commands(t_data *data)
 	t_cmd *head = NULL;
 	int found_cmd = 0;
 
-	// tmp = filtrate_tokens(data, tmp);
-	print_tokens(tmp);
+	tmp = filtrate_tokens(data, tmp);
+	// print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
 	if (!tmp)
 		return;
@@ -248,7 +248,6 @@ void convert_tokens_to_commands(t_data *data)
 					tmp = find_args(cmd, tmp->next);
 				else
 					cmd->args = add_arg(cmd->args, cmd->cmd, 1);
-				break;
 			}
 			if (tmp)
 				tmp = tmp->next;
