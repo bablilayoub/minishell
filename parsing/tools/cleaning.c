@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/14 01:08:38 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/14 23:37:05 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	free_cmd(t_cmd *cmd)
 			free_redirections(cmd->redirect_in);
 		if (cmd->redirect_out)
 			free_redirections(cmd->redirect_out);
+		if (cmd->path)
+			free(cmd->path);
 		tmp = cmd->next;
 		free(cmd);
 		cmd = tmp;
@@ -86,6 +88,11 @@ void	free_data(t_data *data, int free_all)
 		free_array(data->env);
 		free_array(data->export);
 		free(data->shell_path);
+		free(data->prefix);
+		data->env = NULL;
+		data->export = NULL;
+		data->shell_path = NULL;
+		data->prefix = NULL;
 	}
 	data->cmd = NULL;
 	data->token = NULL;

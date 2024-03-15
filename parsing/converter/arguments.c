@@ -6,29 +6,34 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/11 22:48:52 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/15 02:29:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-t_arg *new_arg(char *value)
+t_arg	*new_arg(char *value)
 {
-	t_arg *arg = (t_arg *)malloc(sizeof(t_arg));
+	t_arg	*arg;
+
+	arg = (t_arg *)malloc(sizeof(t_arg));
 	arg->arg = value;
 	arg->next = NULL;
 	arg->prev = NULL;
 	return (arg);
 }
 
-t_arg *add_arg(t_arg *head, char *value, int found_quote)
+t_arg	*add_arg(t_arg *head, char *value, int found_quote)
 {
-	t_arg *arg = new_arg(value);
+	t_arg	*arg;
+	t_arg	*tmp;
+
+	arg = new_arg(value);
 	if (found_quote)
 		arg->env_var = 0;
 	else
 		arg->env_var = 1;
-	t_arg *tmp = head;
+	tmp = head;
 	if (!head)
 		return (arg);
 	while (tmp->next)
@@ -38,10 +43,13 @@ t_arg *add_arg(t_arg *head, char *value, int found_quote)
 	return (head);
 }
 
-bool between_dquotes(t_token *token)
+bool	between_dquotes(t_token *token)
 {
-	t_token *tmp = token;
-	int count = 0;
+	t_token	*tmp;
+	int		count;
+
+	count = 0;
+	tmp = token;
 	while (tmp && ft_strncmp(tmp->type, QUOTE, 1) != 0)
 	{
 		if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) == 0)
@@ -81,14 +89,14 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 			{
 				cmd->has_redir_out = 1;
 				if (ft_strncmp(tmp_type, APPEND_OUT, 2) == 0)
-					tmp = add_file(&cmd->redirect_out, tmp, APPEND_OUT);
+					tmp = add_file(&cmd, &cmd->redirect_out, tmp, APPEND_OUT);
 				else if (ft_strncmp(tmp_type, REDIR_OUT, 1) == 0)
-					tmp = add_file(&cmd->redirect_out, tmp, REDIR_OUT);
+					tmp = add_file(&cmd, &cmd->redirect_out, tmp, REDIR_OUT);
 			} 
 			else 
 			{
 				cmd->has_redir_out = 1;
-				tmp = add_file(&cmd->redirect_out, NULL, REDIR_OUT);
+				tmp = add_file(&cmd, &cmd->redirect_out, NULL, REDIR_OUT);
 			}
 		}
 		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0) && (tmp->state != IN_QUOTE && tmp->state != IN_DQUOTE))
@@ -100,14 +108,14 @@ t_token *find_args(t_cmd *cmd, t_token *token)
 			{
 				cmd->has_redir_in = 1;
 				if (ft_strncmp(tmp_type, HERE_DOC, 2) == 0)
-					tmp = add_file(&cmd->redirect_in, tmp, HERE_DOC);
+					tmp = add_file(&cmd, &cmd->redirect_in, tmp, HERE_DOC);
 				else if (ft_strncmp(tmp_type, REDIR_IN, 1) == 0)
-					tmp = add_file(&cmd->redirect_in, tmp, REDIR_IN);
+					tmp = add_file(&cmd, &cmd->redirect_in, tmp, REDIR_IN);
 			} 
 			else 
 			{
 				cmd->has_redir_in = 1;
-				tmp = add_file(&cmd->redirect_in, NULL, REDIR_IN);
+				tmp = add_file(&cmd, &cmd->redirect_in, NULL, REDIR_IN);
 			}
 		}
 		else if ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0 || ft_strncmp(tmp->type, REDIR_OUT, 1) == 0 || ft_strncmp(tmp->type, APPEND_OUT, 2) == 0 || ft_strncmp(tmp->type, HERE_DOC, 2) == 0) && (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE))

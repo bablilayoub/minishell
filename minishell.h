@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/12 03:02:30 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:53:32 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_data
 	char			**in_valid;
 	int				exit_status;
 	char			*temp;
-	char 			**_2Dtmp;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
 }	t_data;
@@ -54,6 +53,8 @@ typedef struct s_token_params
 	char	*line;
 	char	*value;
 	char	*type;
+	char	*temp;
+	char	*reset;
 	int		state;
 	int		in_quote;
 	int		in_dquote;
