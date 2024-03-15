@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/15 02:10:28 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/15 03:01:38 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,11 @@ int		not_a_shell_command(t_token *token);
 t_token	*get_command_name(t_token *head);
 
 // Arguments
+t_token	*find_args(t_cmd *cmd, t_token *token);
+
+// Arguments utils
 t_arg	*new_arg(char *value);
 t_arg	*add_arg(t_arg *head, char *value, int found_quote);
-t_token	*find_args(t_cmd *cmd, t_token *token);
 
 // Cleaning
 void	free_data(t_data *data, int free_all);
@@ -106,4 +108,5 @@ int		check_syntax(t_data *data);
 // Env
 char	*get_env(char *env_var, t_data *data);
 void	get_env_vars(t_data *data);
+
 #endif

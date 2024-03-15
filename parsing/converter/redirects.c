@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 21:58:12 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/15 02:27:41 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/15 03:44:21 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ t_redirection	*new_redirect(char *type, char *file)
 	t_redirection	*redirect;
 
 	redirect = (t_redirection *)malloc(sizeof(t_redirection));
+	check_error_null(redirect, "malloc");
 	redirect->type = type;
 	redirect->file = file;
 	redirect->next = NULL;

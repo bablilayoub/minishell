@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/14 21:57:17 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/15 03:45:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ void	get_exit_status(t_data *data, t_token *tmp)
 {
 	data->temp = tmp->value;
 	tmp->value = ft_itoa(data->exit_status);
+	check_error_null(tmp->value, "malloc");
 	free(data->temp);
 	data->temp = tmp->type;
 	tmp->type = ft_strdup(WORD);
+	check_error_null(tmp->type, "malloc");
 	free(data->temp);
 }
 
@@ -26,18 +28,22 @@ void	get_normal_env_vars(t_data *data, t_token *tmp)
 {
 	data->temp = tmp->value;
 	tmp->value = get_env(tmp->value + 1, data);
+	check_error_null(tmp->value, "malloc");
 	free(data->temp);
 	if (!tmp->value)
 	{
 		tmp->value = ft_strdup("");
+		check_error_null(tmp->value, "malloc");
 		data->temp = tmp->type;
 		tmp->type = ft_strdup(WHITE_SPACE);
+		check_error_null(tmp->type, "malloc");
 		free(data->temp);
 	}
 	else
 	{
 		data->temp = tmp->type;
 		tmp->type = ft_strdup(WORD);
+		check_error_null(tmp->type, "malloc");
 		free(data->temp);
 	}
 }
@@ -60,6 +66,7 @@ void	get_env_vars(t_data *data)
 		{
 			data->temp = tmp->type;
 			tmp->type = ft_strdup(WORD);
+			check_error_null(tmp->type, "malloc");
 			free(data->temp);
 		}
 		tmp = tmp->next;
@@ -80,10 +87,12 @@ char	*get_env(char *env, t_data *data)
 		while (data->env[i][j] && data->env[i][j] != '=')
 			j++;
 		env_var = ft_substr(data->env[i], 0, j);
+		check_error_null(env_var, "malloc");
 		if (ft_strncmp(env, env_var, ft_strlen(env_var)) == 0
 			&& ft_strlen(env) == ft_strlen(env_var))
 		{
 			env_value = ft_strdup(data->env[i] + j + 1);
+			check_error_null(env_value, "malloc");
 			free(env_var);
 			return (env_value);
 		}

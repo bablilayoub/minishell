@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/14 17:51:42 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/15 03:43:57 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ t_token	*new_token(char *value, char *type, int state, size_t len)
 	t_token	*token;
 
 	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
+	check_error_null(token, "malloc");
 	token->value = value;
 	token->type = type;
 	token->state = state;
