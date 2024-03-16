@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 23:46:57 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/15 00:18:47 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/16 00:26:42 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,12 @@ int	check_syntax_error(t_token *token)
 		return (0);
 	}
 	return (1);
+}
+
+int	cmd_starts_with_redir(t_token *tmp)
+{
+	return (ft_strncmp(tmp->type, REDIR_OUT, 1) == 0
+		|| ft_strncmp(tmp->type, APPEND_OUT, 2) == 0
+		|| ft_strncmp(tmp->type, REDIR_IN, 1) == 0
+		|| ft_strncmp(tmp->type, HERE_DOC, 2) == 0);
 }

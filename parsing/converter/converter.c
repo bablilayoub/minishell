@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/15 17:13:02 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/16 02:47:51 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	start_converting(t_token **tmp, t_cmd **head, t_cmd **cmd)
 	int	found_cmd;
 
 	found_cmd = 0;
-	(1 == 1) && (*cmd = NULL, found_cmd = 0);
 	while (*tmp)
 	{
 		if (ft_strncmp((*tmp)->type, PIPE_LINE, 1) == 0
@@ -82,12 +81,11 @@ void	start_converting(t_token **tmp, t_cmd **head, t_cmd **cmd)
 			convert_word(tmp, head, cmd, &found_cmd);
 			break ;
 		}
-		else if (((ft_strncmp((*tmp)->type, APPEND_OUT, 2) == 0
-					|| ft_strncmp((*tmp)->type, REDIR_OUT, 1) == 0)
-				|| (ft_strncmp((*tmp)->type, HERE_DOC, 2) == 0
-					|| ft_strncmp((*tmp)->type, REDIR_IN, 1) == 0))
-			&& !found_cmd)
+		else if (cmd_starts_with_redir(*tmp) && !found_cmd)
+		{
 			convert_redirection(tmp, head, cmd, &found_cmd);
+			break ;
+		}
 		if (*tmp)
 			(1 == 1) && (*tmp = (*tmp)->next,
 				*tmp = skip_white_spaces(*tmp));
@@ -102,12 +100,16 @@ void	convert_tokens_to_commands(t_data *data)
 
 	if (!data->token)
 		return ;
-	(1 == 1) && (tmp = data->token, head = NULL, cmd = NULL);
-	(1 == 1) && (tmp = clean_tokens(data, tmp), tmp = skip_white_spaces(tmp));
+	tmp = data->token;
+	head = NULL;
+	cmd = NULL;
+	tmp = clean_tokens(data, tmp);
+	tmp = skip_white_spaces(tmp);
 	if (!tmp || !check_syntax_error(tmp))
 		return ;
 	while (tmp)
 	{
+		cmd = NULL;
 		start_converting(&tmp, &head, &cmd);
 		if (tmp)
 			tmp = tmp->next;

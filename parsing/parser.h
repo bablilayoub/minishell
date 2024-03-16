@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/15 03:01:38 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/16 02:39:35 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,24 @@ t_cmd	*add_cmd(t_cmd *head, t_cmd *cmd);
 // Converter utils
 int		not_a_shell_command(t_token *token);
 t_token	*get_command_name(t_token *head);
+int		cmd_starts_with_redir(t_token *tmp);
 
 // Arguments
 t_token	*find_args(t_cmd *cmd, t_token *token);
 
+// Arguments handler
+int		should_stop_finding_args(t_token *tmp);
+int		is_redirect_out_token(t_token *tmp);
+int		is_redirect_in_token(t_token *tmp);
+void	handle_redirect_out_token(t_token **tmp, t_cmd **cmd, char *tmp_type);
+void	handle_redirect_in_token(t_token **tmp, t_cmd **cmd, char *tmp_type);
+
 // Arguments utils
 t_arg	*new_arg(char *value);
 t_arg	*add_arg(t_arg *head, char *value, int found_quote);
+int		is_white_space_in_quote(t_token *tmp);
+void	handle_general_white_space(t_token **tmp, t_arg **head, t_cmd **cmd);
+int		handle_tokens(t_token **tmp, t_arg **head, t_cmd **cmd, char *tmp_type);
 
 // Cleaning
 void	free_data(t_data *data, int free_all);
@@ -109,4 +120,7 @@ int		check_syntax(t_data *data);
 char	*get_env(char *env_var, t_data *data);
 void	get_env_vars(t_data *data);
 
+// Debug
+void	print_args(t_cmd *head);
+void	print_tokens(t_token *token);
 #endif

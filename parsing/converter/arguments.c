@@ -6,103 +6,75 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/15 17:44:52 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/16 02:37:52 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-// int	should_stop_finding_args(t_token *tmp)
-// {
-// 	return (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0
-// 		&& tmp->state != IN_DQUOTE && tmp->state != IN_QUOTE);
-// }
+int	is_special_char_token(t_token *tmp)
+{
+	return ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0
+			|| ft_strncmp(tmp->type, REDIR_OUT, 1) == 0
+			|| ft_strncmp(tmp->type, APPEND_OUT, 2) == 0
+			|| ft_strncmp(tmp->type, HERE_DOC, 2) == 0)
+		&& (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE));
+}
+
+int	handle_escape_dquote_end_error(t_token **tmp)
+{
+	if (ft_strncmp((*tmp)->type, ESCAPE, 1) == 0
+		&& ((*tmp)->state == IN_DQUOTE) && !(*tmp)->next)
+	{
+		printf(PREFIX_ERROR "Syntax error\n");
+		return (0);
+	}
+	return (1);
+}
+
+int	handle_more_tokens(t_token **tmp, t_arg **head)
+{
+	if (ft_strncmp((*tmp)->type, QUOTE, 1) == 0
+		&& between_dquotes(*tmp) && ((*tmp)->state == IN_DQUOTE))
+		*head = add_arg(*head, (*tmp)->value, 1);
+	else if (ft_strncmp((*tmp)->type, PIPE_LINE, 1) == 0
+		&& ((*tmp)->state == IN_QUOTE || (*tmp)->state == IN_DQUOTE))
+		*head = add_arg(*head, (*tmp)->value, 1);
+	else if ((ft_strncmp((*tmp)->type, NEW_LINE, 1) == 0
+			|| ft_strncmp((*tmp)->type, TAB_SPACE, 1) == 0)
+		&& ((*tmp)->state == IN_QUOTE || (*tmp)->state == IN_DQUOTE))
+		*head = add_arg(*head, (*tmp)->value, 1);
+	else if (ft_strncmp((*tmp)->type, ESCAPE, 1) == 0
+		&& ((*tmp)->state == IN_QUOTE))
+		*head = add_arg(*head, (*tmp)->value, 1);
+	else if (!handle_escape_dquote_end_error(tmp))
+		return (0);
+	return (1);
+}
 
 int	start_finding_args(t_token **tmp, t_cmd **cmd,
 	t_arg **head, char *tmp_type)
 {
 	while (*tmp)
 	{
-		if (ft_strncmp((*tmp)->type, PIPE_LINE, 1) == 0
-			&& (*tmp)->state != IN_DQUOTE && (*tmp)->state != IN_QUOTE)
+		if (should_stop_finding_args(*tmp))
 			break ;
-		if (ft_strncmp((*tmp)->type, WORD, 4) == 0)
-			*head = add_arg(*head, (*tmp)->value, 1);
-		else if (ft_strncmp((*tmp)->type, ENV, 1) == 0)
-			*head = add_arg(*head, (*tmp)->value, ((*tmp)->state == IN_QUOTE));
-		else if ((ft_strncmp((*tmp)->type, REDIR_OUT, 1) == 0
-				|| ft_strncmp((*tmp)->type, APPEND_OUT, 2) == 0)
-			&& ((*tmp)->state != IN_QUOTE && (*tmp)->state != IN_DQUOTE))
+		if (!handle_tokens(tmp, head, cmd, tmp_type))
 		{
-			tmp_type = (*tmp)->type;
-			if ((*tmp)->next)
-				*tmp = skip_white_spaces((*tmp)->next);
-			if (tmp && ft_strncmp((*tmp)->type, WORD, 4) == 0)
+			if (is_special_char_token(*tmp))
+				*head = add_arg(*head, (*tmp)->value, 1);
+			else if (is_white_space_in_quote(*tmp))
+				*head = add_arg(*head, (*tmp)->value, 1);
+			else if (ft_strncmp((*tmp)->type, WHITE_SPACE, 1) == 0
+				&& ((*tmp)->state == GENERAL))
 			{
-				if (ft_strncmp(tmp_type, APPEND_OUT, 2) == 0)
-					*tmp = add_file(cmd, &(*cmd)->redirect_out,
-							*tmp, APPEND_OUT);
-				else if (ft_strncmp(tmp_type, REDIR_OUT, 1) == 0)
-					*tmp = add_file(cmd, &(*cmd)->redirect_out,
-							*tmp, REDIR_OUT);
+				handle_general_white_space(tmp, head, cmd);
+				continue ;
 			}
-			else
-				*tmp = add_file(cmd, &(*cmd)->redirect_out, NULL, (*tmp)->type);
+			else if (!handle_more_tokens(tmp, head))
+				return (0);
 		}
-		else if ((ft_strncmp((*tmp)->type, REDIR_IN, 1) == 0)
-			&& ((*tmp)->state != IN_QUOTE && (*tmp)->state != IN_DQUOTE))
-		{
-			tmp_type = (*tmp)->type;
-			if ((*tmp)->next)
-				*tmp = skip_white_spaces((*tmp)->next);
-			if (tmp && ft_strncmp((*tmp)->type, WORD, 4) == 0)
-			{
-				if (ft_strncmp(tmp_type, HERE_DOC, 2) == 0
-					|| ft_strncmp(tmp_type, REDIR_IN, 1) == 0)
-					*tmp = add_file(cmd, &(*cmd)->redirect_in,
-							*tmp, (*tmp)->type);
-			}
-			else
-				*tmp = add_file(cmd, &(*cmd)->redirect_in, NULL, (*tmp)->type);
-		}
-		else if ((ft_strncmp((*tmp)->type, REDIR_IN, 1) == 0
-				|| ft_strncmp((*tmp)->type, REDIR_OUT, 1) == 0
-				|| ft_strncmp((*tmp)->type, APPEND_OUT, 2) == 0
-				|| ft_strncmp((*tmp)->type, HERE_DOC, 2) == 0)
-			&& ((*tmp)->state == IN_QUOTE || (*tmp)->state == IN_DQUOTE))
-			*head = add_arg(*head, (*tmp)->value, 1);
-		else if (ft_strncmp((*tmp)->type, WHITE_SPACE, 1) == 0
-			&& ((*tmp)->state != GENERAL))
-			*head = add_arg(*head, (*tmp)->value, 1);
-		else if (ft_strncmp((*tmp)->type, WHITE_SPACE, 1) == 0
-			&& ((*tmp)->state == GENERAL))
-		{
-			*tmp = skip_white_spaces(*tmp);
-			if (tmp && (ft_strncmp((*cmd)->cmd, "echo", 4) == 0)
-				&& not_a_shell_command(*tmp))
-				*head = add_arg(*head, " ", 1);
-			continue ;
-		}
-		else if (ft_strncmp((*tmp)->type, QUOTE, 1) == 0
-			&& between_dquotes(*tmp) && ((*tmp)->state == IN_DQUOTE))
-			*head = add_arg(*head, (*tmp)->value, 1);
-		else if (ft_strncmp((*tmp)->type, PIPE_LINE, 1) == 0
-			&& ((*tmp)->state == IN_QUOTE || (*tmp)->state == IN_DQUOTE))
-			*head = add_arg(*head, (*tmp)->value, 1);
-		else if ((ft_strncmp((*tmp)->type, NEW_LINE, 1) == 0
-				|| ft_strncmp((*tmp)->type, TAB_SPACE, 1) == 0)
-			&& ((*tmp)->state == IN_QUOTE || (*tmp)->state == IN_DQUOTE))
-			*head = add_arg(*head, (*tmp)->value, 1);
-		else if (ft_strncmp((*tmp)->type, ESCAPE, 1) == 0
-			&& ((*tmp)->state == IN_QUOTE))
-			*head = add_arg(*head, (*tmp)->value, 1);
-		else if (ft_strncmp((*tmp)->type, ESCAPE, 1) == 0
-			&& ((*tmp)->state == IN_DQUOTE) && !(*tmp)->next)
-		{
-			printf(PREFIX_ERROR "Syntax error\n");
-			return (0);
-		}
-		if (tmp && (*tmp)->next)
+		if (*tmp && (*tmp)->next)
 			*tmp = (*tmp)->next;
 		else
 			break ;
