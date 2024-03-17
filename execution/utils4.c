@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/27 15:14:38 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/15 03:40:48 by alaalalm         ###   ########.fr       */
+/*   Created: 2024/03/17 01:56:46 by alaalalm          #+#    #+#             */
+/*   Updated: 2024/03/17 01:57:09 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../execution.h"
+#include "execution.h"
 
-void	ft_pwd(t_data *data)
+int	get_file(t_cmd *cmd, char *file)
 {
-	char	*path;
+	int	fd;
 
-	path = getcwd(NULL, 0);
-	if (!path)
+	fd = 0;
+	if (access(file, F_OK) == -1)
 	{
-		printf("%s\n", strerror(errno));
-		free_data(data, 1);
-		exit(1);
+		printf(PREFIX_ERROR "%s: no such file or directory\n",
+			file);
+		if (!cmd->built_in)
+			exit(EXIT_FAILURE);
+		return (-1);
 	}
-	printf("%s\n", path);
-	free(path);
-	if (!data->cmd->next || !data->cmd->prev)
-		return ;
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+	{
+		printf(PREFIX_ERROR "%s: %s\n", file, strerror(errno));
+		if (!cmd->built_in)
+			exit(EXIT_FAILURE);
+		return (-1);
+	}
+	return (fd);
 }

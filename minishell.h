@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/14 17:53:32 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/17 01:48:55 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ typedef struct s_data
 	char			**in_valid;
 	int				exit_status;
 	char			*temp;
+	int				in;
+	int				out;
+	int				**fd;
+	int				fd_c;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
 }	t_data;
@@ -90,6 +94,8 @@ typedef struct s_cmd
 	int						found;
 	int						has_redir_in;
 	int						has_redir_out;
+	int						fd_in;
+	int						fd_out;
 	struct s_redirection	*redirect_in;
 	struct s_redirection	*redirect_out;
 	struct s_arg			*args;

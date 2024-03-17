@@ -6,32 +6,33 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/13 16:52:10 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/15 22:18:33 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-void excute_builtin(t_cmd *cmd_list, t_data *data)
+void	excute_builtin(t_cmd *cmd_list, t_data *data)
 {
-    if (ft_strncmp(cmd_list->arguments[0], "echo", 4) == 0)
-        ft_echo(cmd_list);
-    else if (ft_strncmp(cmd_list->arguments[0], "cd", 2) == 0)
-        ft_chdir(cmd_list, data);
-    else if (ft_strncmp(cmd_list->arguments[0], "pwd", 3) == 0)
-        ft_pwd(data);
-    else if (ft_strncmp(cmd_list->arguments[0], "env", 3) == 0)
-    {
-        ft_env(data->env);
-        if (!cmd_list->next || !cmd_list->prev)
-            return;
-    }
-    else if ((ft_strncmp(cmd_list->arguments[0], "export", 6) == 0) && !cmd_list->arguments[1])
-        print(data->export);
-    else if (ft_strncmp(cmd_list->arguments[0], "export", 6) == 0)
-        ft_export(data, &data->env);
-    else if (ft_strncmp(cmd_list->arguments[0], "exit", 4) == 0)
-        ft_exit(data, cmd_list);
-    else if (ft_strncmp(cmd_list->arguments[0], "unset", 5) == 0)
-        ft_unset(cmd_list, &data->env, &data->export);
+	if (ft_strncmp(cmd_list->arguments[0], "echo", 4) == 0)
+		ft_echo(cmd_list);
+	else if (ft_strncmp(cmd_list->arguments[0], "cd", 2) == 0)
+		ft_chdir(cmd_list, data);
+	else if (ft_strncmp(cmd_list->arguments[0], "pwd", 3) == 0)
+		ft_pwd(data);
+	else if (ft_strncmp(cmd_list->arguments[0], "env", 3) == 0)
+	{
+		ft_env(data->env, data);
+		if (!cmd_list->next || !cmd_list->prev)
+			return ;
+	}
+	else if ((ft_strncmp(cmd_list->arguments[0], "export", 6) == 0)
+		&& !cmd_list->arguments[1])
+		print(data->export);
+	else if (ft_strncmp(cmd_list->arguments[0], "export", 6) == 0)
+		ft_export(data, &data->env);
+	else if (ft_strncmp(cmd_list->arguments[0], "exit", 4) == 0)
+		ft_exit(data, cmd_list);
+	else if (ft_strncmp(cmd_list->arguments[0], "unset", 5) == 0)
+		ft_unset(cmd_list, &data->env, &data->export);
 }

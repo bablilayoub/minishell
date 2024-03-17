@@ -6,190 +6,16 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/14 01:07:56 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/17 22:36:38 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void here_doc_signal(int sig)
+void	excute_child(t_cmd *current, t_data *data, int k, int fd_c)
 {
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		exit(EXIT_SUCCESS);
-	}
-}
-
-int here_doc(char *file_and_search_for)
-{
-	int fd[2];
-	int ret;
-	char *line;
-
-	pipe(fd);
-	ret = fork();
-	if (ret == 0)
-	{
-		signal(SIGINT, here_doc_signal);
-		close(fd[0]);
-		while (1)
-		{
-			line = readline(YELLOW "> " RESET);
-			if (!line)
-				break;
-			if (ft_strncmp(line, file_and_search_for, ft_strlen(line)) == 0)
-			{
-				free(line);
-				break;
-			}
-			write(fd[1], line, ft_strlen(line));
-			write(fd[1], "\n", 1);
-			free(line);
-		}
-		close(fd[1]);
-		exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		close(fd[1]);
-		waitpid(ret, NULL, 0);
-	}
-	return (fd[0]);
-}
-
-char *get_next_line(int fd, char **line)
-{
-	char *buf;
-	char *tmp;
-	int ret;
-
-	buf = malloc(2);
-	if (!buf)
-		return (NULL);
-	ret = read(fd, buf, 1);
-	if (ret == 0)
-	{
-		free(buf);
-		return (NULL);
-	}
-	buf[1] = '\0';
-	*line = ft_strdup(buf);
-	while (1)
-	{
-		ret = read(fd, buf, 1);
-		if (ret == 0)
-			break;
-		buf[1] = '\0';
-		tmp = ft_strjoin(*line, buf);
-		free(*line);
-		*line = tmp;
-		if (ft_strncmp(buf, "\n", 1) == 0)
-			break;
-	}
-	free(buf);
-	return (*line);
-}
-
-void redirections_out(t_cmd *cmd, int *fd_out)
-{
-	while (cmd->redirect_out)
-	{
-		if (ft_strncmp(cmd->redirect_out->type, ">>", 2) == 0)
-			*fd_out = open(cmd->redirect_out->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
-			*fd_out = open(cmd->redirect_out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		cmd->redirect_out = cmd->redirect_out->next;
-	}
-}
-
-int redirections_in(t_cmd *cmd, int *fd_in)
-{
-	if (cmd->redirect_in)
-	{
-		while (cmd->redirect_in)
-		{
-			if (ft_strncmp(cmd->redirect_in->type, "<<", 2) == 0)
-				*fd_in = here_doc(cmd->redirect_in->file);
-			else
-			{
-				if (access(cmd->redirect_in->file, F_OK) == -1)
-				{
-					printf(PREFIX_ERROR"%s: no such file or directory\n", cmd->redirect_in->file);
-					if (!cmd->built_in)
-						exit(EXIT_FAILURE);
-					else
-						return (0);
-				}
-				*fd_in = open(cmd->redirect_in->file, O_RDONLY);
-			}
-			cmd->redirect_in = cmd->redirect_in->next;
-		}
-	}
-	return (1);
-}
-
-void no_redirections(t_cmd *cmd, int *fd_in, int *fd_out, int fd[][2], int k, int fd_c)
-{
-	if (cmd->next)
-	{
-		if (k == 0)
-			*fd_in = STDIN_FILENO;
-		else
-			*fd_in = fd[k - 1][0];
-		if (k == fd_c - 1)
-			*fd_out = STDOUT_FILENO;
-		else
-			*fd_out = fd[k][1];
-	}
-	else if (cmd->prev)
-	{
-		if (k == 0)
-			*fd_in = STDIN_FILENO;
-		else
-			*fd_in = fd[k - 1][0];
-		*fd_out = STDOUT_FILENO;
-	}
-	else
-	{
-		*fd_in = STDIN_FILENO;
-		*fd_out = STDOUT_FILENO;
-	}
-}
-void handle_redirections(t_cmd *cmd, int fd[][2], int k, int fd_c)
-{
-	int fd_in = 0;
-	int fd_out = 1;
-
-	if (cmd->has_redir_in || cmd->has_redir_out)
-	{
-		if (cmd->has_redir_out)
-		{
-			redirections_out(cmd, &fd_out);
-			if (k == 0)
-				fd_in = STDIN_FILENO;
-			else
-				fd_in = fd[k - 1][0];
-		}
-		if (cmd->has_redir_in)
-		{
-			redirections_in(cmd, &fd_in);
-			if (k == fd_c - 1)
-				fd_out = STDOUT_FILENO;
-			else
-				fd_out = fd[k][1];
-		}
-	}
-	else
-		no_redirections(cmd, &fd_in, &fd_out, fd, k, fd_c);
-	dup2(fd_in, STDIN_FILENO);
-	dup2(fd_out, STDOUT_FILENO);
-}
-
-void excute_child(t_cmd *current, t_data *data, int fd[][2], int k, int fd_c)
-{
-	handle_redirections(current, fd, k, fd_c);
-	close_fds(fd, fd_c);
+	handle_redirections(current, data->fd, k, data);
+	close_fds(data->fd, fd_c);
 	if (current->built_in)
 	{
 		excute_builtin(current, data);
@@ -205,81 +31,73 @@ void excute_child(t_cmd *current, t_data *data, int fd[][2], int k, int fd_c)
 	}
 }
 
-int handle_single_command_redirections(t_cmd *cmd)
+void	excute_multiple_commands(t_data *data, int fd_c,
+pid_t pid[], t_cmd *current)
 {
-	int fd_out = 1;
-	int fd_in = 0;
-	int flag = 0;
+	int	k;
+	int	i;
 
-	if (cmd->has_redir_in || cmd->has_redir_out)
-	{
-		if (cmd->has_redir_out)
-		{
-			redirections_out(cmd, &fd_out);
-			flag = 1;
-		}
-		if (cmd->has_redir_in)
-		{
-			if(!redirections_in(cmd, &fd_in))
-				return (0);
-			flag = 2;
-		}
-	}
-	dup2(fd_in, STDIN_FILENO);
-	dup2(fd_out, STDOUT_FILENO);
-	if (flag == 1)
-		close(fd_out);
-	if (flag == 2)
-		close(fd_in);
-	return (1);
-}
-void start_execution(t_data *data, int fd_c)
-{
-	int k;
-	int i;
-	int fd[fd_c][2];
-	pid_t pid[fd_c];
-	t_cmd *current;
-	int tmp_in;
-	int tmp_out;
-
-	k = 0;
-	i = -1;
-	current = data->cmd;
-	if (current && !current->next && current->built_in)
-	{
-		tmp_in = dup(STDIN_FILENO);
-		tmp_out = dup(STDOUT_FILENO);
-		if (handle_single_command_redirections(current))
-			excute_builtin(current, data);
-		dup2(tmp_in, STDIN_FILENO);
-		dup2(tmp_out, STDOUT_FILENO);
-		close(tmp_in);
-		close(tmp_out);
-		return;
-	}
+	(1) && (k = 0, i = -1);
 	while (++i < fd_c)
-		pipe(fd[i]);
+	{
+		if (pipe(data->fd[i]) == -1)
+			perror("pipe");
+	}
 	while (current)
 	{
 		pid[k] = fork();
+		if (pid[k] == -1)
+			perror("fork");
 		if (pid[k] == 0)
-			excute_child(current, data, fd, k, fd_c);
+			excute_child(current, data, k, fd_c);
+		else
+		{
+			close(data->fd[k][1]);
+			waitpid(pid[k], &data->exit_status, 0);
+		}
 		k++;
 		current = current->next;
 	}
-	close_fds_and_wait(fd, pid, fd_c, data);
+	close_fds_and_getstatus(fd_c, data);
 }
 
-void prepare_for_excution(t_data *data)
+void	start_execution(t_data *data, int fd_c)
 {
-	int fd_c;
-	t_cmd *cmd_list;
+	int		i;
+	pid_t	*pid;
+
+	if (data->cmd && !data->cmd->next && data->cmd->built_in)
+	{
+		(1) && (data->in = dup(STDIN_FILENO), data->out = dup(STDOUT_FILENO));
+		if (handle_single_command_redirections(data->cmd))
+			excute_builtin(data->cmd, data);
+		dup2(data->in, STDIN_FILENO);
+		dup2(data->out, STDOUT_FILENO);
+		(1) && (close(data->in), close(data->out), data->in = 0, data->out = 0);
+		return ;
+	}
+	(1) && (i = -1, pid = malloc(sizeof(pid_t) * fd_c));
+	check_error_null(pid, "malloc");
+	data->fd = malloc(sizeof(int *) * (fd_c + 1));
+	check_error_null(data->fd, "malloc");
+	while (++i < fd_c)
+	{
+		data->fd[i] = malloc(sizeof(int) * 2);
+		check_error_null(data->fd[i], "malloc");
+	}
+	data->fd[i] = NULL;
+	excute_multiple_commands(data, fd_c, pid, data->cmd);
+	(1) && (free_int(data->fd), free(pid), pid = NULL);
+}
+
+void	prepare_for_excution(t_data *data)
+{
+	t_cmd	*cmd_list;
 
 	cmd_list = data->cmd;
 	initialize_arguments(cmd_list);
 	if (!initialize_path(cmd_list, data))
-		return;
-	fd_c = cmd_lenght(cmd_list);
-	start_execution(data, fd_c);
+		return ;
+	data->fd_c = cmd_lenght(cmd_list);
+	start_execution(data, data->fd_c);
 }
