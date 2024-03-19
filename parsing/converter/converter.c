@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   converter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/16 02:55:22 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/19 01:07:06 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,10 @@ void	convert_redirection(t_token **tmp, t_cmd **head,
 				|| ft_strncmp((*tmp)->type, REDIR_IN, 1) == 0)))
 	{
 		if (ft_strncmp((*tmp)->type, APPEND_OUT, 2) == 0
-			|| ft_strncmp((*tmp)->type, REDIR_OUT, 1) == 0)
-			*tmp = add_file(cmd, &(*cmd)->redirect_out,
-					(*tmp)->next, (*tmp)->type);
-		else if (ft_strncmp((*tmp)->type, HERE_DOC, 2) == 0
+			|| ft_strncmp((*tmp)->type, REDIR_OUT, 1) == 0
+			|| ft_strncmp((*tmp)->type, HERE_DOC, 2) == 0
 			|| ft_strncmp((*tmp)->type, REDIR_IN, 1) == 0)
-			*tmp = add_file(cmd, &(*cmd)->redirect_in,
+			*tmp = add_file(cmd, &(*cmd)->redirects,
 					(*tmp)->next, (*tmp)->type);
 		if (*tmp)
 			*tmp = (*tmp)->next;

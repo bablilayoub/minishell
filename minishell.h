@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/17 01:48:55 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/19 01:05:35 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,10 @@ typedef struct s_cmd
 	char					*pwd;
 	char					*old_pwd;
 	int						found;
-	int						has_redir_in;
-	int						has_redir_out;
+	int						has_redirection;
 	int						fd_in;
 	int						fd_out;
-	struct s_redirection	*redirect_in;
-	struct s_redirection	*redirect_out;
+	struct s_redirection	*redirects;
 	struct s_arg			*args;
 	struct s_cmd			*next;
 	struct s_cmd			*prev;

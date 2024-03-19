@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 21:58:12 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/15 18:29:20 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/19 01:06:21 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,10 @@ t_redirection	*add_redirect(t_redirection *head, t_redirection *redirect)
 t_token	*add_file(t_cmd **cmd, t_redirection **head, t_token *token, char *type)
 {
 	if (ft_strncmp(type, APPEND_OUT, 2) == 0
-		|| ft_strncmp(type, REDIR_OUT, 1) == 0)
-		(*cmd)->has_redir_out = 1;
-	else if (ft_strncmp(type, HERE_DOC, 2) == 0
+		|| ft_strncmp(type, REDIR_OUT, 1) == 0
+		|| ft_strncmp(type, HERE_DOC, 2) == 0
 		|| ft_strncmp(type, REDIR_IN, 1) == 0)
-		(*cmd)->has_redir_in = 1;
+		(*cmd)->has_redirection = 1;
 	if (!token)
 		*head = add_redirect(*head, new_redirect(type, NULL));
 	while (token && not_a_shell_command(token)

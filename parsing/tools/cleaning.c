@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/17 04:04:48 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/19 01:05:41 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,8 @@ void	free_cmd(t_cmd *cmd)
 			free_array(cmd->arguments);
 		if (cmd->args)
 			free_args(cmd->args);
-		if (cmd->redirect_in)
-			free_redirections(cmd->redirect_in);
-		if (cmd->redirect_out)
-			free_redirections(cmd->redirect_out);
+		if (cmd->redirects)
+			free_redirections(cmd->redirects);
 		if (cmd->path)
 			free(cmd->path);
 		tmp = cmd->next;

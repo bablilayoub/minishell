@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/16 02:39:35 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/19 01:10:14 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,8 @@ t_token	*find_args(t_cmd *cmd, t_token *token);
 
 // Arguments handler
 int		should_stop_finding_args(t_token *tmp);
-int		is_redirect_out_token(t_token *tmp);
-int		is_redirect_in_token(t_token *tmp);
-void	handle_redirect_out_token(t_token **tmp, t_cmd **cmd, char *tmp_type);
-void	handle_redirect_in_token(t_token **tmp, t_cmd **cmd, char *tmp_type);
+int		is_redirect_token(t_token *tmp);
+void	handle_redirect_token(t_token **tmp, t_cmd **cmd, char *tmp_type);
 
 // Arguments utils
 t_arg	*new_arg(char *value);

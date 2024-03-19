@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:00:52 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/16 02:37:21 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/19 01:10:30 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,9 @@ int	handle_tokens(t_token **tmp, t_arg **head, t_cmd **cmd, char *tmp_type)
 		*head = add_arg(*head, (*tmp)->value, ((*tmp)->state == IN_QUOTE));
 		return (1);
 	}
-	else if (is_redirect_out_token(*tmp))
+	else if (is_redirect_token(*tmp))
 	{
-		handle_redirect_out_token(tmp, cmd, tmp_type);
-		return (1);
-	}
-	else if (is_redirect_in_token(*tmp))
-	{
-		handle_redirect_in_token(tmp, cmd, tmp_type);
+		handle_redirect_token(tmp, cmd, tmp_type);
 		return (1);
 	}
 	return (0);

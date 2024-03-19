@@ -3,27 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/17 03:53:32 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/19 01:11:52 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing/parser.h"
 
-void	f(void)
-{
-	system("leaks minishell");
-}
-
 int	main(int total, char **args, char **env)
 {
 	t_data	data;
 
-	printf("PID: %d\n", getpid());
-	atexit(f);
 	(void)args;
 	if (total != 1)
 	{

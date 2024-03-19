@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:50:50 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/17 01:44:43 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/19 01:10:56 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,8 @@ t_cmd	*new_cmd(t_token *token)
 	cmd->path = NULL;
 	cmd->has_pipe = 0;
 	cmd->arguments = NULL;
-	cmd->has_redir_in = 0;
-	cmd->has_redir_out = 0;
-	cmd->redirect_in = NULL;
-	cmd->redirect_out = NULL;
+	cmd->has_redirection = 0;
+	cmd->redirects = NULL;
 	cmd->args = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;

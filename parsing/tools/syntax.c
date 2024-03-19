@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:23:16 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/13 01:03:53 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/19 01:14:54 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,51 +55,28 @@ int	check_pipes(t_cmd *cmd)
 	return (1);
 }
 
-int	check_redirections_out(t_cmd *tmp)
-{
-	t_redirection	*redir_out;
-
-	if (tmp->has_redir_out)
-	{
-		redir_out = tmp->redirect_out;
-		while (tmp->redirect_out)
-		{
-			if (!tmp->redirect_out->file)
-			{
-				printf("%s\n", PREFIX_ERROR "Syntax error");
-				return (0);
-			}
-			tmp->redirect_out = tmp->redirect_out->next;
-		}
-		tmp->redirect_out = redir_out;
-	}
-	return (1);
-}
-
 int	check_redirections(t_cmd *cmd)
 {
 	t_cmd			*tmp;
-	t_redirection	*redir_in;
+	t_redirection	*redirects;
 
 	tmp = cmd;
 	while (tmp)
 	{
-		if (tmp->has_redir_in)
+		if (tmp->has_redirection)
 		{
-			redir_in = tmp->redirect_in;
-			while (tmp->redirect_in)
+			redirects = tmp->redirects;
+			while (tmp->redirects)
 			{
-				if (!tmp->redirect_in->file)
+				if (!tmp->redirects->file)
 				{
 					printf("%s\n", PREFIX_ERROR "Syntax error");
 					return (0);
 				}
-				tmp->redirect_in = tmp->redirect_in->next;
+				tmp->redirects = tmp->redirects->next;
 			}
-			tmp->redirect_in = redir_in;
+			tmp->redirects = redirects;
 		}
-		if (!check_redirections_out(tmp))
-			return (0);
 		tmp = tmp->next;
 	}
 	return (1);
