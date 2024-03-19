@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/17 04:07:03 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/19 03:08:22 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ bool	initialize_path(t_cmd *head, t_data *data)
 		if (!head->cmd || head->built_in || access(head->cmd, F_OK | X_OK) == 0)
 		{
 			if (access(head->cmd, F_OK | X_OK) == 0)
-				head->path = head->cmd;
+				head->path = ft_strdup(head->cmd);
 			head = head->next;
 			continue ;
 		}

@@ -6,16 +6,16 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/17 22:36:38 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:34:25 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
 
-void	excute_child(t_cmd *current, t_data *data, int k, int fd_c)
+void	excute_child(t_cmd *current, t_data *data, int k)
 {
 	handle_redirections(current, data->fd, k, data);
-	close_fds(data->fd, fd_c);
+	close_fds(data->fd);
 	if (current->built_in)
 	{
 		excute_builtin(current, data);
@@ -49,7 +49,7 @@ pid_t pid[], t_cmd *current)
 		if (pid[k] == -1)
 			perror("fork");
 		if (pid[k] == 0)
-			excute_child(current, data, k, fd_c);
+			excute_child(current, data, k);
 		else
 		{
 			close(data->fd[k][1]);
@@ -58,7 +58,7 @@ pid_t pid[], t_cmd *current)
 		k++;
 		current = current->next;
 	}
-	close_fds_and_getstatus(fd_c, data);
+	close_fds_and_getstatus(data);
 }
 
 void	start_execution(t_data *data, int fd_c)
@@ -69,7 +69,7 @@ void	start_execution(t_data *data, int fd_c)
 	if (data->cmd && !data->cmd->next && data->cmd->built_in)
 	{
 		(1) && (data->in = dup(STDIN_FILENO), data->out = dup(STDOUT_FILENO));
-		if (handle_single_command_redirections(data->cmd))
+		if (handle_single_command_redirections(data->cmd, data))
 			excute_builtin(data->cmd, data);
 		dup2(data->in, STDIN_FILENO);
 		dup2(data->out, STDOUT_FILENO);

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/17 03:41:34 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:29:05 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,11 @@ int	cmd_lenght(t_cmd *cmd)
 	return (i);
 }
 
-void	close_fds(int **fd, int fd_c)
+void	close_fds(int **fd)
 {
 	int	i;
 
 	i = -1;
-	(void)fd_c;
 	while (fd[++i])
 	{
 		if (write(fd[i][1], "", 0) == -1 && read(fd[i][0], "", 0) == -1)
@@ -94,8 +93,8 @@ void	update_prefix(t_data *data, char *prefix)
 	data->prefix = new_prefix;
 }
 
-void	close_fds_and_getstatus(int fd_c, t_data *data)
+void	close_fds_and_getstatus(t_data *data)
 {
 	data->exit_status = WEXITSTATUS(data->exit_status);
-	close_fds(data->fd, fd_c);
+	close_fds(data->fd);
 }

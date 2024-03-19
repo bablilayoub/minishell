@@ -6,36 +6,49 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:50:22 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/17 03:05:50 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:36:34 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-int	handle_single_command_redirections(t_cmd *cmd)
+int	iterate_redirections(t_cmd *cmd, t_redirection *tmp, t_data *data)
 {
-	int		fd_out;
-	int		fd_in;
-
-	(1) && (fd_out = STDOUT_FILENO, fd_in = STDIN_FILENO);
-	if (cmd->has_redir_in || cmd->has_redir_out)
+	while (tmp)
 	{
-		if (cmd->has_redir_in)
+		if (ft_strncmp(tmp->type, "<", ft_strlen(tmp->type)) == 0
+			|| ft_strncmp(tmp->type, "<<", ft_strlen(tmp->type)) == 0)
 		{
-			if (!redirections_in(cmd, &fd_in))
+			if (!redirections_in(cmd, &cmd->fd_in, tmp, data))
 				return (0);
 		}
-		if (cmd->has_redir_out)
+		else if (ft_strncmp(tmp->type, ">", ft_strlen(tmp->type)) == 0
+			|| ft_strncmp(tmp->type, ">>", ft_strlen(tmp->type)) == 0)
 		{
-			if (!redirections_out(cmd, &fd_out))
+			if (!redirections_out(cmd, &cmd->fd_out, tmp, data))
 				return (0);
 		}
+		tmp = tmp->next;
 	}
-	dup2(fd_in, STDIN_FILENO);
-	dup2(fd_out, STDOUT_FILENO);
-	if (fd_in != STDIN_FILENO)
-		close(fd_in);
-	if (fd_out != STDOUT_FILENO)
-		close(fd_out);
+	return (1);
+}
+
+int	handle_single_command_redirections(t_cmd *cmd, t_data *data)
+{
+	t_redirection	*tmp;
+
+	(1) && (cmd->fd_out = STDOUT_FILENO, cmd->fd_in = STDIN_FILENO);
+	tmp = cmd->redirects;
+	if (cmd->has_redirection)
+	{
+		if (!iterate_redirections(cmd, tmp, data))
+			return (0);
+	}
+	dup2(cmd->fd_in, STDIN_FILENO);
+	dup2(cmd->fd_out, STDOUT_FILENO);
+	if (cmd->fd_in != STDIN_FILENO)
+		close(cmd->fd_in);
+	if (cmd->fd_out != STDOUT_FILENO)
+		close(cmd->fd_out);
 	return (1);
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the PID of your program
-pid=78215
+pid=70577
 
 # Function to check for file descriptor leaks
 check_fd_leaks() {
