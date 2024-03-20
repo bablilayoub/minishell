@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   converter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/20 00:24:16 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/20 00:33:22 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	convert_tokens_to_commands(t_data *data)
 	head = NULL;
 	cmd = NULL;
 	tmp = clean_tokens(data, tmp);
-	print_tokens(tmp);
+	// print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
 	if (!tmp || !check_syntax_error(tmp))
 		return ;
@@ -172,5 +172,5 @@ void	convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
-	print_args(data->cmd);
+	// print_args(data->cmd);
 }

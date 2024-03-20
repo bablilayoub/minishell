@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/19 21:36:52 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/20 00:44:02 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	close_fds(int **fd);
 void	close_fds_and_getstatus(t_data *data);
 char	**key_value(char *exported);
 void	excute_builtin(t_cmd *cmd_list, t_data *data);
-void	ft_echo(t_cmd *cmd);
+void	ft_echo(t_cmd *cmd, t_data *data);
 void	ft_chdir(t_cmd *cmd, t_data *data);
 void	ft_pwd(t_data *data);
 void	ft_export(t_data *data, char ***env);

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/15 22:18:33 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/20 00:43:45 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	excute_builtin(t_cmd *cmd_list, t_data *data)
 {
 	if (ft_strncmp(cmd_list->arguments[0], "echo", 4) == 0)
-		ft_echo(cmd_list);
+		ft_echo(cmd_list, data);
 	else if (ft_strncmp(cmd_list->arguments[0], "cd", 2) == 0)
 		ft_chdir(cmd_list, data);
 	else if (ft_strncmp(cmd_list->arguments[0], "pwd", 3) == 0)

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 04:41:00 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/15 04:45:56 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/20 01:56:57 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int	ft_strdoublelen(char **str)
 void	print_error(t_cmd *cmd, char *dirname, char *oldpwd)
 {
 	printf(PREFIX_ERROR "cd: %s: %s\n", dirname, strerror(errno));
-	free(oldpwd);
+	if (oldpwd)
+		free(oldpwd);
 	if (cmd->next || cmd->prev)
 		exit(EXIT_FAILURE);
 	else

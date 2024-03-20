@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:09 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/15 03:34:42 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/20 01:55:37 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ void	start_process(t_data *data, char *oldpwd, char *pwd, char ***env)
 void	cd_failed(t_cmd *cmd, char *oldpwd)
 {
 	printf(PREFIX_ERROR "cd: HOME not set\n");
-	free(oldpwd);
+	if (oldpwd)
+		free(oldpwd);
 	if (cmd->next || cmd->prev)
 		exit(EXIT_FAILURE);
 	else
@@ -93,8 +94,9 @@ void	ft_chdir(t_cmd *cmd, t_data *data)
 
 	(1 == 1) && (oldpwd = NULL, pwd = NULL, dirname = NULL);
 	oldpwd = getcwd(NULL, 0);
-	check_error_null(oldpwd, "getcwd");
-	dirname = cmd->arguments[1];
+	(1) && (check_error_null(oldpwd, "getcwd"), dirname = cmd->arguments[1]);
+	if (dirname && ft_strlen(dirname) == 0)
+		return (free(oldpwd));
 	if (!dirname || (dirname[0] == '~' && dirname[1] == '\0'))
 	{
 		if (chdir(ft_getenv("HOME", data->env)) == 0)

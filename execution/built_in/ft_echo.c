@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:11:39 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/17 03:10:26 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/20 00:44:34 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	print_arguments(char **arguments, int *valid)
 	}
 }
 
-void	ft_echo(t_cmd *cmd)
+void	ft_echo(t_cmd *cmd, t_data *data)
 {
 	t_cmd	*tmp;
 	int		valid;
@@ -79,6 +79,7 @@ void	ft_echo(t_cmd *cmd)
 	print_arguments(tmp->arguments, &valid);
 	if (!valid)
 		printf("\n");
+	data->exit_status = 0;
 	if (!cmd->next || !cmd->prev)
 		return ;
 }
