@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 22:18:54 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/20 00:27:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ void	get_normal_env_vars(t_data *data, t_token *tmp)
 		tmp->value = ft_strdup("");
 		check_error_null(tmp->value, "malloc");
 		data->temp = tmp->type;
-		tmp->type = ft_strdup(WHITE_SPACE);
+		if (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE)
+			tmp->type = ft_strdup(WORD);
+		else
+			tmp->type = ft_strdup(WHITE_SPACE);
 		check_error_null(tmp->type, "malloc");
 		free(data->temp);
 	}
