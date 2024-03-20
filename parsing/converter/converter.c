@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 01:07:06 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/20 00:10:03 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,62 @@ void	start_converting(t_token **tmp, t_cmd **head, t_cmd **cmd)
 	}
 }
 
+void print_args(t_cmd *head)
+{
+	t_cmd *tmp = head;
+	t_arg *arg;
+
+	if (!tmp)
+		return;
+	while (tmp)
+	{
+		printf("--------------------------------------------\n");
+		printf("| Command  : %s %*s |\n", tmp->cmd, 28 - (int)ft_strlen(tmp->cmd), " ");
+		if (tmp->args)
+		{
+			arg = tmp->args;
+			while (tmp->args)
+			{
+				if (!tmp->args->arg)
+					break;
+				if (ft_strncmp(tmp->args->arg, NEW_LINE, 1) != 0 && ft_strncmp(tmp->args->arg, TAB_SPACE, 1) != 0)
+					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", tmp->args->arg, 8 - (int)ft_strlen(tmp->args->arg), " ", tmp->args->env_var);
+				else if (ft_strncmp(tmp->args->arg, NEW_LINE, 1) == 0)
+					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", "\\n", 8 - 2, " ", tmp->args->env_var);
+				else
+					printf("| Arguement: '%s' %*s |  Env Var : %d    |\n", "\\t", 8 - 2, " ", tmp->args->env_var);
+				tmp->args = tmp->args->next;
+			}
+			tmp->args = arg;
+		}
+		if (tmp->has_redirection)
+		{
+			t_redirection *redir = tmp->redirects;
+			printf("|------------------------------------------|\n");
+			printf("| Redirection %*s |\n", 34, " ");
+			while (redir)
+			{
+				printf("| Type     : '%s' %*s |\n", redir->type, 26 - (int)ft_strlen(redir->type), " ");
+				printf("| File     : '%s' %*s |\n", redir->file, 26 - (int)ft_strlen(redir->file), " ");
+				if (redir->next)
+					printf("|%*s|\n", 42, " ");
+				redir = redir->next;
+			}
+			printf("|------------------------------------------|\n");
+		}
+		if (tmp->has_pipe)
+			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
+		else
+			printf("| Has Pipe : %d %*s |\n", tmp->has_pipe, 27, " ");
+		if (tmp->built_in)
+			printf("| Built In : %d %*s |\n", tmp->built_in, 27, " ");
+		else
+			printf("| Built In : %d %*s |\n", tmp->built_in, 27, " ");
+		printf("--------------------------------------------\n");
+		tmp = tmp->next;
+	}
+}
+
 void	convert_tokens_to_commands(t_data *data)
 {
 	t_token	*tmp;
@@ -101,7 +157,8 @@ void	convert_tokens_to_commands(t_data *data)
 	tmp = data->token;
 	head = NULL;
 	cmd = NULL;
-	tmp = clean_tokens(data, tmp);
+	// tmp = clean_tokens(data, tmp);
+	print_tokens(tmp);
 	tmp = skip_white_spaces(tmp);
 	if (!tmp || !check_syntax_error(tmp))
 		return ;
@@ -115,4 +172,5 @@ void	convert_tokens_to_commands(t_data *data)
 			tmp = tmp->next;
 	}
 	data->cmd = head;
+	print_args(data->cmd);
 }

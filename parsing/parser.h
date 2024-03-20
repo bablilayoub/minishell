@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 01:10:14 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/19 22:53:40 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define REDIR_OUT ">"
 # define HERE_DOC "<<"
 # define APPEND_OUT ">>"
+# define SPECIAL_CASE "SPECIAL_CASE"
 
 // Parsing
 void	reader(t_data *data);

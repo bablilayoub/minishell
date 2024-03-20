@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/15 03:45:28 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/19 22:18:54 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	get_normal_env_vars(t_data *data, t_token *tmp)
 {
 	data->temp = tmp->value;
 	tmp->value = get_env(tmp->value + 1, data);
-	check_error_null(tmp->value, "malloc");
 	free(data->temp);
 	if (!tmp->value)
 	{

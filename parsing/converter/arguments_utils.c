@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:00:52 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 01:10:30 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/19 23:48:29 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ void	handle_general_white_space(t_token **tmp, t_arg **head, t_cmd **cmd)
 int	handle_tokens(t_token **tmp, t_arg **head, t_cmd **cmd, char *tmp_type)
 {
 	if (ft_strncmp((*tmp)->type, WORD, 4) == 0)
+	{
+		*head = add_arg(*head, (*tmp)->value, 1);
+		return (1);
+	}
+	if (ft_strncmp((*tmp)->type, SPECIAL_CASE, 1) == 0)
 	{
 		*head = add_arg(*head, (*tmp)->value, 1);
 		return (1);

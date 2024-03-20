@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/14 21:52:13 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/19 22:47:24 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,13 @@ void	handle_exapndable(t_token_params *params,
 	}
 	else
 	{
-		if (params->state == IN_DQUOTE || params->state == IN_QUOTE
-			|| params->line[params->i] == '\0')
-			params->value = ft_strdup(value);
-		else
+		if ((params->line[params->i] == '"' || params->line[params->i] == '\'') && params->state == GENERAL)
 			params->value = ft_strdup("");
+		else
+		{
+			params->value = ft_strdup(value);
+			printf("'%s'\n", params->line + params->i);
+		}
 	}
 	(1 == 1) && (params->i--, *len = ft_strlen(params->value));
 }

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 23:46:57 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/16 00:26:42 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/20 00:11:55 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ int	check_syntax_error(t_token *token)
 		&& ft_strncmp(token->type, REDIR_OUT, 1) != 0
 		&& ft_strncmp(token->type, HERE_DOC, 2) != 0
 		&& ft_strncmp(token->type, REDIR_IN, 1) != 0
-		&& ft_strncmp(token->type, ENV, 1) != 0)
+		&& ft_strncmp(token->type, ENV, 1) != 0
+		&& ft_strncmp(token->type, SPECIAL_CASE, 1) != 0)
 	{
 		printf("%s\n", PREFIX_ERROR "Syntax error");
 		return (0);
