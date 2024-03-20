@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 22:47:24 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/20 22:18:17 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	handle_exapndable(t_token_params *params,
 
 	(1 == 1) && (expandable = 1, params->i++);
 	if (params->line[params->i] >= '1' && params->line[params->i] <= '9')
+	{
 		(1 == 1) && (expandable = 0, params->i++);
+		params->type = ft_strdup(WORD);
+	}
 	*temp = get_word(params->line, &params->i, 1);
 	if (*temp)
 	{
@@ -34,10 +37,7 @@ void	handle_exapndable(t_token_params *params,
 		if ((params->line[params->i] == '"' || params->line[params->i] == '\'') && params->state == GENERAL)
 			params->value = ft_strdup("");
 		else
-		{
 			params->value = ft_strdup(value);
-			printf("'%s'\n", params->line + params->i);
-		}
 	}
 	(1 == 1) && (params->i--, *len = ft_strlen(params->value));
 }
@@ -88,10 +88,11 @@ void	handle_special_char(t_token_params *params, char *value, int len)
 	if (value[0] == '$' && value[1] == '\0'
 		&& params->line[params->i + 1] != '$')
 	{
+		params->type = NULL;
 		handle_exapndable(params, &params->temp, &len, value);
-		if (params->value[0] == '$' && ft_strlen(params->value) == 1)
+		if (params->value[0] == '$' && ft_strlen(params->value) == 1 && !params->type)
 			params->type = ft_strdup(WORD);
-		else
+		else if (!params->type)
 			params->type = ft_strdup(ENV);
 	}
 	else if (value[0] == '$' && value[1] == '\0'
