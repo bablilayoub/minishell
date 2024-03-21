@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 02:46:38 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 23:37:40 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ void	finish_cmd(t_cmd **cmd, t_token **tmp, t_cmd **head)
 {
 	(*cmd)->built_in = is_built_in((*cmd)->cmd);
 	*head = add_cmd(*head, *cmd);
+	if (ft_strncmp((*tmp)->type, PIPE_LINE, 1) == 0)
+	{
+		(*tmp) = (*tmp)->prev;
+		(*cmd)->has_pipe = 1;
+		return ;
+	}
 	*tmp = get_command_name(*tmp);
 	*tmp = skip_white_spaces(*tmp);
 	if (*tmp && (*tmp)->next)
@@ -56,7 +62,7 @@ void	convert_redirection(t_token **tmp, t_cmd **head,
 		if (*tmp)
 			*tmp = skip_white_spaces(*tmp);
 	}
-	if (*tmp)
+	if (*tmp && ft_strncmp((*tmp)->type, WORD, 4) == 0)
 		(*cmd)->cmd = (*tmp)->value;
 	else
 		(*cmd)->cmd = NULL;

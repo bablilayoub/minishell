@@ -6,78 +6,102 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:11:39 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/21 02:45:27 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 22:27:21 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-void	write_rest_args(char **arguments)
-{
-	int	i;
-
-	i = -1;
-	while (arguments[++i])
-		printf("%s", arguments[i]);
-}
-
-bool	is_all_n(char *arg)
+int	is_n_option(char *arg)
 {
 	int	i;
 
 	i = 0;
-	if (arg[i] == '-' && arg[i + 1] == 'n')
+	if (arg[0] == '-' && arg[1] == 'n')
 	{
 		i++;
-		while (arg[i])
-		{
-			if (arg[i] != 'n')
-				return (false);
+		while (arg[i] == 'n')
 			i++;
-		}
+		if (arg[i] == '\0')
+			return (1);
 	}
-	else
-		return (false);
-	return (true);
+	return (0);
 }
 
-void	print_arguments(char **arguments, int *valid)
+int	is_space(char *arg)
 {
 	int	i;
 
 	i = 0;
-	while (arguments[++i])
+	if (!arg)
+		return (1);
+	if (arg[0] == '\0')
+		return (1);
+	while (arg[i] == ' ' || arg[i] == '\t')
+		i++;
+	if (arg[i] == '\0')
+		return (1);
+	return (0);
+}
+
+int	get_last_n_option(t_cmd *cmd)
+{
+	int	i;
+
+	i = 1;
+	while (cmd->arguments[i])
 	{
-		if ((ft_strncmp(arguments[i], "-n", ft_strlen(arguments[i])) == 0)
-			|| is_all_n(arguments[i]))
-		{
-			if (is_all_n(arguments[i]))
-				*valid = 1;
-			continue ;
-		}
-		write_rest_args(arguments + i);
-		break ;
+		if (is_space(cmd->arguments[i]) || is_n_option(cmd->arguments[i]))
+			i++;
+		else
+			break ;
 	}
+	if (cmd->arguments[i] == NULL)
+		return (i);
+	if (!is_space(cmd->arguments[i]) && !is_n_option(cmd->arguments[i]))
+		i--;
+	while (cmd->arguments[i] && is_space(cmd->arguments[i]))
+		i--;
+	if (cmd->arguments[i] && is_n_option(cmd->arguments[i]))
+		i++;
+	if (cmd->arguments[i] && is_space(cmd->arguments[i]))
+		i++;
+	return (i);
+}
+
+void	check_if_we_should_print_nl(t_cmd *cmd, int *should_print_nl)
+{
+	int	i;
+
+	i = 1;
+	while (cmd->arguments[i])
+	{
+		if (is_n_option(cmd->arguments[i]) || is_space(cmd->arguments[i]))
+		{
+			if (is_n_option(cmd->arguments[i]))
+				*should_print_nl = 0;
+		}
+		else
+			break ;
+		i++;
+	}
+	if (*should_print_nl)
+		i = 1;
+	else
+		i = get_last_n_option(cmd);
+	while (cmd->arguments[i])
+		printf("%s", cmd->arguments[i++]);
 }
 
 void	ft_echo(t_cmd *cmd, t_data *data)
 {
-	t_cmd	*tmp;
-	int		valid;
+	int	should_print_nl;
 
-	if (!cmd)
+	if (!cmd || !cmd->arguments)
 		return ;
-	tmp = cmd;
-	valid = 0;
-	if (tmp->arguments[1])
-	{
-		if (is_all_n(tmp->arguments[1]))
-			valid = 1;
-	}
-	print_arguments(tmp->arguments, &valid);
-	if (!valid)
+	should_print_nl = 1;
+	check_if_we_should_print_nl(cmd, &should_print_nl);
+	if (should_print_nl)
 		printf("\n");
 	data->exit_status = 0;
-	if (!cmd->next || !cmd->prev)
-		return ;
 }
