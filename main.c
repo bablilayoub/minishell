@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 01:17:29 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 01:36:39 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	main(int total, char **args, char **env)
 	data.prefix = ft_strdup(PREFIX);
 	data.shell_path = getcwd(NULL, 0);
 	data.temp = NULL;
+	rl_catch_signals = 0;
 	reader(&data);
 	return (0);
 }

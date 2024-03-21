@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 01:20:59 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 01:36:30 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	parser(char *line, t_data *data)
 {
-	extern int	g_child_open;
-
-	g_child_open = 0;
 	if (only_spaces(line))
 		return (0);
 	data->token = tokenizer(line);
@@ -34,7 +31,6 @@ void	reader(t_data *data)
 	char		*line;
 	extern int	g_child_open;
 
-	rl_catch_signals = 0;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);
 	while (1)
@@ -46,6 +42,7 @@ void	reader(t_data *data)
 		{
 			if (parser(line, data))
 				prepare_for_excution(data);
+			g_child_open = 0;
 			free_data(data, 0);
 			add_history(line);
 		}
