@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:53:30 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/16 03:06:07 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/21 00:09:56 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 bool	write_the_error(char **key_val, int flag, t_data *data)
 {
 	if (flag == 1)
-		printf(PREFIX_ERROR "export: not an identifier\n");
+		printf(PREFIX_ERROR "export: not a valid identifier\n");
 	data->exit_status = 1;
 	free_array(key_val);
 	return (false);
