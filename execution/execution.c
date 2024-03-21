@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/21 00:40:53 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 01:25:31 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ void	excute_child(t_cmd *current, t_data *data, int k)
 void	excute_multiple_commands(t_data *data, int fd_c,
 pid_t pid[], t_cmd *current)
 {
-	int	k;
-	int	i;
+	int			k;
+	int			i;
+	extern int	g_child_open;
 
 	(1) && (k = 0, i = -1);
 	while (++i < fd_c)
@@ -45,7 +46,7 @@ pid_t pid[], t_cmd *current)
 	}
 	while (current)
 	{
-		pid[k] = fork();
+		(1 == 1) && (g_child_open = 1, pid[k] = fork());
 		if (pid[k] == -1)
 			perror("fork");
 		if (pid[k] == 0)
@@ -55,8 +56,7 @@ pid_t pid[], t_cmd *current)
 			close(data->fd[k][1]);
 			waitpid(pid[k], &data->exit_status, 0);
 		}
-		k++;
-		current = current->next;
+		(1 == 1) && (k += 1, current = current->next);
 	}
 	close_fds_and_getstatus(data);
 }
