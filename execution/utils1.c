@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/19 21:29:05 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/21 01:07:29 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,4 @@ void	update_prefix(t_data *data, char *prefix)
 	check_error_null(new_prefix, "malloc");
 	free(data->temp);
 	data->prefix = new_prefix;
-}
-
-void	close_fds_and_getstatus(t_data *data)
-{
-	data->exit_status = WEXITSTATUS(data->exit_status);
-	close_fds(data->fd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/21 00:40:53 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 01:21:43 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,17 @@ void	excute_child(t_cmd *current, t_data *data, int k)
 	}
 }
 
+void	close_fds_and_waitpid(pid_t pid[], int fd_c, t_data *data)
+{
+	int	i;
+
+	close_fds(data->fd);
+	i = -1;
+	while (++i < fd_c)
+		waitpid(pid[i], &data->exit_status, 0);
+	data->exit_status = WEXITSTATUS(data->exit_status);
+}
+
 void	excute_multiple_commands(t_data *data, int fd_c,
 pid_t pid[], t_cmd *current)
 {
@@ -53,12 +64,16 @@ pid_t pid[], t_cmd *current)
 		else
 		{
 			close(data->fd[k][1]);
-			waitpid(pid[k], &data->exit_status, 0);
+			if (current->redirects)
+			{
+				if (ft_strncmp(current->redirects->type, "<<", 2) == 0)
+					waitpid(pid[k], &data->exit_status, 0);
+			}
 		}
 		k++;
 		current = current->next;
 	}
-	close_fds_and_getstatus(data);
+	close_fds_and_waitpid(pid, fd_c, data);
 }
 
 void	start_execution(t_data *data, int fd_c)
