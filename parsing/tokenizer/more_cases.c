@@ -6,27 +6,31 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 03:49:37 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/20 00:13:16 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 00:09:48 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
+void	handle_special_case(t_token_params *params, int quote)
+{
+	if (quote == 1 && params->line[params->i + 1] == '\'')
+		params->value = ft_strdup("");
+	else if (quote == 2 && params->line[params->i + 1] == '\"')
+		params->value = ft_strdup("");
+	params->type = ft_strdup(SPECIAL_CASE);
+	params->token = new_token(params->value, params->type,
+			GENERAL, ft_strlen(params->value));
+	params->head = add_token(params->head, params->token);
+	params->i++;
+}
+
 void	handle_quotes(t_token_params *params, int quote, char *quote_type)
 {
-	if (params->state == GENERAL && ((quote == 1 && (params->line[params->i + 1] == '\'')) || (quote == 2 && (params->line[params->i + 1] == '\"'))))
-	{
-		if (quote == 1 && params->line[params->i + 1] == '\'')
-			params->value = ft_strdup("");
-		else if (quote == 2 && params->line[params->i + 1] == '\"')
-			params->value = ft_strdup("");
-		params->type = ft_strdup(SPECIAL_CASE);
-		params->token = new_token(params->value, params->type,
-				GENERAL, ft_strlen(params->value));
-		params->head = add_token(params->head, params->token);
-		params->i++;
-		return ;
-	}
+	if (params->state == GENERAL
+		&& ((quote == 1 && (params->line[params->i + 1] == '\''))
+			|| (quote == 2 && (params->line[params->i + 1] == '\"'))))
+		return (handle_special_case(params, quote));
 	if (quote == 1 && params->in_dquote)
 	{
 		handle_special_char(params, quote_type, 1);

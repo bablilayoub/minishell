@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/20 22:18:17 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 00:17:57 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,7 @@ void	handle_exapndable(t_token_params *params,
 		free(*temp);
 	}
 	else
-	{
-		if ((params->line[params->i] == '"' || params->line[params->i] == '\'') && params->state == GENERAL)
-			params->value = ft_strdup("");
-		else
-			params->value = ft_strdup(value);
-	}
+		when_no_word(params, value);
 	(1 == 1) && (params->i--, *len = ft_strlen(params->value));
 }
 
@@ -90,7 +85,8 @@ void	handle_special_char(t_token_params *params, char *value, int len)
 	{
 		params->type = NULL;
 		handle_exapndable(params, &params->temp, &len, value);
-		if (params->value[0] == '$' && ft_strlen(params->value) == 1 && !params->type)
+		if (params->value[0] == '$'
+			&& ft_strlen(params->value) == 1 && !params->type)
 			params->type = ft_strdup(WORD);
 		else if (!params->type)
 			params->type = ft_strdup(ENV);
@@ -106,10 +102,7 @@ void	handle_special_char(t_token_params *params, char *value, int len)
 	}
 	else
 		handle_else(params, value);
-	params->token = new_token(params->value, params->type, params->state, len);
-	params->head = add_token(params->head, params->token);
-	if (len > 1 && value[0] != '\\')
-		params->i++;
+	finalize_token(params, len, value);
 }
 
 void	handle_cases(t_token_params *params, char *line)

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/20 00:01:01 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 00:07:10 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,19 @@ t_token	*skip_white_spaces(t_token *token)
 	while (tmp)
 	{
 		if (ft_strncmp(tmp->type, SPECIAL_CASE, 1) == 0 && tmp->state == GENERAL
-			&& ((tmp->next && ft_strncmp(tmp->next->type, WORD, 4) == 0) || (tmp->prev && ft_strncmp(tmp->prev->type, WORD, 4) == 0)))
+			&& ((tmp->next && ft_strncmp(tmp->next->type, WORD, 4) == 0)
+				|| (tmp->prev
+					&& ft_strncmp(tmp->prev->type, WORD, 4) == 0)))
 		{
 			tmp = tmp->next;
 			continue ;
 		}
 		if (ft_strncmp(tmp->type, WHITE_SPACE, 1) != 0)
 			break ;
-		if (ft_strncmp(tmp->type, SPECIAL_CASE, 1) == 0 && tmp->state == GENERAL 
-			&& ((tmp->next && ft_strncmp(tmp->next->type, WHITE_SPACE, 1) == 0) || (tmp->prev && ft_strncmp(tmp->prev->type, WHITE_SPACE, 1) == 0)))
+		if (ft_strncmp(tmp->type, SPECIAL_CASE, 1) == 0 && tmp->state == GENERAL
+			&& ((tmp->next && ft_strncmp(tmp->next->type, WHITE_SPACE, 1) == 0)
+				|| (tmp->prev
+					&& ft_strncmp(tmp->prev->type, WHITE_SPACE, 1) == 0)))
 			break ;
 		tmp = tmp->next;
 	}

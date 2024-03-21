@@ -6,17 +6,13 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/20 22:05:52 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 00:10:22 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing/parser.h"
 
-void f(void)
-{
-	system("leaks minishell");
-}	
 int	main(int total, char **args, char **env)
 {
 	t_data	data;
@@ -27,7 +23,6 @@ int	main(int total, char **args, char **env)
 		printf(PREFIX_ERROR"Error: program takes no arguments\n");
 		return (1);
 	}
-	atexit(f);
 	data.env = allocate_env(env);
 	data.export = allocate_export(env);
 	data.token = NULL;

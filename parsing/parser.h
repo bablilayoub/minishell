@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 22:53:40 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 00:19:54 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ void	reader(t_data *data);
 
 // Tokenizer
 void	*tokenizer(char *line);
+
+// More utils
+void	finalize_token(t_token_params *params, int len, char *value);
+void	when_no_word(t_token_params *params, char *value);
 
 // Tokenizer utils
 t_token	*new_token(char *value, char *type, int state, size_t len);
