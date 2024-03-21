@@ -6,11 +6,22 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/15 03:52:25 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/21 00:38:48 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
+
+bool	check_unset(char *arg, bool flag)
+{
+	if (ft_isdigit(arg[0]) || !ft_is_alphanumeric(arg))
+	{
+		if (flag == true)
+			printf(PREFIX_ERROR "unset: not a valid identifier\n");
+		return (false);
+	}
+	return (true);
+}
 
 void	check_flag(char *to_update, char ***check, bool flag)
 {
@@ -39,7 +50,7 @@ void	update_(t_cmd *cmd, char ***to_update, bool flag, char **check)
 	(1) && (i = 0, k = 0);
 	while (cmd->arguments[++k])
 	{
-		if (ft_strchr(cmd->arguments[k], '='))
+		if (!check_unset(cmd->arguments[k], flag))
 			continue ;
 		env = malloc(sizeof(char *) * (ft_strdoublelen(*to_update) + 1));
 		check_error_null(env, "malloc");

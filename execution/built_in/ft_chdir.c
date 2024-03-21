@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:09 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/20 01:55:37 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/21 00:06:23 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	ft_chdir(t_cmd *cmd, t_data *data)
 		if (chdir(ft_getenv("HOME", data->env)) == 0)
 			return (start_process(data, oldpwd, pwd, &data->env));
 		else
-			cd_failed(cmd, oldpwd);
+			return (cd_failed(cmd, oldpwd));
 	}
 	if (access(dirname, F_OK) == 0)
 	{
