@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:57:01 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 00:07:10 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 02:21:35 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*get_word(char *line, size_t *i, int alpha_num)
 	if (!line)
 		return (NULL);
 	if (alpha_num)
-		while (line[*i] && ft_isalnum(line[*i]))
+		while (line[*i] && (ft_isalnum(line[*i]) || line[*i] == '_'))
 			(*i)++;
 	else
 		while (line[*i] && not_a_special_char(line[*i]))

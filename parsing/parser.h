@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 00:19:54 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/21 02:03:42 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,4 @@ int		check_syntax(t_data *data);
 char	*get_env(char *env_var, t_data *data);
 void	get_env_vars(t_data *data);
 
-// Debug
-void	print_args(t_cmd *head);
-void	print_tokens(t_token *token);
 #endif

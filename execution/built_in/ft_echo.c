@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:11:39 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/20 00:44:34 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:45:27 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	print_arguments(char **arguments, int *valid)
 	while (arguments[++i])
 	{
 		if ((ft_strncmp(arguments[i], "-n", ft_strlen(arguments[i])) == 0)
-			|| (ft_strncmp(arguments[i], "\t", ft_strlen(arguments[i])) == 0)
-			|| (ft_strncmp(arguments[i], " ", ft_strlen(arguments[i])) == 0)
 			|| is_all_n(arguments[i]))
 		{
 			if (is_all_n(arguments[i]))
