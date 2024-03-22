@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/20 00:44:02 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:18:46 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,7 @@ int		redirections_out(t_cmd *cmd, int *fd_out,
 void	free_int(int **fd);
 bool	failure(char *cmd, t_data *data);
 int		get_file(t_cmd *cmd, char *file);
+void	ft_pipe(int **fd);
+void	check_redirects( t_cmd *current, pid_t pid, t_data *data);
 
 #endif

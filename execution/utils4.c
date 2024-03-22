@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 01:56:46 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/17 01:57:09 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:18:37 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,29 @@ int	get_file(t_cmd *cmd, char *file)
 		return (-1);
 	}
 	return (fd);
+}
+
+void	ft_pipe(int **fd)
+{
+	int	i;
+
+	i = -1;
+	while (fd[++i])
+	{
+		if (pipe(fd[i]) == -1)
+			perror("pipe");
+	}
+}
+
+void	check_redirects( t_cmd *current, pid_t pid, t_data *data)
+{
+	t_redirection		*tmp;
+
+	tmp = current->redirects;
+	while (tmp)
+	{
+		if (ft_strncmp(tmp->type, "<<", 2) == 0)
+			waitpid(pid, &data->exit_status, 0);
+		tmp = tmp->next;
+	}
 }

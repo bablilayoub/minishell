@@ -10,7 +10,7 @@ HEADER = minishell.h
 READLINE_LIB = $(shell brew --prefix readline)/lib
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 
 # LIBRARIES
 LIBFT = ./utils/libft/libft.a
@@ -56,14 +56,6 @@ prepare_libft:
 	@cd ./utils/libft && make
 	@echo "libft is ready"
 
-parsing: prepare_libft $(PARSING_OBJS) $(UTILS_OBJS) $(MAIN_OBJS)
-	@cc $(CFLAGS) -L $(READLINE_LIB) -lreadline $(PARSING_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
-	@echo "parsing is ready"
-
-execution: prepare_libft $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS)
-	@cc $(CFLAGS) -L $(READLINE_LIB) -lreadline $(EXECUTION_OBJS) $(UTILS_OBJS) $(MAIN_OBJS) $(LIBFT) -o $(NAME)
-	@echo "execution is ready"
-
 %.o: %.c $(HEADER)
 	@echo "compiling $<"
 	@cc $(CFLAGS) -I $(READLINE_INCLUDE)  -c $< -o $@
@@ -81,33 +73,6 @@ fclean: clean
 	@echo "minishell is fully clean"
 
 re: fclean all
-
-# GIT COMMANDS
-push:
-	@read -p "Enter commit message: " message; \
-	git add .; \
-	git commit -m "$$message"; \
-	git push
-	@echo "pushed"
- 
-force:
-	@echo "pushing"
-	@git add .
-	@git commit -m "Force push"
-	@git push -f
-	@echo "pushed"
-
-pull:
-	@echo "pulling"
-	@git pull
-	@echo "pulled"
-
-stash:
-	@echo "stashing"
-	@git stash
-	@git pull
-	@git stash pop
-	@echo "stashed"
 
 # PHONY
 .PHONY: prepare_libft clean fclean 

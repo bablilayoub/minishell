@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/21 01:30:26 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/22 01:18:31 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,10 @@ void	excute_multiple_commands(t_data *data, int fd_c,
 pid_t pid[], t_cmd *current)
 {
 	int			k;
-	int			i;
 	extern int	g_child_open;
 
-	(1) && (k = 0, i = -1);
-	while (++i < fd_c)
-	{
-		if (pipe(data->fd[i]) == -1)
-			perror("pipe");
-	}
+	k = 0;
+	ft_pipe(data->fd);
 	while (current)
 	{
 		(1 == 1) && (g_child_open = 1, pid[k] = fork());
@@ -66,10 +61,7 @@ pid_t pid[], t_cmd *current)
 		{
 			close(data->fd[k][1]);
 			if (current->redirects)
-			{
-				if (ft_strncmp(current->redirects->type, "<<", 2) == 0)
-					waitpid(pid[k], &data->exit_status, 0);
-			}
+				check_redirects(current, pid[k], data);
 		}
 		(1 == 1) && (k += 1, current = current->next);
 	}
