@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:23:16 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 01:14:54 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/22 05:52:04 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,10 @@ int	check_redirections(t_cmd *cmd)
 
 int	check_syntax(t_data *data)
 {
-	if (!check_pipes(data->cmd))
+	if (!check_pipes(data->cmd) || !check_redirections(data->cmd))
+	{
+		data->exit_status = 258;
 		return (0);
-	if (!check_redirections(data->cmd))
-		return (0);
+	}
 	return (1);
 }

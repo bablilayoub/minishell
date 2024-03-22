@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:53:30 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/21 00:09:56 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/22 16:41:55 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	check_exported(char *exported, int flag, t_data *data)
 	int		i;
 	char	**key_val;
 	char	*key;
+	char	*found;
 
 	(1) && (i = 0, key_val = key_value(exported));
 	check_error_null(key_val, "malloc");
@@ -39,7 +40,14 @@ int	check_exported(char *exported, int flag, t_data *data)
 			return (false);
 		}
 		else
-			return (write_the_error(key_val, flag, data));
+		{
+			found = ft_strchr(exported, '+');
+			if (found)
+			{
+				if (found[1] != '=')
+					return (write_the_error(key_val, flag, data));
+			}
+		}
 	}
 	if (!ft_strchr(exported, '=') && flag == 1)
 	{
@@ -88,13 +96,35 @@ char	**key_value(char *exported)
 	key_value = load_key_value(key, value);
 	return (key_value);
 }
-
+void	remove_if_found(char **str)
+{
+	int		k;
+	int		j;
+	char	*copy;
+	
+	k = 0;
+	copy = (*str);
+	while ((*str)[k] && (*str)[k] != '=')
+		k++;
+	if ((*str)[k - 1] == '+')
+	{
+		k = -1;
+		j = 0;
+		while (copy[++k])
+		{
+			if (copy[k] == '+')
+				continue ;
+			(*str)[j++] = copy[k];
+		}
+		(*str)[j] = '\0';
+	}
+}
 void	add_var(char ***env, char *exported, int flag)
 {
 	int		i;
 	char	**new_env;
 	char	**temp;
-
+	
 	i = 0;
 	new_env = malloc(sizeof(char *) * (ft_strdoublelen(*env) + 2));
 	if (!new_env)
@@ -104,6 +134,7 @@ void	add_var(char ***env, char *exported, int flag)
 		new_env[i] = (*env)[i];
 		i++;
 	}
+	remove_if_found(&exported);
 	if (!flag)
 	{
 		new_env[i] = ft_strdup(exported);

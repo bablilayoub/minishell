@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/20 00:43:45 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/22 13:25:40 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,7 @@ void	excute_builtin(t_cmd *cmd_list, t_data *data)
 	else if (ft_strncmp(cmd_list->arguments[0], "pwd", 3) == 0)
 		ft_pwd(data);
 	else if (ft_strncmp(cmd_list->arguments[0], "env", 3) == 0)
-	{
 		ft_env(data->env, data);
-		if (!cmd_list->next || !cmd_list->prev)
-			return ;
-	}
 	else if ((ft_strncmp(cmd_list->arguments[0], "export", 6) == 0)
 		&& !cmd_list->arguments[1])
 		print(data->export);

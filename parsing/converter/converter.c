@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 23:47:26 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/22 06:10:06 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,15 @@ void	start_converting(t_token **tmp, t_cmd **head, t_cmd **cmd)
 			convert_redirection(tmp, head, cmd, &found_cmd);
 			break ;
 		}
+		else if (*tmp && !found_cmd && !(*tmp)->next && ft_strncmp((*tmp)->type, SPECIAL_CASE, ft_strlen(SPECIAL_CASE)) == 0)
+		{
+			(*tmp)->value = ft_strdup(" ");
+			*cmd = new_cmd(*tmp);
+			*head = add_cmd(*head, *cmd);
+			break ;
+		}
+		else
+			break ;
 		if (*tmp)
 			(1 == 1) && (*tmp = (*tmp)->next,
 				*tmp = skip_white_spaces(*tmp));

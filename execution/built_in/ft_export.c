@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/16 03:07:41 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:56:58 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,12 @@ void	load_to_exp(char ***export, char *args, char *key_arg, int *found)
 void	export_to_exp(char ***export, char **args, t_data *data)
 {
 	int		i;
-	int		j;
 	int		found;
 	char	**key_arg;
 
 	i = 0;
 	while (args[++i])
 	{
-		j = -1;
 		found = 0;
 		if (!check_exported(args[i], 0, data))
 			continue ;
@@ -80,27 +78,33 @@ void	export_to_exp(char ***export, char **args, t_data *data)
 
 void	export_to_env(char ***env, char **key_val, t_data *data, int *found)
 {
-	size_t	k;
 	int		i;
+	char	*check;
 
 	i = -1;
+	check = key_val[0];
 	while ((*env)[++i])
 	{
-		k = 0;
-		while ((*env)[i][k] && (*env)[i][k] != '=')
-			k++;
-		if ((ft_strncmp((*env)[i], key_val[0], k) == 0)
-			&& (k == ft_strlen(key_val[0])))
+		if (ft_strchr(key_val[0], '+'))
+			key_val[0] = ft_substr(key_val[0], 0, (ft_strlen(key_val[0]) - 1));
+		printf("%s\n", key_val[0]);
+		if (ft_strncmp((*env)[i], key_val[0], ft_strlen(key_val[0]) == 0))
 		{
 			data->temp = (*env)[i];
-			(*env)[i] = ft_strjoin(key_val[0], "=");
-			check_error_null((*env)[i], "malloc");
-			free(data->temp);
-			data->temp = (*env)[i];
-			(*env)[i] = ft_strjoin((*env)[i], key_val[1]);
-			check_error_null((*env)[i], "malloc");
-			free(data->temp);
-			*found = 1;
+			if (ft_strchr(check, '+'))
+			{
+				(*env)[i] = ft_strjoin((*env)[i], key_val[1]);
+					// printf("%s\n", (*env)[i]);
+			}
+			else
+			{
+				(*env)[i] = ft_strjoin(key_val[0], "=");	
+				check_error_null((*env)[i], "malloc");
+				(1) && (free(data->temp), data->temp = (*env)[i]);				
+				(*env)[i] = ft_strjoin((*env)[i], key_val[1]);				
+				check_error_null((*env)[i], "malloc");
+			}
+			(1) && (free(data->temp), *found = 1);
 		}
 	}
 }
