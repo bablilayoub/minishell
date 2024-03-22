@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 02:03:42 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/22 00:32:23 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 void	reader(t_data *data);
 
 // Tokenizer
-void	*tokenizer(char *line);
+void	*tokenizer(t_data *data, char *line);
 
 // More utils
 void	finalize_token(t_token_params *params, int len, char *value);

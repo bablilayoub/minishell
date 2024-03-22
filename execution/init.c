@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/19 03:08:22 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/22 00:08:49 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,14 @@ bool	initialize_path(t_cmd *head, t_data *data)
 		}
 		env = ft_split(ft_getenv("PATH", data->env), ':');
 		if (!env)
-			return (failure(head->cmd, data));
+			failure(head->cmd, data);
 		check_for_access(env, data, &flag, head);
 		if (!flag)
 			error_print(&found_error, head);
 		(1) && (head = head->next, free_array(env), env = NULL);
 	}
 	if (found_error)
-		return (exitstatus(&data->exit_status));
+		exitstatus(&data->exit_status);
 	return (true);
 }
 

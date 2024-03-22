@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 00:17:57 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/22 00:33:43 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,7 @@ void	handle_exapndable(t_token_params *params,
 
 void	handle_double_dollar(t_token_params *params)
 {
-	int		parent_pid;
-
-	parent_pid = fork();
-	if (parent_pid == 0)
-		exit(0);
-	waitpid(parent_pid, NULL, 0);
-	params->value = ft_itoa(parent_pid - 1);
+	params->value = ft_itoa(params->data->parent_pid);
 	params->type = ft_strdup(WORD);
 	params->i++;
 }

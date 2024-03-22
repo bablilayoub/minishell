@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 01:36:39 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/22 00:35:38 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	main(int total, char **args, char **env)
 	data.shell_path = getcwd(NULL, 0);
 	data.temp = NULL;
 	rl_catch_signals = 0;
+	get_parent_pid(&data);
 	reader(&data);
 	return (0);
 }

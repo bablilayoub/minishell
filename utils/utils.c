@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/15 03:43:21 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/22 00:35:44 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,19 @@ bool	between_dquotes(t_token *token)
 		tmp = tmp->prev;
 	}
 	return (count % 2 == 0);
+}
+
+void	get_parent_pid(t_data *data)
+{
+	int	ret;
+
+	ret = fork();
+	if (ret == -1)
+	{
+		printf(PREFIX_ERROR"Error: fork failed\n");
+		exit(1);
+	}
+	if (ret == 0)
+		exit(0);
+	data->parent_pid = ret - 1;
 }

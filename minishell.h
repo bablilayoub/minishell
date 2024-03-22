@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 01:05:35 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/22 00:31:40 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_data
 	char			**export;
 	char			**in_valid;
 	int				exit_status;
+	int				parent_pid;
 	char			*temp;
 	int				in;
 	int				out;
@@ -62,6 +63,7 @@ typedef struct s_token_params
 	int		state;
 	int		in_quote;
 	int		in_dquote;
+	t_data	*data;
 	t_token	*head;
 	t_token	*token;
 }	t_token_params;

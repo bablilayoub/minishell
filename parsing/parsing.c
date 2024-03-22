@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 01:36:30 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/22 00:32:41 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	parser(char *line, t_data *data)
 {
 	if (only_spaces(line))
 		return (0);
-	data->token = tokenizer(line);
+	data->token = tokenizer(data, line);
 	get_env_vars(data);
 	if (!check_quotes(data->token))
 		return (0);
