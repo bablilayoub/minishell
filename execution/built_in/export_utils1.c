@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export2.c                                       :+:      :+:    :+:   */
+/*   export_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:53:30 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/22 16:41:55 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/23 18:06:11 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	check_exported(char *exported, int flag, t_data *data)
 			found = ft_strchr(exported, '+');
 			if (found)
 			{
-				if (found[1] != '=')
+				if ((exported[0] == '+' && exported[1] == '=') || found[1] != '=')
 					return (write_the_error(key_val, flag, data));
 			}
 		}

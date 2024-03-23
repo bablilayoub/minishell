@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/22 00:35:44 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/23 18:53:22 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,31 @@ char	**allocate_env(char **env)
 char	**allocate_export(char **env)
 {
 	int		i;
+	int		j;
+	int		flag;
 	int		lenght;
 	char	**tmp;
 
-	lenght = 0;
-	while (env[lenght])
-		lenght++;
+	lenght = ft_strdoublelen(env);
 	tmp = malloc(sizeof(char *) * (lenght + 1));
 	check_error_null(tmp, "malloc");
-	i = -1;
+	(1) && (i = -1, j = 0, flag = 0);
 	while (env[++i])
 	{
-		tmp[i] = ft_strjoin("declare -x ", env[i]);
-		check_error_null(tmp[i], "malloc");
+		if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
+		{
+			tmp[i] = ft_strjoin("declare -x ", "OLDPWD");
+			flag = 1;
+		}
+		else
+		{
+			tmp[i] = ft_strjoin("declare -x ", env[i]);
+			check_error_null(tmp[i], "malloc");
+		}
 	}
 	tmp[i] = NULL;
+	if (!flag)
+		add_var(&tmp, ft_strjoin("declare -x ", "OLDPWD"), 1);
 	return (tmp);
 }
 

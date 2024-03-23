@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:46:52 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/22 17:56:58 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/23 18:00:22 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,23 +79,27 @@ void	export_to_exp(char ***export, char **args, t_data *data)
 void	export_to_env(char ***env, char **key_val, t_data *data, int *found)
 {
 	int		i;
+	size_t	k;
 	char	*check;
+	char	*temp;
 
-	i = -1;
+	(1) && (i = -1);
 	check = key_val[0];
+	if (ft_strchr(check, '+'))
+	{
+		temp = key_val[0];
+		key_val[0] = ft_substr(key_val[0], 0, (ft_strlen(key_val[0]) - 1));
+	}
 	while ((*env)[++i])
 	{
-		if (ft_strchr(key_val[0], '+'))
-			key_val[0] = ft_substr(key_val[0], 0, (ft_strlen(key_val[0]) - 1));
-		printf("%s\n", key_val[0]);
-		if (ft_strncmp((*env)[i], key_val[0], ft_strlen(key_val[0]) == 0))
+		 k = 0;
+		while ((*env)[i][k] && (*env)[i][k] != '=')
+			k++;
+		if ((ft_strncmp((*env)[i], key_val[0], k) == 0) && ft_strlen(key_val[0]) == k)
 		{
 			data->temp = (*env)[i];
 			if (ft_strchr(check, '+'))
-			{
 				(*env)[i] = ft_strjoin((*env)[i], key_val[1]);
-					// printf("%s\n", (*env)[i]);
-			}
 			else
 			{
 				(*env)[i] = ft_strjoin(key_val[0], "=");	
@@ -107,6 +111,8 @@ void	export_to_env(char ***env, char **key_val, t_data *data, int *found)
 			(1) && (free(data->temp), *found = 1);
 		}
 	}
+	if (ft_strchr(check, '+'))
+		free(temp);
 }
 
 void	ft_export(t_data *data, char ***env)

@@ -29,7 +29,7 @@ PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER)) $(addprefix converter/
 
 # EXECUTION
 EXECUTION_HEADER = ./execution/execution.h
-BUILTIN = built_in.c ft_chdir.c ft_echo.c ft_env.c ft_exit.c ft_export.c ft_export2.c ft_pwd.c ft_unset.c \
+BUILTIN = built_in.c ft_chdir.c ft_echo.c ft_env.c ft_exit.c ft_export.c export_utils1.c export_utils2.c ft_pwd.c ft_unset.c \
 			here_doc.c redirections.c redirections2.c
 EXECUTION = execution.c  utils1.c utils2.c utils3.c utils4.c init.c $(addprefix built_in/, $(BUILTIN))
 
