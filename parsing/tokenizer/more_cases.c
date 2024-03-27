@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 03:49:37 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 00:09:48 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/25 02:05:04 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	handle_special_case(t_token_params *params, int quote)
 		params->value = ft_strdup("");
 	else if (quote == 2 && params->line[params->i + 1] == '\"')
 		params->value = ft_strdup("");
-	params->type = ft_strdup(SPECIAL_CASE);
+	if (params->i == 0 || (params->line[params->i - 1] == ' '))
+		params->type = ft_strdup(SPECIAL_CASE);
+	else
+		params->type = ft_strdup(WORD);
 	params->token = new_token(params->value, params->type,
 			GENERAL, ft_strlen(params->value));
 	params->head = add_token(params->head, params->token);

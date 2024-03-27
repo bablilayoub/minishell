@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/22 00:08:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/25 22:08:00 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static void	error_print(int *found_error, t_cmd *head)
 	*found_error = 1;
 }
 
-bool	exitstatus(int *exit_status)
+bool	exitstatus(t_data *data)
 {
-	*exit_status = 127;
+	data->exit_status = 127;
 	return (false);
 }
 
@@ -65,14 +65,14 @@ bool	initialize_path(t_cmd *head, t_data *data)
 		}
 		env = ft_split(ft_getenv("PATH", data->env), ':');
 		if (!env)
-			failure(head->cmd, data);
+			return failure(head->cmd, data);
 		check_for_access(env, data, &flag, head);
 		if (!flag)
 			error_print(&found_error, head);
 		(1) && (head = head->next, free_array(env), env = NULL);
 	}
 	if (found_error)
-		exitstatus(&data->exit_status);
+		return exitstatus(data);
 	return (true);
 }
 
@@ -87,11 +87,13 @@ void	initialize_arguments(t_cmd *cmd_list)
 	{
 		temp->arguments = malloc(sizeof(char *)
 				* (args_lenght(temp->args) + 1));
+		check_error_null(temp->arguments, "malloc");
 		i = 0;
 		arg_temp = temp->args;
 		while (temp->args)
 		{
 			temp->arguments[i++] = ft_strdup(temp->args->arg);
+			check_error_null(temp->arguments[i - 1], "malloc");
 			temp->args = temp->args->next;
 		}
 		temp->args = arg_temp;

@@ -6,13 +6,13 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:23:16 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/22 05:52:04 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/24 22:24:13 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-int	check_quotes(t_token *token)
+int	check_quotes(t_token *token, t_data *data)
 {
 	t_token	*tmp;
 	int		count;
@@ -29,6 +29,7 @@ int	check_quotes(t_token *token)
 	}
 	if (count % 2 != 0)
 	{
+		data->exit_status = 258;
 		printf(PREFIX_ERROR "Syntax error\n");
 		return (0);
 	}

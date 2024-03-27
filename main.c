@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/22 00:35:38 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/26 06:45:44 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,18 @@ int	main(int total, char **args, char **env)
 	(void)args;
 	if (total != 1)
 	{
-		printf(PREFIX_ERROR"Error: program takes no arguments\n");
+		printf(PREFIX_ERROR"E  rror: program takes no arguments\n");
 		return (1);
 	}
 	data.env = allocate_env(env);
 	data.export = allocate_export(env);
-	data.token = NULL;
-	data.cmd = NULL;
-	data.in_valid = NULL;
-	data.exit_status = 0;
-	data.prefix = ft_strdup(PREFIX);
-	data.shell_path = getcwd(NULL, 0);
-	data.temp = NULL;
-	rl_catch_signals = 0;
+	(1) && (data.token = NULL, data.cmd = NULL, data.in_valid = NULL,
+	data.exit_status = 0, data.prefix = ft_strdup(PREFIX), data.temp = NULL,
+	data.shell_path = getcwd(NULL, 0), rl_catch_signals = 0);
 	get_parent_pid(&data);
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	reader(&data);
+	printf("exit\n");
 	return (0);
 }

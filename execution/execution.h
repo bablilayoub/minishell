@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/22 01:18:46 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/26 06:25:36 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	add_var(char ***env, char *exported, int flag);
 void	handle_redirections(t_cmd *cmd, int **fd, int k, t_data *data);
 int		handle_single_command_redirections(t_cmd *cmd, t_data *data);
 int		ft_is_alphanumeric(char *key);
-int		here_doc(char *file_and_search_for);
+int		here_doc(t_redirection *tmp, t_data *data);
 int		redirections_in(t_cmd *cmd, int *fd_in,
 			t_redirection *tmp, t_data *data);
 int		redirections_out(t_cmd *cmd, int *fd_out,

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/23 18:53:22 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:30:06 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "../parsing/parser.h"
 
-bool	only_spaces(char *str)
+bool	only_spaces(char *str, t_data *data)
 {
 	int	i;
 	int	count;
@@ -27,7 +27,10 @@ bool	only_spaces(char *str)
 		i++;
 	}
 	if (count == i)
+	{
+		data->exit_status = 0;
 		return (true);
+	}
 	return (false);
 }
 

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/22 05:59:24 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/26 01:03:17 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,13 @@ void	start_execution(t_data *data, int fd_c)
 void	prepare_for_excution(t_data *data)
 {
 	t_cmd	*cmd_list;
-
+	extern int	g_child_open;
+	
 	cmd_list = data->cmd;
 	initialize_arguments(cmd_list);
 	if (!initialize_path(cmd_list, data))
 		return ;
 	data->fd_c = cmd_lenght(cmd_list);
 	start_execution(data, data->fd_c);
+	g_child_open = 0;
 }

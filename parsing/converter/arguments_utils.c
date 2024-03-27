@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:00:52 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/21 02:42:20 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/26 03:07:25 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,18 @@ void	handle_general_white_space(t_token **tmp, t_arg **head, t_cmd **cmd)
 	*tmp = skip_white_spaces(*tmp);
 	if (tmp && (ft_strncmp((*cmd)->cmd, "echo", 4) == 0)
 		&& not_a_shell_command(*tmp))
-		*head = add_arg(*head, " ", 1);
+	{
+		if (!(*head) || !(*head)->next)
+			*head = add_arg(*head, "", 1);
+		else
+			*head = add_arg(*head, " ", 1);
+	}
 }
 
 int	handle_tokens(t_token **tmp, t_arg **head, t_cmd **cmd, char *tmp_type)
 {
-	if (ft_strncmp((*tmp)->type, WORD, 4) == 0)
-	{
-		*head = add_arg(*head, (*tmp)->value, 1);
-		return (1);
-	}
-	if (ft_strncmp((*tmp)->type, SPECIAL_CASE, 1) == 0)
+	if (ft_strncmp((*tmp)->type, WORD, 4) == 0
+		|| ft_strncmp((*tmp)->type, SPECIAL_CASE, 1) == 0)
 	{
 		*head = add_arg(*head, (*tmp)->value, 1);
 		return (1);

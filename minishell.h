@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/22 00:31:40 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/26 06:16:16 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_redirection
 {
 	char					*type;
 	char					*file;
+	int						expandalbe;
 	struct s_redirection	*next;
 	struct s_redirection	*prev;
 }	t_redirection;

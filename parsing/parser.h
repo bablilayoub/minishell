@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/22 05:55:57 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/26 06:33:11 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,14 @@ void	free_args(t_arg *args);
 void	signal_handler(int sig);
 
 // Syntax
-int		check_quotes(t_token *token);
+int		check_quotes(t_token *token, t_data *data);
 int		check_pipes(t_cmd *cmd);
 int		check_syntax(t_data *data);
 
 // Env
 char	*get_env(char *env_var, t_data *data);
 void	get_env_vars(t_data *data);
+void	get_exit_status(t_data *data, t_token *tmp);
+void	get_normal_env_vars(t_data *data, t_token *tmp);
 
 #endif

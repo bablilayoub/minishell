@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:49:13 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/19 21:25:29 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/26 06:25:31 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	redirections_in(t_cmd *cmd, int *fd_in, t_redirection *tmp, t_data *data)
 	if (*fd_in != STDIN_FILENO)
 		close(*fd_in);
 	if (ft_strncmp(tmp->type, "<<", 2) == 0)
-		*fd_in = here_doc(tmp->file);
+		*fd_in = here_doc(tmp, data);
 	else
 		*fd_in = get_file(cmd, tmp->file);
 	if (*fd_in == -1)

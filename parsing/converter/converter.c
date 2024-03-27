@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/22 06:10:06 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/26 03:04:13 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,16 @@
 void	convert_word(t_token **tmp, t_cmd **head, t_cmd **cmd, int *found_cmd)
 {
 	*found_cmd = 1;
-	*cmd = new_cmd(*tmp);
+	if ((*tmp)->value && ft_strlen((*tmp)->value) > 0)
+		*cmd = new_cmd(*tmp);
+	else
+	{
+		free((*tmp)->value);
+		(*tmp)->value = ft_strdup(" ");
+		free((*tmp)->type);
+		(*tmp)->type = ft_strdup(SPECIAL_CASE);
+		*cmd = new_cmd(*tmp);
+	}
 	*head = add_cmd(*head, *cmd);
 	if ((*tmp)->next)
 		*tmp = find_args(*cmd, (*tmp)->next);
@@ -74,34 +83,26 @@ void	start_converting(t_token **tmp, t_cmd **head, t_cmd **cmd)
 	int	found_cmd;
 
 	found_cmd = 0;
-	while (*tmp)
+	if (*tmp)
 	{
 		if (ft_strncmp((*tmp)->type, PIPE_LINE, 1) == 0
 			&& (*tmp)->state != IN_DQUOTE && (*tmp)->state != IN_QUOTE)
-			break ;
+			return ;
 		if ((ft_strncmp((*tmp)->type, WORD, 4) == 0
 				|| ft_strncmp((*tmp)->type, ENV, 1) == 0) && !found_cmd)
-		{
 			convert_word(tmp, head, cmd, &found_cmd);
-			break ;
-		}
 		else if (cmd_starts_with_redir(*tmp) && !found_cmd)
-		{
 			convert_redirection(tmp, head, cmd, &found_cmd);
-			break ;
-		}
-		else if (*tmp && !found_cmd && !(*tmp)->next && ft_strncmp((*tmp)->type, SPECIAL_CASE, ft_strlen(SPECIAL_CASE)) == 0)
+		else if (*tmp && !found_cmd && ft_strncmp((*tmp)->type,
+				SPECIAL_CASE, ft_strlen(SPECIAL_CASE)) == 0)
 		{
+			found_cmd = 1;
 			(*tmp)->value = ft_strdup(" ");
 			*cmd = new_cmd(*tmp);
 			*head = add_cmd(*head, *cmd);
-			break ;
+			while (*tmp && ft_strncmp((*tmp)->type, PIPE_LINE, 1) != 0)
+				(*tmp) = (*tmp)->next;
 		}
-		else
-			break ;
-		if (*tmp)
-			(1 == 1) && (*tmp = (*tmp)->next,
-				*tmp = skip_white_spaces(*tmp));
 	}
 }
 

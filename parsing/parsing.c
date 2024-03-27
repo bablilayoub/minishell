@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/22 06:00:58 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/26 02:01:36 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	parser(char *line, t_data *data)
 {
-	if (only_spaces(line))
+	if (only_spaces(line, data))
 		return (0);
 	data->token = tokenizer(data, line);
 	get_env_vars(data);
-	if (!check_quotes(data->token))
+	if (!check_quotes(data->token, data))
 		return (0);
 	convert_tokens_to_commands(data);
 	if (!check_syntax(data))
@@ -31,10 +31,10 @@ void	reader(t_data *data)
 	char		*line;
 	extern int	g_child_open;
 
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	rl_catch_signals = 1;
 	while (1)
 	{
+		rl_catch_signals = 0;
 		line = readline(data->prefix);
 		if (!line)
 			break ;
@@ -42,7 +42,6 @@ void	reader(t_data *data)
 		{
 			if (parser(line, data))
 				prepare_for_excution(data);
-			g_child_open = 0;
 			free_data(data, 0);
 			add_history(line);
 		}

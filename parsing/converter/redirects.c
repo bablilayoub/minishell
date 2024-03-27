@@ -6,13 +6,13 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 21:58:12 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 01:06:21 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/26 06:18:59 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../parser.h"
 
-t_redirection	*new_redirect(char *type, char *file)
+t_redirection	*new_redirect(char *type, char *file, int expandable)
 {
 	t_redirection	*redirect;
 
@@ -20,6 +20,8 @@ t_redirection	*new_redirect(char *type, char *file)
 	check_error_null(redirect, "malloc");
 	redirect->type = type;
 	redirect->file = file;
+	redirect->expandalbe = expandable;
+	redirect->prev = NULL;
 	redirect->next = NULL;
 	return (redirect);
 }
@@ -46,15 +48,16 @@ t_token	*add_file(t_cmd **cmd, t_redirection **head, t_token *token, char *type)
 		|| ft_strncmp(type, REDIR_IN, 1) == 0)
 		(*cmd)->has_redirection = 1;
 	if (!token)
-		*head = add_redirect(*head, new_redirect(type, NULL));
+		*head = add_redirect(*head, new_redirect(type, NULL, 0));
 	while (token && not_a_shell_command(token)
 		&& ft_strncmp(token->type, WORD, 4) != 0)
 		token = token->next;
 	if (!token)
-		*head = add_redirect(*head, new_redirect(type, NULL));
+		*head = add_redirect(*head, new_redirect(type, NULL, 0));
 	if (token && ft_strncmp(token->type, WORD, 4) == 0)
-		*head = add_redirect(*head, new_redirect(type, token->value));
+		*head = add_redirect(*head,
+				new_redirect(type, token->value, token->state == GENERAL));
 	else
-		*head = add_redirect(*head, new_redirect(type, NULL));
+		*head = add_redirect(*head, new_redirect(type, NULL, 0));
 	return (token);
 }
