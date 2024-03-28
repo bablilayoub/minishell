@@ -17,7 +17,7 @@ LIBFT = ./utils/libft/libft.a
 
 # GENERAL
 MAIN = main.c
-UTILS = utils.c
+UTILS = utils.c more_utils.c
 UTILS_HEADER = ./utils/utils.h
 
 # PARSING

@@ -3,36 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/27 23:53:14 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 00:19:22 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include "../parsing/parser.h"
+#include "../utils/utils.h"
 
-bool    only_spaces(char *str, t_data *data)
+bool	only_spaces(char *str, t_data *data)
 {
-    int    i;
-    int    count;
+	int	i;
+	int	count;
 
-    i = 0;
-    count = 0;
-    while (str[i])
-    {
-        if (str[i] == ' ' || str[i] == '\t')
-            count++;
-        i++;
-    }
-    if (count == i)
-    {
-        data->exit_status = 0;
-        return (true);
-    }
-    return (false);
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ' || str[i] == '\t')
+			count++;
+		i++;
+	}
+	if (count == i)
+	{
+		data->exit_status = 0;
+		return (true);
+	}
+	return (false);
 }
+
 void	increment_shell_lvl(char **env, int *i, t_data *data)
 {
 	char	*shell_lvl;
@@ -52,8 +54,8 @@ void	increment_shell_lvl(char **env, int *i, t_data *data)
 	free_array(key_val);
 	free(lvl);
 	env[*i] = shell_lvl;
-		
 }
+
 char	**allocate_empty_env(int flag)
 {
 	char	**new_env;
@@ -77,11 +79,12 @@ char	**allocate_empty_env(int flag)
 	check_error_null(new_env[2], "malloc");
 	if (!flag)
 		new_env[3] = ft_strjoin("SHELL=", "/bin/zsh");
-	if (!flag)	
-		new_env[4] = ft_strdup("PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
-	new_env[5] = NULL;
-	return (new_env);
+	if (!flag)
+		new_env[4]
+			= ft_strdup("PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
+	return (new_env[5] = NULL, new_env);
 }
+
 char	**allocate_env(char **env, t_data *data)
 {
 	int		i;
@@ -96,8 +99,7 @@ char	**allocate_env(char **env, t_data *data)
 	}
 	new_env = malloc(sizeof(char *) * (ft_strdoublelen(env) + 1));
 	check_error_null(new_env, "malloc");
-	i = -1;
-	j = 0;
+	(1) && (i = -1, j = 0);
 	while (env[++i])
 	{
 		if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
@@ -114,35 +116,14 @@ char	**allocate_env(char **env, t_data *data)
 
 char	**allocate_export(char **env, t_data *data)
 {
-	int		i;
 	int		flag;
-	int		lenght;
 	char	**tmp;
 
 	if (data->empty_env)
 		return (allocate_empty_env(1));
-	lenght = ft_strdoublelen(env);
-	tmp = malloc(sizeof(char *) * (lenght + 1));
-	check_error_null(tmp, "malloc");
-	(1) && (i = -1, flag = 0);
-	while (env[++i])
-	{
-		if (ft_strncmp(env[i], "OLDPWD", 6) == 0)
-		{
-			tmp[i] = ft_strjoin("declare -x ", "OLDPWD");
-			flag = 1;
-		}
-		else
-		{
-			if (ft_strncmp(env[i], "declare -x SHLVL=", 17) == 0)
-				increment_shell_lvl(env, &i, data);
-			tmp[i] = ft_strjoin("declare -x ", env[i]);
-			check_error_null(tmp[i], "malloc");
-		}
-	}
-	tmp[i] = NULL;
+	flag = 0;
+	tmp = start_allocate_export(env, data, &flag);
 	if (!flag)
 		add_var(&tmp, ft_strjoin("declare -x ", "OLDPWD"), 1, 0);
 	return (tmp);
 }
-
