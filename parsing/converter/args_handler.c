@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 02:38:10 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 01:09:48 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 06:01:02 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	handle_redirect_token(t_token **tmp, t_cmd **cmd, char *tmp_type)
 	tmp_type = (*tmp)->type;
 	if ((*tmp)->next)
 		*tmp = skip_white_spaces((*tmp)->next);
-	if (tmp && ft_strncmp((*tmp)->type, WORD, 4) == 0)
+	if (*tmp && ft_strncmp((*tmp)->type, WORD, 4) == 0)
 	{
 		if (ft_strncmp(tmp_type, APPEND_OUT, 2) == 0
 			|| ft_strncmp(tmp_type, REDIR_OUT, 1) == 0

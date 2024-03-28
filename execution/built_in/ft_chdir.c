@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:09 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/28 00:59:05 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 05:56:31 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,7 @@ char	*ft_getenv(char *name, char **env)
 void	start_process(t_data *data, char *oldpwd, char *pwd, char ***env)
 {
 	char	*new_prefix;
-	t_cmd	*cmd;
 
-	cmd = data->cmd;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (check_error_null(pwd, "getcwd"));

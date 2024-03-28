@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 22:32:35 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/27 22:32:52 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 05:57:03 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,11 @@ void	load_to_exp(char ***export, char *args, char *key_arg, t_data *data)
 void	export_to_exp(char ***export, char **args, t_data *data)
 {
 	int		i;
-	int		j;
 	char	**key_arg;
 
 	i = 0;
 	while (args[++i])
 	{
-		j = -1;
 		data->found = 0;
 		if (!check_exported(args[i], 0, data))
 			continue ;

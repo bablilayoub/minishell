@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/27 22:33:09 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 06:14:47 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,12 @@ void	handle_more_cases(t_token_params *params, char *line);
 void	handle_else(t_token_params *params, char *value);
 
 // Converter
-void	convert_tokens_to_commands(t_data *data);
+int		convert_tokens_to_commands(t_data *data);
 int		not_a_shell_command(t_token *token);
 bool	is_built_in(char *value);
 
 // Converter utils
-int		check_syntax_error(t_token *token);
+int		check_syntax_error(t_token *token, t_data *data);
 
 // Redirects
 t_token	*add_file(t_cmd **cmd, t_redirection **head,

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 23:46:57 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/20 00:11:55 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 06:13:20 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*get_command_name(t_token *head)
 	return (tmp);
 }
 
-int	check_syntax_error(t_token *token)
+int	check_syntax_error(t_token *token, t_data *data)
 {
 	if (!token)
 		return (0);
@@ -54,6 +54,7 @@ int	check_syntax_error(t_token *token)
 		&& ft_strncmp(token->type, ENV, 1) != 0
 		&& ft_strncmp(token->type, SPECIAL_CASE, 1) != 0)
 	{
+		data->exit_status = 258;
 		printf("%s\n", PREFIX_ERROR "Syntax error");
 		return (0);
 	}

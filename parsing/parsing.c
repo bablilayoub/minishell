@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/27 22:33:34 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 06:14:39 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	parser(char *line, t_data *data)
 	get_env_vars(data);
 	if (!check_quotes(data->token, data))
 		return (0);
-	convert_tokens_to_commands(data);
+	if (!convert_tokens_to_commands(data))
+		return (0);
 	if (!check_syntax(data))
 		return (0);
 	return (1);
