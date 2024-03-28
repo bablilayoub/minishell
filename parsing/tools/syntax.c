@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:23:16 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/24 22:24:13 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 07:30:16 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_quotes(t_token *token, t_data *data)
 	if (count % 2 != 0)
 	{
 		data->exit_status = 258;
-		printf(PREFIX_ERROR "Syntax error\n");
+		printf(PREFIX_ERROR "syntax error , quotes not closed\n");
 		return (0);
 	}
 	return (1);
@@ -47,7 +47,7 @@ int	check_pipes(t_cmd *cmd)
 		{
 			if (!tmp->next)
 			{
-				printf("%s\n", PREFIX_ERROR "Syntax error");
+				printf("%s\n", PREFIX_ERROR "syntax error, pipe at the end");
 				return (0);
 			}
 		}
@@ -71,7 +71,7 @@ int	check_redirections(t_cmd *cmd)
 			{
 				if (!tmp->redirects->file)
 				{
-					printf("%s\n", PREFIX_ERROR "Syntax error");
+					printf("%s\n", PREFIX_ERROR "syntax error, no file");
 					return (0);
 				}
 				tmp->redirects = tmp->redirects->next;
