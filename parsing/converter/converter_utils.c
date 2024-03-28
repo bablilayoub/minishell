@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 23:46:57 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/28 06:13:20 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 06:55:18 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ int	check_syntax_error(t_token *token, t_data *data)
 		&& ft_strncmp(token->type, SPECIAL_CASE, 1) != 0)
 	{
 		data->exit_status = 258;
-		printf("%s\n", PREFIX_ERROR "Syntax error");
+		printf(PREFIX_ERROR "syntax error near unexpected token `%s'\n",
+			token->value);
 		return (0);
 	}
 	return (1);

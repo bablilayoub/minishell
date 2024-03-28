@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 21:18:29 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/22 00:33:43 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 06:56:36 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int	handle_escape(t_token_params *p, char **temp, char **reset)
 		&& (p->state == IN_DQUOTE || p->state == IN_QUOTE))
 		(1 == 1) && (p->value = ft_strdup("\\"), p->type = ft_strdup(WORD));
 	else
-		return (printf(PREFIX_ERROR "syntax error near token `\\'\n"));
+		return (
+			printf(PREFIX_ERROR "syntax error near unexpected token `\\'\n"));
 	return (1);
 }
 
