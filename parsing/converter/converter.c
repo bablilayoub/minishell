@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:42:27 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/28 06:15:13 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 08:33:31 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ int	convert_tokens_to_commands(t_data *data)
 		start_converting(&tmp, &head, &cmd);
 		if (tmp)
 			tmp = tmp->next;
-		if (tmp && (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0))
+		if (tmp && (ft_strncmp(tmp->type, PIPE_LINE, 1) == 0)
+			&& tmp->state == GENERAL)
 			tmp = tmp->next;
 	}
 	data->cmd = head;

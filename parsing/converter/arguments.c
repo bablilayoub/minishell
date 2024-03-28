@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 15:45:48 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/22 05:55:13 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 08:30:25 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,18 @@
 
 int	is_special_char_token(t_token *tmp)
 {
+	if (!tmp)
+		return (0);
 	return ((ft_strncmp(tmp->type, REDIR_IN, 1) == 0
 			|| ft_strncmp(tmp->type, REDIR_OUT, 1) == 0
 			|| ft_strncmp(tmp->type, APPEND_OUT, 2) == 0
 			|| ft_strncmp(tmp->type, HERE_DOC, 2) == 0)
-		&& (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE));
+		&& (tmp->state != GENERAL));
 }
 
 int	handle_escape_dquote_end_error(t_token **tmp)
 {
-	if (ft_strncmp((*tmp)->type, ESCAPE, 1) == 0
+	if (*tmp && ft_strncmp((*tmp)->type, ESCAPE, 1) == 0
 		&& ((*tmp)->state == IN_DQUOTE) && !(*tmp)->next)
 	{
 		printf(PREFIX_ERROR "Syntax error\n");
@@ -34,6 +36,8 @@ int	handle_escape_dquote_end_error(t_token **tmp)
 
 int	handle_more_tokens(t_token **tmp, t_arg **head)
 {
+	if (!*tmp)
+		return (0);
 	if (ft_strncmp((*tmp)->type, QUOTE, 1) == 0
 		&& between_dquotes(*tmp) && ((*tmp)->state == IN_DQUOTE))
 		*head = add_arg(*head, (*tmp)->value, 1);

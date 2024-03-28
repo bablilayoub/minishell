@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arguments_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:00:52 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/27 22:33:38 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 08:29:18 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ t_arg	*add_arg(t_arg *head, char *value, int found_quote)
 
 int	is_white_space_in_quote(t_token *tmp)
 {
+	if (!tmp)
+		return (0);
 	return (ft_strncmp(tmp->type, WHITE_SPACE, 1) == 0
 		&& (tmp->state != GENERAL));
 }
@@ -53,7 +55,7 @@ int	is_white_space_in_quote(t_token *tmp)
 void	handle_general_white_space(t_token **tmp, t_arg **head, t_cmd **cmd)
 {
 	*tmp = skip_white_spaces(*tmp);
-	if (tmp && (ft_strncmp((*cmd)->cmd, "echo", 4) == 0)
+	if (*tmp && (ft_strncmp((*cmd)->cmd, "echo", ft_strlen((*cmd)->cmd)) == 0)
 		&& not_a_shell_command(*tmp))
 	{
 		if (!(*head) || !(*head)->next)
