@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:11:39 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/21 22:27:21 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 00:50:29 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	is_space(char *arg)
 	if (!arg)
 		return (1);
 	if (arg[0] == '\0')
-		return (1);
+		return (0);
 	while (arg[i] == ' ' || arg[i] == '\t')
 		i++;
 	if (arg[i] == '\0')
