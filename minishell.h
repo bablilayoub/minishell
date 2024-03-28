@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/26 06:16:16 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/27 22:28:13 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,23 @@
 
 typedef struct s_data
 {
-	char			*prefix;
-	char			**env;
-	char			*shell_path;
 	char			**export;
+	char			**env;
 	char			**in_valid;
+	int				**fd;
+	char			*prefix;
+	char			*shell_path;
+	char			*temp;
+	char			*oldpwd;
+	char			*pwd;
 	int				exit_status;
 	int				parent_pid;
-	char			*temp;
 	int				in;
 	int				out;
-	int				**fd;
 	int				fd_c;
+	int				plus;
+	int				found;
+	int				empty_env;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
 }	t_data;

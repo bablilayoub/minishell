@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:19:56 by abablil           #+#    #+#             */
-/*   Updated: 2023/11/15 10:28:44 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/25 23:02:32 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_atoi(char const *str)
 
 	sign = 1;
 	result = 0;
-	if (str[0] == '\0' || !str)
+	if (!str || str[0] == '\0')
 		return (result);
 	i = ft_whitespaces(str);
 	if (str[i] == '+' || str[i] == '-')

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 01:56:46 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/22 01:18:37 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/27 23:54:04 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,35 @@ void	check_redirects( t_cmd *current, pid_t pid, t_data *data)
 			waitpid(pid, &data->exit_status, 0);
 		tmp = tmp->next;
 	}
+}
+
+bool	between_dquotes(t_token *token)
+{
+	t_token	*tmp;
+	int		count;
+
+	count = 0;
+	tmp = token;
+	while (tmp && ft_strncmp(tmp->type, QUOTE, 1) != 0)
+	{
+		if (ft_strncmp(tmp->type, DOUBLE_QUOTE, 1) == 0)
+			count++;
+		tmp = tmp->prev;
+	}
+	return (count % 2 == 0);
+}
+
+void	get_parent_pid(t_data *data)
+{
+	int	ret;
+
+	ret = fork();
+	if (ret == -1)
+	{
+		printf(PREFIX_ERROR"Error: fork failed\n");
+		exit(1);
+	}
+	if (ret == 0)
+		exit(0);
+	data->parent_pid = ret - 1;
 }

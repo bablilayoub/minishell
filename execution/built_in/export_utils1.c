@@ -6,57 +6,11 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:53:30 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/23 18:06:11 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/27 22:25:40 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
-
-bool	write_the_error(char **key_val, int flag, t_data *data)
-{
-	if (flag == 1)
-		printf(PREFIX_ERROR "export: not a valid identifier\n");
-	data->exit_status = 1;
-	free_array(key_val);
-	return (false);
-}
-
-int	check_exported(char *exported, int flag, t_data *data)
-{
-	int		i;
-	char	**key_val;
-	char	*key;
-	char	*found;
-
-	(1) && (i = 0, key_val = key_value(exported));
-	check_error_null(key_val, "malloc");
-	key = key_val[0];
-	if (ft_isdigit(key[i]) || (key[i] == '_' && !key[i + 1])
-		|| !ft_is_alphanumeric(key) || !key[i])
-	{
-		if ((key[i] == '_' && !key[i + 1]))
-		{
-			free_array(key_val);
-			return (false);
-		}
-		else
-		{
-			found = ft_strchr(exported, '+');
-			if (found)
-			{
-				if ((exported[0] == '+' && exported[1] == '=') || found[1] != '=')
-					return (write_the_error(key_val, flag, data));
-			}
-		}
-	}
-	if (!ft_strchr(exported, '=') && flag == 1)
-	{
-		free_array(key_val);
-		return (false);
-	}
-	free_double(key_val);
-	return (true);
-}
 
 char	**load_key_value(char *key, char *value)
 {
@@ -96,51 +50,54 @@ char	**key_value(char *exported)
 	key_value = load_key_value(key, value);
 	return (key_value);
 }
-void	remove_if_found(char **str)
+
+char	*remove_if_found(char *str, int flag)
 {
 	int		k;
-	int		j;
 	char	*copy;
-	
+	char	**key_val;
+	char	*temp;
+
 	k = 0;
-	copy = (*str);
-	while ((*str)[k] && (*str)[k] != '=')
+	while (str[k] && str[k] != '=')
 		k++;
-	if ((*str)[k - 1] == '+')
-	{
-		k = -1;
-		j = 0;
-		while (copy[++k])
-		{
-			if (copy[k] == '+')
-				continue ;
-			(*str)[j++] = copy[k];
-		}
-		(*str)[j] = '\0';
-	}
+	key_val = key_value(str);
+	check_error_null(key_val, "malloc");
+	copy = ft_substr(key_val[0], 0, ft_strlen(key_val[0]) - 1);
+	check_error_null(copy, "malloc");
+	temp = copy;
+	copy = ft_strjoin(copy, "=");
+	free(temp);
+	check_error_null(copy, "malloc");
+	temp = copy;
+	copy = ft_strjoin(copy, key_val[1]);
+	free(temp);
+	check_error_null(copy, "malloc");
+	free_array(key_val);
+	if (flag)
+		free(str);
+	return (copy);
 }
-void	add_var(char ***env, char *exported, int flag)
+
+void	add_var(char ***env, char *exported, int flag, int plus)
 {
 	int		i;
 	char	**new_env;
 	char	**temp;
-	
+
 	i = 0;
 	new_env = malloc(sizeof(char *) * (ft_strdoublelen(*env) + 2));
-	if (!new_env)
-		exit(EXIT_FAILURE);
+	check_error_null(new_env, "malloc");
 	while ((*env)[i])
 	{
 		new_env[i] = (*env)[i];
 		i++;
 	}
-	remove_if_found(&exported);
-	if (!flag)
-	{
+	if (plus)
+		new_env[i] = remove_if_found(exported, flag);
+	if (!flag && !plus)
 		new_env[i] = ft_strdup(exported);
-		check_error_null(new_env[i], "malloc");
-	}
-	else
+	else if (flag && !plus)
 		new_env[i] = exported;
 	new_env[i + 1] = NULL;
 	temp = *env;

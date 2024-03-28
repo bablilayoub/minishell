@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:47:01 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/22 13:25:40 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/27 22:30:19 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	excute_builtin(t_cmd *cmd_list, t_data *data)
 		ft_env(data->env, data);
 	else if ((ft_strncmp(cmd_list->arguments[0], "export", 6) == 0)
 		&& !cmd_list->arguments[1])
-		print(data->export);
+		print(data->export, data->temp);
 	else if (ft_strncmp(cmd_list->arguments[0], "export", 6) == 0)
 		ft_export(data, &data->env);
 	else if (ft_strncmp(cmd_list->arguments[0], "exit", 4) == 0)

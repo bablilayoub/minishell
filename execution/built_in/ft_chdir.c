@@ -6,18 +6,46 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:09 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/22 00:50:40 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/27 23:57:05 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
-char	**update_envpwd(char **env, char *oldpwd, char *pwd)
+char	**update_exppwd(char **exp, char *oldpwd, char *pwd)
 {
 	int		i;
 	char	*tmp;
 
 	i = -1;
+	while (exp[++i])
+	{
+		tmp = exp[i];
+		if (ft_strncmp(exp[i], "declare -x OLDPWD", 17) == 0)
+			exp[i] = ft_strjoin("declare -x OLDPWD=", oldpwd);
+		else if (ft_strncmp(exp[i], "declare -x PWD", 14) == 0)
+			exp[i] = ft_strjoin("declare -x PWD=", pwd);
+		else
+			exp[i] = ft_strdup(exp[i]);
+		free(tmp);
+		check_error_null(exp[i], "malloc");
+	}
+	exp[i] = NULL;
+	return (exp);
+}
+
+char	**update_envpwd(char **env, char *oldpwd, char *pwd)
+{
+	int			i;
+	char		*tmp;
+	static int	set = 0;
+
+	i = -1;
+	if (!set)
+	{
+		add_var(&env, ft_strjoin("OLDPWD=", oldpwd), 1, 0);
+		set = 1;
+	}
 	while (env[++i])
 	{
 		tmp = env[i];
@@ -60,8 +88,10 @@ void	start_process(t_data *data, char *oldpwd, char *pwd, char ***env)
 
 	cmd = data->cmd;
 	pwd = getcwd(NULL, 0);
-	check_error_null(pwd, "getcwd");
+	if (!pwd)
+		return (check_error_null(pwd, "getcwd"));
 	*env = update_envpwd(*env, oldpwd, pwd);
+	data->export = update_exppwd(data->export, oldpwd, pwd);
 	if (!*env)
 	{
 		perror("malloc");
@@ -71,46 +101,33 @@ void	start_process(t_data *data, char *oldpwd, char *pwd, char ***env)
 	new_prefix = ft_strrchr(pwd, '/');
 	update_prefix(data, new_prefix + 1);
 	free_two(oldpwd, pwd);
-	if (!cmd->next || !cmd->prev)
-		return ;
-}
-
-void	cd_failed(t_cmd *cmd, char *oldpwd)
-{
-	printf(PREFIX_ERROR "cd: HOME not set\n");
-	if (oldpwd)
-		free(oldpwd);
-	if (cmd->next || cmd->prev)
-		exit(EXIT_FAILURE);
-	else
-		return ;
 }
 
 void	ft_chdir(t_cmd *cmd, t_data *data)
 {
 	char	*dirname;
-	char	*oldpwd;
-	char	*pwd;
 
-	(1 == 1) && (oldpwd = NULL, pwd = NULL, dirname = NULL);
-	oldpwd = getcwd(NULL, 0);
-	(1) && (check_error_null(oldpwd, "getcwd"), dirname = cmd->arguments[1]);
+	(1 == 1) && (data->oldpwd = NULL, data->pwd = NULL, dirname = NULL);
+	data->oldpwd = getcwd(NULL, 0);
+	dirname = cmd->arguments[1];
+	if (!data->oldpwd)
+		return (check_directory("getcwd", dirname, data->env));
 	if (dirname && ft_strlen(dirname) == 0)
-		return (free(oldpwd));
+		return (free(data->oldpwd));
 	if (!dirname || (dirname[0] == '~' && dirname[1] == '\0'))
 	{
 		if (chdir(ft_getenv("HOME", data->env)) == 0)
-			return (start_process(data, oldpwd, pwd, &data->env));
+			return (start_process(data, data->oldpwd, data->pwd, &data->env));
 		else
-			return (cd_failed(cmd, oldpwd));
+			return (cd_failed(cmd, data->oldpwd));
 	}
 	if (access(dirname, F_OK) == 0)
 	{
 		if (chdir(dirname) == 0)
-			return (start_process(data, oldpwd, pwd, &data->env));
+			return (start_process(data, data->oldpwd, data->pwd, &data->env));
 		else
-			return (print_error(cmd, dirname, oldpwd));
+			return (print_error(cmd, dirname, data->oldpwd));
 	}
 	else
-		return (print_error(cmd, dirname, oldpwd));
+		return (print_error(cmd, dirname, data->oldpwd));
 }

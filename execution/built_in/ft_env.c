@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:14:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/16 04:51:09 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/27 01:21:30 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,24 @@ bool	print_error_exit(t_data *data)
 	printf(PREFIX_ERROR "env: No such file or directory\n");
 	data->exit_status = 127;
 	return (false);
+}
+
+void	ft_put_double_str(char **str, t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (data->empty_env)
+		{
+			if (!(ft_strncmp(str[i], "PATH", 4) == 0)
+				&& !(ft_strncmp(str[i], "SHELL", 4) == 0))
+				printf("%s\n", str[i]);
+		}
+		else
+			printf("%s\n", str[i]);
+	}
 }
 
 bool	ft_env(char **env, t_data *data)
@@ -41,9 +59,7 @@ bool	ft_env(char **env, t_data *data)
 		free_array(path);
 		return (failure("env", data));
 	}
-	i = -1;
-	while (env[++i])
-		printf("%s\n", env[i]);
+	ft_put_double_str(env, data);
 	free_array(path);
 	return (true);
 }

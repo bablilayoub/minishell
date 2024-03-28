@@ -6,15 +6,28 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/21 00:38:48 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/27 01:20:39 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
 
+bool	unset_alphanumeric(char *arg)
+{
+	int	i;
+
+	i = -1;
+	while (arg[++i])
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (false);
+	}
+	return (true);
+}
+
 bool	check_unset(char *arg, bool flag)
 {
-	if (ft_isdigit(arg[0]) || !ft_is_alphanumeric(arg))
+	if (ft_isdigit(arg[0]) || !unset_alphanumeric(arg))
 	{
 		if (flag == true)
 			printf(PREFIX_ERROR "unset: not a valid identifier\n");
@@ -53,13 +66,13 @@ void	update_(t_cmd *cmd, char ***to_update, bool flag, char **check)
 		if (!check_unset(cmd->arguments[k], flag))
 			continue ;
 		env = malloc(sizeof(char *) * (ft_strdoublelen(*to_update) + 1));
-		check_error_null(env, "malloc");
 		(1) && (i = -1, j = 0);
 		while ((*to_update)[++i])
 		{
 			check_flag((*to_update)[i], &check, flag);
-			if (ft_strncmp(check[0], cmd->arguments[k],
-					ft_strlen(check[0])) != 0)
+			if (!(ft_strncmp(check[0], cmd->arguments[k],
+						ft_strlen(cmd->arguments[k])) == 0
+					&& ft_strlen(check[0]) == ft_strlen(cmd->arguments[k])))
 				env[j++] = ft_strdup((*to_update)[i]);
 			free_array(check);
 		}

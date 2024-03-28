@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/25 22:08:00 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/28 00:06:58 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,10 @@ static void	error_print(int *found_error, t_cmd *head)
 	*found_error = 1;
 }
 
-bool	exitstatus(t_data *data)
-{
-	data->exit_status = 127;
-	return (false);
-}
-
-bool	initialize_path(t_cmd *head, t_data *data)
+void	init_path(t_data *data, t_cmd *head, int *flag, int *found_error)
 {
 	char	**env;
-	int		flag;
-	int		found_error;
 
-	(1) && (flag = 0, found_error = 0);
 	while (head)
 	{
 		if (!head->cmd || head->built_in || access(head->cmd, F_OK | X_OK) == 0)
@@ -65,14 +56,31 @@ bool	initialize_path(t_cmd *head, t_data *data)
 		}
 		env = ft_split(ft_getenv("PATH", data->env), ':');
 		if (!env)
-			return failure(head->cmd, data);
-		check_for_access(env, data, &flag, head);
-		if (!flag)
-			error_print(&found_error, head);
+		{
+			failure(head->cmd, data);
+			(1) && (head = head->next, free_array(env), env = NULL);
+			continue ;
+		}
+		if (env)
+			check_for_access(env, data, flag, head);
+		if (!(*flag))
+			error_print(found_error, head);
 		(1) && (head = head->next, free_array(env), env = NULL);
 	}
+}
+
+bool	initialize_path(t_cmd *head, t_data *data)
+{
+	int		flag;
+	int		found_error;
+
+	(1) && (flag = 0, found_error = 0);
+	init_path(data, head, &flag, &found_error);
 	if (found_error)
-		return exitstatus(data);
+	{
+		data->exit_status = 127;
+		return (false);
+	}
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 16:28:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/21 01:07:29 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/27 23:26:45 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,16 @@ void	update_prefix(t_data *data, char *prefix)
 	check_error_null(new_prefix, "malloc");
 	free(data->temp);
 	data->prefix = new_prefix;
+}
+
+void	check_directory(char *str, char *dir, char **env)
+{
+	if (!dir || (dir[0] == '~' && dir[1] == '\0'))
+	{
+		chdir(ft_getenv("HOME", env));
+		return ;
+	}
+	perror(str);
+	chdir(dir);
+	return ;
 }
