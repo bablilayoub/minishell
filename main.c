@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:00:51 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/27 22:42:49 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:11:42 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int total, char **args, char **env)
 	data.shell_path = getcwd(NULL, 0), rl_catch_signals = 0);
 	data.found = 0;
 	data.plus = 0;
+	data.chk = NULL;
 	get_parent_pid(&data);
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, signal_handler);

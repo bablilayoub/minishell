@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 08:19:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/27 23:27:04 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:08:30 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_pwd(t_data *data);
 void	ft_export(t_data *data, char ***env);
 bool	ft_env(char **env, t_data *data);
 void	ft_exit(t_data *data, t_cmd *cmd);
-void	ft_unset(t_cmd *cmd, char ***env, char ***export);
+void	ft_unset(t_cmd *cmd, char ***env, char ***export, t_data *data);
 void	update_prefix(t_data *data, char *prefix);
 char	**update_envpwd(char **env, char *oldpwd, char *pwd);
 int		ft_strdoublelen(char **str);
@@ -52,7 +52,7 @@ void	print(char **export, char *temp);
 char	*ft_getenv(char *name, char **env);
 void	export_to_exp(char ***export, char **args, t_data *data);
 int		check_exported(char *exported, int flag, t_data *data);
-void	print_error(t_cmd *cmd, char *dirname, char *oldpwd);
+void	print_error(t_cmd *cmd, char *dirname, char *oldpwd, t_data *data);
 void	add_var(char ***env, char *exported, int flag, int plus);
 void	handle_redirections(t_cmd *cmd, int **fd, int k, t_data *data);
 int		handle_single_command_redirections(t_cmd *cmd, t_data *data);
@@ -70,6 +70,6 @@ void	check_redirects( t_cmd *current, pid_t pid, t_data *data);
 char	*remove_if_found(char *str, int flag);
 void	continue_loading(char ***export, char *args, int j, t_data *data);
 void	check_directory(char *str, char *dirname, char **env);
-void	cd_failed(t_cmd *cmd, char *oldpwd);
+void	cd_failed(t_cmd *cmd, char *oldpwd, t_data *data);
 
 #endif

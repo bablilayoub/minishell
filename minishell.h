@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/27 22:28:13 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:11:47 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_data
 	int				plus;
 	int				found;
 	int				empty_env;
+	char			**chk;
 	struct s_cmd	*cmd;
 	struct s_token	*token;
 }	t_data;

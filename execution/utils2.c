@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 04:41:00 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/27 22:30:10 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:00:00 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ int	ft_strdoublelen(char **str)
 	return (i);
 }
 
-void	print_error(t_cmd *cmd, char *dirname, char *oldpwd)
+void	print_error(t_cmd *cmd, char *dirname, char *oldpwd, t_data *data)
 {
 	printf(PREFIX_ERROR "cd: %s: %s\n", dirname, strerror(errno));
+	data->exit_status = 1;
 	if (oldpwd)
 		free(oldpwd);
 	if (cmd->next || cmd->prev)
@@ -57,9 +58,10 @@ void	print_error(t_cmd *cmd, char *dirname, char *oldpwd)
 		return ;
 }
 
-void	cd_failed(t_cmd *cmd, char *oldpwd)
+void	cd_failed(t_cmd *cmd, char *oldpwd, t_data *data)
 {
 	printf(PREFIX_ERROR "cd: HOME not set\n");
+	data->exit_status = 1;
 	if (oldpwd)
 		free(oldpwd);
 	if (cmd->next || cmd->prev)

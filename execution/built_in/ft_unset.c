@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:50 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/27 01:20:39 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:12:19 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,13 @@ bool	unset_alphanumeric(char *arg)
 	return (true);
 }
 
-bool	check_unset(char *arg, bool flag)
+bool	check_unset(char *arg, bool flag, t_data *data)
 {
 	if (ft_isdigit(arg[0]) || !unset_alphanumeric(arg))
 	{
 		if (flag == true)
 			printf(PREFIX_ERROR "unset: not a valid identifier\n");
+		data->exit_status = 1;
 		return (false);
 	}
 	return (true);
@@ -52,7 +53,7 @@ void	check_flag(char *to_update, char ***check, bool flag)
 	check_error_null(*check, "malloc");
 }
 
-void	update_(t_cmd *cmd, char ***to_update, bool flag, char **check)
+void	update_(t_cmd *cmd, char ***to_update, bool flag, t_data *data)
 {
 	int		i;
 	int		j;
@@ -63,33 +64,28 @@ void	update_(t_cmd *cmd, char ***to_update, bool flag, char **check)
 	(1) && (i = 0, k = 0);
 	while (cmd->arguments[++k])
 	{
-		if (!check_unset(cmd->arguments[k], flag))
+		if (!check_unset(cmd->arguments[k], flag, data))
 			continue ;
 		env = malloc(sizeof(char *) * (ft_strdoublelen(*to_update) + 1));
 		(1) && (i = -1, j = 0);
 		while ((*to_update)[++i])
 		{
-			check_flag((*to_update)[i], &check, flag);
-			if (!(ft_strncmp(check[0], cmd->arguments[k],
+			check_flag((*to_update)[i], &data->chk, flag);
+			if (!(ft_strncmp(data->chk[0], cmd->arguments[k],
 						ft_strlen(cmd->arguments[k])) == 0
-					&& ft_strlen(check[0]) == ft_strlen(cmd->arguments[k])))
+					&& ft_strlen(data->chk[0]) == ft_strlen(cmd->arguments[k])))
 				env[j++] = ft_strdup((*to_update)[i]);
-			free_array(check);
+			free_array(data->chk);
 		}
 		(1) && (env[j] = NULL, tmp = *to_update, *to_update = env);
 		free_array(tmp);
 	}
 }
 
-void	ft_unset(t_cmd *cmd, char ***env, char ***export)
+void	ft_unset(t_cmd *cmd, char ***env, char ***export, t_data *data)
 {
-	char	**check;
-
 	if (!cmd->arguments[1])
 		return ;
-	check = NULL;
-	update_(cmd, env, true, check);
-	update_(cmd, export, false, check);
-	if (!cmd->next || !cmd->prev)
-		return ;
+	update_(cmd, env, true, data);
+	update_(cmd, export, false, data);
 }

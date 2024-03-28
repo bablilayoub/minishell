@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_chdir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:12:09 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/27 23:57:05 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/28 00:59:05 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,15 +119,15 @@ void	ft_chdir(t_cmd *cmd, t_data *data)
 		if (chdir(ft_getenv("HOME", data->env)) == 0)
 			return (start_process(data, data->oldpwd, data->pwd, &data->env));
 		else
-			return (cd_failed(cmd, data->oldpwd));
+			return (cd_failed(cmd, data->oldpwd, data));
 	}
 	if (access(dirname, F_OK) == 0)
 	{
 		if (chdir(dirname) == 0)
 			return (start_process(data, data->oldpwd, data->pwd, &data->env));
 		else
-			return (print_error(cmd, dirname, data->oldpwd));
+			return (print_error(cmd, dirname, data->oldpwd, data));
 	}
 	else
-		return (print_error(cmd, dirname, data->oldpwd));
+		return (print_error(cmd, dirname, data->oldpwd, data));
 }
