@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/27 23:58:12 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/30 01:02:59 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 void	excute_child(t_cmd *current, t_data *data, int k)
 {
+	if (opendir(current->cmd))
+		printf(PREFIX_ERROR"%s: is a directory\n", current->cmd);
 	handle_redirections(current, data->fd, k, data);
 	close_fds(data->fd);
+	if (opendir(current->cmd))
+		exit(126);
 	if (current->built_in)
 	{
 		excute_builtin(current, data);
