@@ -6,11 +6,27 @@
 /*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:14:02 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/27 01:21:30 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/03/31 18:20:03 by alaalalm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../execution.h"
+
+bool	check_if_path_changed(char **env)
+{
+	int		i;
+	bool	not_changed;
+
+	i = -1;
+	not_changed = 0;
+	while (env[++i])
+	{
+		if (ft_strncmp(env[i],
+				"PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.", 47) == 0)
+			not_changed = 1;
+	}
+	return (not_changed);
+}
 
 bool	print_error_exit(t_data *data)
 {
@@ -21,16 +37,19 @@ bool	print_error_exit(t_data *data)
 
 void	ft_put_double_str(char **str, t_data *data)
 {
-	int	i;
+	int		i;
+	bool	not_changed;
 
 	i = -1;
+	not_changed = check_if_path_changed(str);
 	while (str[++i])
 	{
 		if (data->empty_env)
 		{
-			if (!(ft_strncmp(str[i], "PATH", 4) == 0)
-				&& !(ft_strncmp(str[i], "SHELL", 4) == 0))
-				printf("%s\n", str[i]);
+			if ((ft_strncmp(str[i], "PATH", 4) == 0 && not_changed)
+				|| ft_strncmp(str[i], "SHELL", 4) == 0)
+				continue ;
+			printf("%s\n", str[i]);
 		}
 		else
 			printf("%s\n", str[i]);
