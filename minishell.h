@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:55:30 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/28 01:11:47 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/01 00:13:22 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_data
 	char			*prefix;
 	char			*shell_path;
 	char			*temp;
+	char			*temp2;
 	char			*oldpwd;
 	char			*pwd;
 	int				exit_status;

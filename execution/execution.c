@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/30 01:02:59 by abablil          ###   ########.fr       */
+/*   Updated: 2024/03/31 23:28:11 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,7 @@ void	prepare_for_excution(t_data *data)
 
 	cmd_list = data->cmd;
 	initialize_arguments(cmd_list);
-	if (!initialize_path(cmd_list, data))
-		return ;
+	initialize_path(cmd_list, data);
 	data->fd_c = cmd_lenght(cmd_list);
 	start_execution(data, data->fd_c);
 	g_child_open = 0;

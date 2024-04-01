@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:57:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/28 00:19:22 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/01 00:13:51 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,16 @@ void	increment_shell_lvl(char **env, int *i, t_data *data)
 	env[*i] = shell_lvl;
 }
 
-char	**allocate_empty_env(int flag)
+char	**allocate_empty_env(int flag, t_data *data)
 {
 	char	**new_env;
 
 	new_env = malloc(sizeof(char *) * 5);
 	check_error_null(new_env, "malloc");
 	if (!flag)
-		new_env[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
+		new_env[0] = ft_strjoin("PWD=", data->temp2);
 	else
-		new_env[0] = ft_strjoin("declare -x ", getcwd(NULL, 0));
+		new_env[0] = ft_strjoin("declare -x ", data->temp2);
 	check_error_null(new_env[0], "malloc");
 	if (!flag)
 		new_env[1] = ft_strjoin("SHLVL=", "1");
@@ -94,7 +94,7 @@ char	**allocate_env(char **env, t_data *data)
 	if (ft_strdoublelen(env) == 0)
 	{
 		data->empty_env = 1;
-		new_env = allocate_empty_env(0);
+		new_env = allocate_empty_env(0, data);
 		return (new_env);
 	}
 	new_env = malloc(sizeof(char *) * (ft_strdoublelen(env) + 1));
@@ -120,7 +120,7 @@ char	**allocate_export(char **env, t_data *data)
 	char	**tmp;
 
 	if (data->empty_env)
-		return (allocate_empty_env(1));
+		return (allocate_empty_env(1, data));
 	flag = 0;
 	tmp = start_allocate_export(env, data, &flag);
 	if (!flag)
