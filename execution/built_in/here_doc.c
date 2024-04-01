@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 03:51:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/26 06:40:33 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/01 04:09:06 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	here_doc_signal_handler(int sig)
 {
+	extern int	g_child_open;
+
 	if (sig == SIGINT)
 		exit(1);
 }

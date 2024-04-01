@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/31 23:28:11 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/01 05:52:21 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ pid_t pid[], t_cmd *current)
 	ft_pipe(data->fd);
 	while (current)
 	{
+		if (g_child_open == 2)
+			break ;
 		(1 == 1) && (g_child_open = 1, pid[k] = fork());
 		if (pid[k] == -1)
 			perror("fork");

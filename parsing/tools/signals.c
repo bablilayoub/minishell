@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:22:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/27 22:33:47 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/04/01 04:10:04 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void	signal_handler(int sig)
 			rl_replace_line("", 0);
 			rl_redisplay();
 		}
-		else
+		else if (g_child_open == 1)
+		{
+			g_child_open = 2;
 			printf("\n");
+		}
 	}
 }
