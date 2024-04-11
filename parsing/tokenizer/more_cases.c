@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 03:49:37 by abablil           #+#    #+#             */
-/*   Updated: 2024/04/01 05:37:15 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/01 07:24:41 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,6 @@ void	handle_more_cases(t_token_params *params, char *line)
 		handle_special_char(params, REDIR_IN, 1);
 	else if (line[params->i] == '>' && line[params->i + 1] != '>')
 		handle_special_char(params, REDIR_OUT, 1);
-	else if (line[params->i] == '\\')
-		handle_special_char(params, ESCAPE, 1);
 	else
 		handle_word(params, line);
 }

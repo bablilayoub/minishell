@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 20:23:16 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/28 07:30:16 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/11 17:39:45 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,65 +30,80 @@ int	check_quotes(t_token *token, t_data *data)
 	if (count % 2 != 0)
 	{
 		data->exit_status = 258;
-		printf(PREFIX_ERROR "syntax error , quotes not closed\n");
+		printf(PREFIX_ERROR "syntax error, quotes not closed\n");
 		return (0);
 	}
 	return (1);
 }
 
-int	check_pipes(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-
-	tmp = cmd;
-	while (tmp)
-	{
-		if (tmp->has_pipe)
-		{
-			if (!tmp->next)
-			{
-				printf("%s\n", PREFIX_ERROR "syntax error, pipe at the end");
-				return (0);
-			}
-		}
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
-int	check_redirections(t_cmd *cmd)
+int	check_redirections(t_cmd *cmd, t_data *data)
 {
 	t_cmd			*tmp;
-	t_redirection	*redirects;
 
 	tmp = cmd;
 	while (tmp)
 	{
 		if (tmp->has_redirection)
 		{
-			redirects = tmp->redirects;
-			while (tmp->redirects)
-			{
-				if (!tmp->redirects->file)
-				{
-					printf("%s\n", PREFIX_ERROR "syntax error, no file");
-					return (0);
-				}
-				tmp->redirects = tmp->redirects->next;
-			}
-			tmp->redirects = redirects;
+			if (!validate_redirects(&tmp->redirects, data))
+				return (0);
 		}
 		tmp = tmp->next;
 	}
 	return (1);
 }
 
-int	check_syntax(t_data *data)
+int	check_ambiguous_redirects(char *line, t_data *data)
 {
-	if (!check_pipes(data->cmd) || !check_redirections(data->cmd))
+	t_token	*tokens;
+	t_token	*tmp;
+	char	*file;
+
+	(1) && (tokens = tokenizer(data, line), tmp = tokens, file = NULL);
+	while (tmp)
+	{
+		while (tmp && not_a_shell_command(tmp))
+			tmp = tmp->next;
+		if (tmp && is_redirect(tmp) && tmp->state == GENERAL)
+		{
+			tmp = tmp->next;
+			while (tmp && is_whitespace_or_quotes(tmp) && tmp->state == GENERAL)
+				tmp = tmp->next;
+			if (tmp && ft_strncmp(tmp->type, ENV, 1) == 0)
+			{
+				if (!handle_env(tmp, &file, data, tokens))
+					return (0);
+			}
+		}
+		if (tmp)
+			tmp = tmp->next;
+	}
+	free_tokens(tokens);
+	return (1);
+}
+
+int	check_syntax(t_data *data, char *line)
+{
+	if (line)
+	{
+		if (!check_ambiguous_redirects(line, data))
+		{
+			data->exit_status = 1;
+			return (0);
+		}
+	}
+	if (!check_redirections(data->cmd, data))
 	{
 		data->exit_status = 258;
 		return (0);
+	}
+	if (line)
+	{
+		if (!check_pipes(line, data))
+		{
+			data->exit_status = 258;
+			return (0);
+		}
 	}
 	return (1);
 }

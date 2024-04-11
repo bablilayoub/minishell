@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:03:47 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/20 00:27:27 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/11 14:21:46 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,53 @@ void	get_exit_status(t_data *data, t_token *tmp)
 	free(data->temp);
 }
 
-void	get_normal_env_vars(t_data *data, t_token *tmp)
+int	not_for_redirects(t_data *data, t_token *tmp)
 {
-	data->temp = tmp->value;
-	tmp->value = get_env(tmp->value + 1, data);
-	free(data->temp);
-	if (!tmp->value)
-	{
-		tmp->value = ft_strdup("");
-		check_error_null(tmp->value, "malloc");
-		data->temp = tmp->type;
-		if (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE)
-			tmp->type = ft_strdup(WORD);
-		else
-			tmp->type = ft_strdup(WHITE_SPACE);
-		check_error_null(tmp->type, "malloc");
-		free(data->temp);
-	}
-	else
+	t_token	*tmp2;
+
+	tmp2 = tmp;
+	while (tmp2 && ft_strncmp(tmp2->type, REDIR_IN, 1) != 0
+		&& ft_strncmp(tmp2->type, REDIR_OUT, 1) != 0
+		&& ft_strncmp(tmp2->type, PIPE_LINE, 1) != 0)
+		tmp2 = tmp2->prev;
+	if (tmp2 && (ft_strncmp(tmp2->type, REDIR_IN, 1) == 0
+			|| ft_strncmp(tmp2->type, REDIR_OUT, 1) == 0))
 	{
 		data->temp = tmp->type;
 		tmp->type = ft_strdup(WORD);
 		check_error_null(tmp->type, "malloc");
 		free(data->temp);
+		return (1);
+	}
+	return (0);
+}
+
+void	get_normal_env_vars(t_data *data, t_token *tmp)
+{
+	if (!not_for_redirects(data, tmp))
+	{
+		data->temp = tmp->value;
+		tmp->value = get_env(tmp->value + 1, data);
+		free(data->temp);
+		if (!tmp->value)
+		{
+			tmp->value = ft_strdup("");
+			check_error_null(tmp->value, "malloc");
+			data->temp = tmp->type;
+			if (tmp->state == IN_QUOTE || tmp->state == IN_DQUOTE)
+				tmp->type = ft_strdup(WORD);
+			else
+				tmp->type = ft_strdup(WHITE_SPACE);
+			check_error_null(tmp->type, "malloc");
+			free(data->temp);
+		}
+		else
+		{
+			data->temp = tmp->type;
+			tmp->type = ft_strdup(WORD);
+			check_error_null(tmp->type, "malloc");
+			free(data->temp);
+		}
 	}
 }
 

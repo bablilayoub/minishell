@@ -6,23 +6,55 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/28 06:14:39 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/04 23:48:25 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
+char	*create_new_line(t_data *data)
+{
+	t_token	*temp;
+	char	*new_line;
+
+	temp = data->token;
+	new_line = ft_strdup("");
+	while (temp)
+	{
+		data->temp = new_line;
+		if (temp && ft_strncmp(temp->type, SPECIAL_CASE,
+				ft_strlen(SPECIAL_CASE)) == 0)
+			new_line = ft_strjoin(new_line, "''");
+		else
+			new_line = ft_strjoin(new_line, temp->value);
+		free(data->temp);
+		temp = temp->next;
+	}
+	return (new_line);
+}
+
 int	parser(char *line, t_data *data)
 {
+	char	*new_line;
+
 	if (only_spaces(line, data))
 		return (0);
 	data->token = tokenizer(data, line);
+	if (!data->token)
+		return (0);
 	get_env_vars(data);
+	new_line = create_new_line(data);
+	free_tokens(data->token);
+	data->token = tokenizer(data, new_line);
+	get_env_vars(data);
+	free(new_line);
+	if (!data->token)
+		return (0);
 	if (!check_quotes(data->token, data))
 		return (0);
 	if (!convert_tokens_to_commands(data))
 		return (0);
-	if (!check_syntax(data))
+	if (!check_syntax(data, line))
 		return (0);
 	return (1);
 }

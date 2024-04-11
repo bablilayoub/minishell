@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/28 06:14:47 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/11 17:40:24 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,21 @@ void	signal_handler(int sig);
 
 // Syntax
 int		check_quotes(t_token *token, t_data *data);
-int		check_pipes(t_cmd *cmd);
-int		check_syntax(t_data *data);
+int		check_pipes(char *line, t_data *data);
+int		check_syntax(t_data *data, char *line);
+
+// Syntax pipe
+int		check_pipes(char *line, t_data *data);
+
+// Syntax ambiguous
+int		is_redirect(t_token *tmp);
+int		is_whitespace_or_quotes(t_token *tmp);
+int		handle_env(t_token *tmp, char **file, t_data *data, t_token *tokens);
+int		handle_general_state(char *file, t_token *tokens);
+int		handle_in_dquote_state(char *file, t_token *tokens);
+
+// Syntax redirection
+int		validate_redirects(t_redirection **head, t_data *data);
 
 // Env
 char	*get_env(char *env_var, t_data *data);

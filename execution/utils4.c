@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 01:56:46 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/27 23:54:04 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/04/11 14:16:32 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	get_file(t_cmd *cmd, char *file)
 	fd = 0;
 	if (access(file, F_OK) == -1)
 	{
-		printf(PREFIX_ERROR "%s: no such file or directory\n",
-			file);
 		if (!cmd->built_in)
 			exit(EXIT_FAILURE);
 		return (-1);

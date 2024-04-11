@@ -24,7 +24,7 @@ UTILS_HEADER = ./utils/utils.h
 PARSING_HEADER = ./parsing/parsing.h
 TOKENIZER = tokenizer.c clean_tokens.c tokenizer_utils.c cases.c more_cases.c states.c more_utils.c
 CONVERTER = converter.c converter_utils.c arguments.c args_handler.c arguments_utils.c commands.c env.c redirects.c
-TOOLS = cleaning.c more_cleaning.c signals.c syntax.c
+TOOLS = cleaning.c more_cleaning.c signals.c syntax.c syntax_pipe.c syntax_ambiguous.c syntax_redirects.c
 PARSING = parsing.c $(addprefix tokenizer/, $(TOKENIZER)) $(addprefix converter/, $(CONVERTER)) $(addprefix tools/, $(TOOLS))
 
 # EXECUTION

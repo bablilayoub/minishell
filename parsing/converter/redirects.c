@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 21:58:12 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/26 06:18:59 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/11 18:39:03 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,36 @@ t_redirection	*add_redirect(t_redirection *head, t_redirection *redirect)
 	return (head);
 }
 
+int	file_not_found(t_token *token)
+{
+	return (token && not_a_shell_command(token)
+		&& ft_strncmp(token->type, WORD, 4) != 0
+		&& ft_strncmp(token->type, ENV, 1) != 0
+		&& ft_strncmp(token->type, SPECIAL_CASE, 12) != 0);
+}
+
 t_token	*add_file(t_cmd **cmd, t_redirection **head, t_token *token, char *type)
 {
-	if (ft_strncmp(type, APPEND_OUT, 2) == 0
-		|| ft_strncmp(type, REDIR_OUT, 1) == 0
-		|| ft_strncmp(type, HERE_DOC, 2) == 0
-		|| ft_strncmp(type, REDIR_IN, 1) == 0)
-		(*cmd)->has_redirection = 1;
+	(*cmd)->has_redirection = 1;
 	if (!token)
 		*head = add_redirect(*head, new_redirect(type, NULL, 0));
-	while (token && not_a_shell_command(token)
-		&& ft_strncmp(token->type, WORD, 4) != 0)
+	while (file_not_found(token))
 		token = token->next;
 	if (!token)
 		*head = add_redirect(*head, new_redirect(type, NULL, 0));
-	if (token && ft_strncmp(token->type, WORD, 4) == 0)
-		*head = add_redirect(*head,
-				new_redirect(type, token->value, token->state == GENERAL));
+	if (token && (ft_strncmp(token->type, WORD, 4) == 0
+			|| ft_strncmp(token->type, SPECIAL_CASE, 12) == 0
+			|| ft_strncmp(token->type, ENV, 1) == 0))
+	{
+		if (ft_strncmp(type, HERE_DOC, 2) == 0)
+			*head = add_redirect(*head,
+					new_redirect(type, ft_strdup(token->value),
+						token->state == GENERAL));
+		else
+			*head = add_redirect(*head,
+					new_redirect(type, ft_strdup(token->value),
+						(token->state != IN_QUOTE)));
+	}
 	else
 		*head = add_redirect(*head, new_redirect(type, NULL, 0));
 	return (token);

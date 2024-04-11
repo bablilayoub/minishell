@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:41:45 by abablil           #+#    #+#             */
-/*   Updated: 2024/03/19 01:34:54 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/04/11 18:14:33 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	free_redirections(t_redirection *redirections)
 	while (redirections)
 	{
 		tmp = redirections->next;
+		if (redirections->file)
+			free(redirections->file);
 		free(redirections);
 		redirections = tmp;
 	}
