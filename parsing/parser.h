@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:02:17 by abablil           #+#    #+#             */
-/*   Updated: 2024/04/11 17:40:24 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/20 16:35:12 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	free_args(t_arg *args);
 
 // Signals
 void	signal_handler(int sig);
+void	child_handler(int sig);
 
 // Syntax
 int		check_quotes(t_token *token, t_data *data);

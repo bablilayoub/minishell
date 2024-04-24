@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/04/11 15:03:46 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/21 15:48:18 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ void	excute_child(t_cmd *current, t_data *data, int k)
 {
 	if (opendir(current->cmd) && ft_strchr(current->cmd, '/'))
 		printf(PREFIX_ERROR"%s: is a directory\n", current->cmd);
+	signal(SIGQUIT, child_handler);
 	handle_redirections(current, data->fd, k, data);
 	close_fds(data->fd);
 	if (opendir(current->cmd) && ft_strchr(current->cmd, '/'))
 		exit(126);
-	if (ft_strncmp(current->cmd, "..", 2) == 0)
+	if (current->cmd && ft_strncmp(current->cmd, "..", 2) == 0)
 	{
 		printf(PREFIX_ERROR"%s: command not found\n", current->cmd);
 		exit(127);
