@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 12:33:23 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/04/21 15:48:18 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/30 17:53:19 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	excute_child(t_cmd *current, t_data *data, int k)
 	else
 	{
 		if (!current->path)
-			exit(EXIT_SUCCESS);
+			exit(127);
 		execve(current->path, current->arguments, data->env);
 		perror("execve");
 		exit(EXIT_FAILURE);

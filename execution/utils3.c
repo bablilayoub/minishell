@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaalalm <alaalalm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 04:43:53 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/03/25 15:29:07 by alaalalm         ###   ########.fr       */
+/*   Updated: 2024/04/26 14:50:50 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	free_int(int **fd)
 
 bool	failure(char *cmd, t_data *data)
 {
-	printf(PREFIX_ERROR "command not found: %s\n", cmd);
+	printf(PREFIX_ERROR"%s: command not found\n", cmd);
 	data->exit_status = 127;
 	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 19:24:33 by alaalalm          #+#    #+#             */
-/*   Updated: 2024/04/21 15:34:23 by abablil          ###   ########.fr       */
+/*   Updated: 2024/04/26 14:50:26 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ void	check_for_access(char **env, t_data *data, int *flag, t_cmd *head)
 	}
 }
 
-static void	error_print(int *found_error, t_cmd *head)
+static void	error_print(int *found_error, t_cmd *head, t_data *data)
 {
-	printf(PREFIX_ERROR "command not found: %s\n", head->cmd);
+	printf(PREFIX_ERROR"%s: command not found\n", head->cmd);
+	data->exit_status = 127;
 	*found_error = 1;
 }
 
@@ -65,7 +66,7 @@ void	init_path(t_data *data, t_cmd *head, int *flag, int *found_error)
 		if (env)
 			check_for_access(env, data, flag, head);
 		if (!(*flag))
-			error_print(found_error, head);
+			error_print(found_error, head, data);
 		(1) && (head = head->next, free_array(env), env = NULL);
 	}
 }
