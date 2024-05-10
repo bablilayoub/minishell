@@ -6,7 +6,7 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 17:40:03 by abablil           #+#    #+#             */
-/*   Updated: 2024/04/11 18:37:46 by abablil          ###   ########.fr       */
+/*   Updated: 2024/05/09 14:54:28 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	validate_redirects(t_redirection **redirects, t_data *data)
 				&& ft_strncmp(tmp->type, REDIR_IN, 1) == 0)
 			{
 				printf("%s\n", PREFIX_ERROR "No such file or directory");
-				return (0);
+				return (1);
 			}
 		}
 		tmp = tmp->next;

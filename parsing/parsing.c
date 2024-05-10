@@ -6,32 +6,11 @@
 /*   By: abablil <abablil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:31:53 by abablil           #+#    #+#             */
-/*   Updated: 2024/04/23 16:44:49 by abablil          ###   ########.fr       */
+/*   Updated: 2024/05/10 17:12:05 by abablil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-char	*create_new_line(t_data *data)
-{
-	t_token	*temp;
-	char	*new_line;
-
-	temp = data->token;
-	new_line = ft_strdup("");
-	while (temp)
-	{
-		data->temp = new_line;
-		if (temp && ft_strncmp(temp->type, SPECIAL_CASE,
-				ft_strlen(SPECIAL_CASE)) == 0)
-			new_line = ft_strjoin(new_line, "''");
-		else
-			new_line = ft_strjoin(new_line, temp->value);
-		free(data->temp);
-		temp = temp->next;
-	}
-	return (new_line);
-}
 
 int	parser(char *line, t_data *data)
 {
